@@ -1,0 +1,249 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'Netris API'
+  license:
+    name: MIT
+servers:
+  - url: 'localhost:3000'
+paths:
+  /api/v2/nos-images/:
+    get:
+      tags: ["Nos Images"]
+      summary: 'Get the NOS images list'
+      responses:
+        '200':
+          description: 'Response'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        desc:
+                          type: string
+                        nos:
+                          type: string
+                        default:
+                          type: boolean
+                        md5sum:
+                          type: string
+                        created_date:
+                          type: integer
+                        modified_date:
+                          type: integer
+  /api/v2/nos-images/{id}:
+    get:
+      tags: ["Nos Images"]
+      summary: 'Get the NOS image by id'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Response'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    desc:
+                      type: string
+                    nos:
+                      type: string
+                    default:
+                      type: boolean
+                    md5sum:
+                      type: string
+                    created_date:
+                      type: integer
+                    modified_date:
+                      type: integer
+  /api/v2/nos-images/{name}:
+    get:
+      tags: ["Nos Images"]
+      summary: 'Get the NOS image by name'
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Response'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    desc:
+                      type: string
+                    nos:
+                      type: string
+                    default:
+                      type: boolean
+                    md5sum:
+                      type: string
+                    created_date:
+                      type: integer
+                    modified_date:
+                      type: integer
+  /api/v2/nos-images/create:
+    post:
+        tags: ["Nos Images"]
+        summary: 'Upload NOS images'
+        requestBody:
+          content:
+            multipart/form-data:
+              schema:
+                   $ref: '#/components/schemas/UploadRequest'
+        responses:
+            '200':
+                description: 'Upload Response'
+                content:
+                  application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+  /api/v2/nos-images/edit/{id}:
+    put:
+        tags: ["Nos Images"]
+        summary: 'Edit NOS images'
+        parameters: 
+         - in: path
+           name: id
+           required: true
+           schema:
+            type: integer
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  desc:
+                    description: "Description of the NOS image"
+                    type: string
+                  nos:
+                    description: "NOS type"
+                    type: string
+                  default:
+                    description: "Flag that marks the image as default. Allowed values 'yes' or 'no'"
+                    type: string
+        responses:
+            '200':
+                description: 'Upload Response'
+                content:
+                  application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+  /api/v2/nos-images/delete/{id}:
+      delete:
+        tags: ["Nos Images"]
+        summary: 'Delete the NOS image by id'
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+        responses:
+            '200':
+                description: 'Delete Response'
+                content:
+                  application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+  /api/v2/nos-images/delete/{name}:
+      delete:
+        tags: ["Nos Images"]
+        summary: 'Delete the NOS image by name'
+        parameters:
+          - in: path
+            name: name
+            required: true
+            schema:
+              type: string
+        responses:
+            '200':
+                description: 'Delete Response'
+                content:
+                  application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    UploadRequest:
+      type: object
+      required:
+      - file
+      - name
+      - type
+      - default
+      properties:
+        file:
+          description: "File that is going to be uploaded"
+          type: string
+          format: binary
+        desc:
+          description: "Description of the NOS image"
+          type: string
+        nos:
+          description: "NOS type"
+          type: string
+          default: 'cumulus_linux'
+          enum:
+          - cumulus_linux
+          - ubuntu_switch_dev
+          - sonic
+        default:
+          description: "Flag that marks the image as a default image"
+          type: string
+          enum:
+          - true
+          - false
+        url:
+          description: "URL from where the images must be downloaded. **file** field will be ignored when this property is not empty"
+          type: string
+    Error:
+      type: object
+      description: "Error response"
+      properties:
+        data:
+          type: array
+          items:
+              type: string
+        errors:
+          type: array
+          items:
+              type: string
+        message:
+          type: string
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+            statusCode:
+              type: integer
