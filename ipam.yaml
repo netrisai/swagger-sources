@@ -611,3 +611,9 @@ components:
           type: string
           example: 10.0.0.1
           description: ''
+        tags:
+          type: array
+          items:
+            type: string
+            example: ["tag1", "tag2"]
+
