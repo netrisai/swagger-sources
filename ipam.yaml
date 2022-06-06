@@ -1,0 +1,613 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v1
+  license:
+    name: MIT
+servers:
+  - url: localhost:3000
+paths:
+  /api/v2/ipam:
+    get:
+      tags:
+        - IPAM
+      summary: Request for getting ips tree.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ipTree'
+  /api/v2/ipam/subnets:
+    get:
+      tags:
+        - IPAM
+      summary: Request for getting subnets.
+      responses:
+        '200':
+          description: OK
+  /api/v2/ipam/hosts/{subnetID}:
+    get:
+      tags:
+        - IPAM
+      summary: Request for getting hosts.
+      parameters:
+        - in: path
+          name: subnetID
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the subnet
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ipHosts'
+  /api/v2/ipam/allocation:
+    post:
+      tags:
+        - IPAM
+      summary: Request for adding allocation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/allocationBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: number
+  /api/v2/ipam/allocation/{id}:
+    put:
+      tags:
+        - IPAM
+      summary: Request for editing allocation.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the allocation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/allocationBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: number
+  /api/v2/ipam/subnet:
+    post:
+      tags:
+        - IPAM
+      summary: Request for adding subnet.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/subnetBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: number
+  /api/v2/ipam/subnet/{id}:
+    put:
+      tags:
+        - IPAM
+      summary: Request for editing subnet.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the subnet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/subnetBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: number
+  /api/v2/ipam/{type}/{id}:
+    delete:
+      tags:
+        - IPAM
+      parameters:
+        - in: path
+          name: type
+          schema:
+            type: string
+            enum:
+              - allocation
+              - subnet
+          required: true
+          description: Type of the IP.
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the IP.
+      summary: Request for deleting by id.
+      responses:
+        '200':
+          description: OK
+  /api/v2/ipam/{type}/{prefix}:
+    delete:
+      tags:
+        - IPAM
+      parameters:
+        - in: path
+          name: type
+          schema:
+            type: string
+            enum:
+              - allocation
+              - subnet
+          required: true
+          description: Type of the IP.
+        - in: path
+          name: prefix
+          schema:
+            type: string
+          required: true
+          description: Prefix of the IP.
+      summary: Request for deleting by prefix.
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    ipTree:
+      type: object
+      required:
+        - data
+        - statusCode
+        - status
+        - error
+        - message
+        - errors
+        - isSuccess
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ipTreeAllocation'
+        statusCode:
+          type: number
+          example: 200
+          description: ''
+        status:
+          type: number
+          example: 1
+          description: ''
+        error:
+          type: number
+          example: 0
+          description: ''
+        message:
+          type: string
+          example: ''
+          description: ''
+        errors:
+          type: object
+          example: {}
+          description: ''
+        isSuccess:
+          type: boolean
+          example: true
+          description: ''
+        meta:
+          type: object
+          example:
+            apiVersion: v2
+          description: ''
+    ipTreeAllocation:
+      type: object
+      description: ''
+      properties:
+        id:
+          type: number
+          example: 1
+          description: ''
+        name:
+          type: string
+          example: main
+          description: ''
+        description:
+          type: string
+          example: ''
+          description: ''
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 23
+            name:
+              type: string
+              example: Unix
+          description: ''
+        ipFamily:
+          type: string
+          enum:
+            - ipv4
+            - ipv6
+          example: ipv4
+          description: ''
+        readonly:
+          type: string
+          enum:
+            - 'yes'
+            - 'no'
+          example: 'no'
+          description: ''
+        prefix:
+          type: string
+          example: 10.0.0.0/16
+          description: ''
+        subnet:
+          type: object
+          properties:
+            prefix:
+              type: string
+              example: 10.0.0.0
+            length:
+              type: number
+              example: 16
+          description: ''
+        type:
+          type: string
+          enum:
+            - allocation
+            - subnet
+          example: allocation
+          description: ''
+        createdDate:
+          type: number
+          example: 1617280628000
+          description: Time in milliseconds
+        modifiedDate:
+          type: number
+          example: 1617365215000
+          description: Time in milliseconds
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/ipTreeSubnet'
+    ipTreeSubnet:
+      type: object
+      description: ''
+      properties:
+        id:
+          type: number
+          example: 2
+          description: ''
+        parentID:
+          type: number
+          example: 0
+          description: ''
+        allocationID:
+          type: number
+          example: 1
+          description: ''
+        name:
+          type: string
+          example: main
+          description: ''
+        description:
+          type: string
+          example: ''
+          description: ''
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 23
+            name:
+              type: string
+              example: Unix
+          description: ''
+        sites:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 1
+              name:
+                type: string
+                example: Yerevan
+            description: ''
+        ipFamily:
+          type: string
+          enum:
+            - ipv4
+            - ipv6
+          example: ipv4
+          description: ''
+        purpose:
+          type: string
+          enum:
+            - common
+            - load-balancer
+            - loopback
+            - management
+            - nat
+            - bgp
+          example: common
+          description: ''
+        readonly:
+          type: string
+          enum:
+            - 'yes'
+            - 'no'
+          example: 'no'
+          description: ''
+        prefix:
+          type: string
+          example: 10.0.0.0/24
+          description: ''
+        subnet:
+          type: object
+          properties:
+            prefix:
+              type: string
+              example: 10.0.0.0
+            length:
+              type: number
+              example: 24
+          description: ''
+        defaultGateway:
+          type: string
+          example: 10.0.0.1
+          description: ''
+        type:
+          type: string
+          enum:
+            - allocation
+            - subnet
+          example: subnet
+          description: ''
+        createdDate:
+          type: number
+          example: 1617280628000
+          description: Time in milliseconds
+        modifiedDate:
+          type: number
+          example: 1617365215000
+          description: Time in milliseconds
+        children:
+          type: array
+          items: {}
+    ipHosts:
+      type: object
+      required:
+        - data
+        - statusCode
+        - status
+        - error
+        - message
+        - errors
+        - isSuccess
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ipHostsList'
+        statusCode:
+          type: number
+          example: 200
+          description: ''
+        status:
+          type: number
+          example: 1
+          description: ''
+        error:
+          type: number
+          example: 0
+          description: ''
+        message:
+          type: string
+          example: ''
+          description: ''
+        errors:
+          type: object
+          example: {}
+          description: ''
+        isSuccess:
+          type: boolean
+          example: true
+          description: ''
+        meta:
+          type: object
+          example:
+            apiVersion: v2
+          description: ''
+    ipHostsList:
+      type: object
+      description: ''
+      properties:
+        id:
+          type: number
+          example: 1
+          description: ''
+        subnetID:
+          type: number
+          example: 1
+          description: ''
+        name:
+          type: string
+          example: main
+          description: ''
+        description:
+          type: string
+          example: ''
+          description: ''
+        ipFamily:
+          type: string
+          enum:
+            - ipv4
+            - ipv6
+          example: ipv4
+          description: ''
+        readonly:
+          type: string
+          enum:
+            - 'yes'
+            - 'no'
+          example: 'no'
+          description: ''
+        address:
+          type: string
+          example: 10.0.0.0
+          description: ''
+        type:
+          type: string
+          example: host
+          description: ''
+        meta:
+          type: object
+          example: {}
+          description: ''
+        createdDate:
+          type: number
+          example: 1617280628000
+          description: Time in milliseconds
+        modifiedDate:
+          type: number
+          example: 1617365215000
+          description: Time in milliseconds
+    allocationBody:
+      type: object
+      description: ''
+      required:
+        - name
+        - tenant
+        - prefix
+      properties:
+        name:
+          type: string
+          example: main
+          description: ''
+        description:
+          type: string
+          example: ''
+          description: ''
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 23
+            name:
+              type: string
+              example: Unix
+          description: ''
+        prefix:
+          type: string
+          example: 10.0.0.0/16
+          description: ''
+    subnetBody:
+      type: object
+      description: ''
+      required:
+        - name
+        - tenant
+        - sites
+        - purpose
+        - prefix
+      properties:
+        name:
+          type: string
+          example: main
+          description: ''
+        description:
+          type: string
+          example: ''
+          description: ''
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 23
+            name:
+              type: string
+              example: Unix
+          description: ''
+        sites:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 1
+              name:
+                type: string
+                example: Yerevan
+            description: ''
+        purpose:
+          type: string
+          enum:
+            - common
+            - load-balancer
+            - loopback
+            - management
+            - nat
+            - bgp
+          example: management
+          description: ''
+        prefix:
+          type: string
+          example: 10.0.0.0/16
+          description: ''
+        defaultGateway:
+          type: string
+          example: 10.0.0.1
+          description: ''
