@@ -944,7 +944,7 @@ components:
         - name
         - tenant
         - site
-        - mainAddress
+        - uuid
       properties:
         name:
           type: string
