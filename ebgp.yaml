@@ -1,0 +1,1050 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v1
+  license:
+    name: MIT
+servers:
+  - url: localhost:3000
+paths:
+  /api/v2/ebgp:
+    get:
+      tags:
+        - E-BGP
+      summary: Request for getting E-BGPs.
+      parameters:
+        - name: filterBySites
+          in: query
+          description: ''
+          schema:
+            $ref: '#/components/schemas/filterBySites'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ebgps'
+    post:
+      tags:
+        - E-BGP
+      summary: Request for adding E-BGP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ebgpAddItem'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: number
+    put:
+      tags:
+        - E-BGP
+      summary: Request for editting E-BGP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ebgpEditItem'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: number
+  /api/v2/ebgp/{id}:
+    get:
+      tags:
+        - E-BGP
+      summary: Request for getting E-BGP by id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ebgpItem'
+    delete:
+      tags:
+        - E-BGP
+      summary: Request for deleting E-BGP.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ''
+          schema:
+              type: integer
+      responses:
+        '200':
+          description: OK
+  /api/v2/ebgp/bgps:
+    get:
+      tags:
+        - E-BGP
+      summary: Request for getting BGPs.
+      parameters: []
+      responses:
+        '200':
+          description: OK
+  /api/v2/ebgp/ports:
+    get:
+      tags:
+        - E-BGP
+      summary: Request for getting ports.
+      parameters:
+        - name: idoftheselectedsite
+          in: query
+          description: ''
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports'
+  /api/v2/ebgp/hardwares:
+    get:
+      tags:
+        - E-BGP
+      summary: Request for getting switches.
+      parameters:
+        - name: site
+          in: query
+          description: ''
+          required: true
+          schema: 
+            type: integer
+        - name: vnet
+          in: query
+          description: ''
+          schema: 
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/switches'
+  /api/v2/ebgp/check:
+    get:
+      tags:
+        - E-BGP
+      summary: Request for getting E-BGPs with same port and vlan.
+      parameters:
+        - name: switch_port_id
+          in: query
+          description: ''
+          required: true
+          schema: 
+            type: integer
+        - name: vlan
+          in: query
+          description: ''
+          required: true
+          schema: 
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/v2/ebgp/updatesources:
+    get:
+      tags:
+        - E-BGP
+      summary: Request for getting update sources.
+      parameters:
+        - name: switch_port_id
+          in: query
+          description: ''
+          required: true
+          schema: 
+            type: integer
+        - name: offload_port_id
+          in: query
+          description: ''
+          required: true
+          schema: 
+            type: integer
+        - name: key
+          in: query
+          description: ''
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updatesources'
+  /api/v2/ebgp/changestatus:
+    put:
+      tags:
+        - E-BGP
+      summary: Request for changing E-BGP state.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - state
+              properties:
+                id:
+                  type: number
+                  example: 1
+                state:
+                  type: string
+                  example: disabled
+      responses:
+        '200':
+          description: OK
+  /api/v2/ebgp/asnvalidation:
+    post:
+      tags:
+        - E-BGP
+      summary: Request for asn equality.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - siteID
+                - neighborAS
+              properties:
+                siteID:
+                  type: number
+                  example: 1
+                neighborAS:
+                  type: number
+                  example: 3242
+      responses:
+        '200':
+          description: OK
+  /api/v2/ebgp/routemaps:
+    get:
+      tags:
+        - E-BGP
+      summary: Request for getting Route Maps.
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routemaps'
+components:
+  schemas:
+    filterBySites:
+      type: array
+      items:
+        $ref: '#/components/schemas/selectedSite'
+    selectedSite:
+      type: integer
+    ebgps:
+      type: array
+      items:
+        $ref: '#/components/schemas/ebgpItem'
+    ebgpItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: name
+        description:
+          type: string
+          example: ''
+        site:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: name
+        vnet:
+          $ref: '#/components/schemas/vnet'
+        hardware:
+          $ref: '#/components/schemas/hw'
+        port:
+          type: object
+          properties:
+            id:
+                  type: integer
+                  example: 1
+            name:
+             oneOf:
+                - type: string
+                - type: boolean
+            ifName:
+              type: string
+              example: ifName
+            shortName:
+              type: string
+              example: shortName
+        neighborAS:
+          type: integer
+          example: 65009
+        localIP:
+          type: string
+          example: 1.1.1.1
+        remoteIP:
+          type: string
+          example: 1.1.1.2
+        prefixLength:
+          type: string
+          example: 1.1.1.2
+        bgpPassword:
+          type: string
+          example: ''
+        vlan:
+          type: integer
+          example: 2
+        prefixInboundMax:
+          type: integer
+          example: 0
+        prependInbound:
+          type: integer
+          example: 0
+        prependOutbound:
+          type: integer
+          example: 0
+        prefixListInbound:
+          type: string
+          example: permit 6.6.6.6/32
+        prefixListOutbound:
+          type: string
+          example: permit 6.6.6.6/32
+        localPreference:
+          type: integer
+          example: 100
+        weight:
+          type: integer
+          example: 0
+        multihop:
+          type: integer
+          example: 0
+        routeId:
+          type: integer
+          example: 0
+        neighborAddress:
+          type: string
+          example: ''
+        updateSource:
+          oneOf:
+              - type: string
+              - type: boolean
+        bgpCommunity:
+          type: string
+          example: ''
+        allowAsIn:
+          type: integer
+          example: 0
+        inboundRouteMap:
+          type: integer
+          example: null
+        outboundRouteMap:
+          type: integer
+          example: 1
+        localAsn:
+          type: integer
+          example: 65008
+        inboundRouteMapName:
+          type: string
+          example: ''
+        outboundRouteMapName:
+          type: string
+          example: ''
+        bgp_state:
+          type: string
+          example: ''
+        bgpPrefixes:
+          type: string
+          example: ''
+        bgpUptime:
+          type: string
+          example: ''
+        ipFamily:
+          type: string
+          enum:
+            - ipv4
+            - ipv6
+          example: ipv4
+        state:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          example: enabled
+        defaultOriginate:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          example: enabled
+        internal:
+          oneOf:
+            - type: boolean
+            - type: number
+        tenantName:
+          type: string
+          example: Admin
+        siteName:
+          type: string
+          example: Santa Clara
+        circuitName:
+          type: string
+          example: circuit
+        createdDate:
+          type: string
+        modifiedDate:
+          type: string
+        ports:
+          items:
+            $ref: '#/components/schemas/returnPorts'
+    returnPorts:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          portID:
+            type: integer
+            example: 1
+          consumerID:
+            type: integer
+            example: 1
+          consumerType:
+            type: string
+            example: bgp
+          meta:
+            type: object
+            properties:
+              vlan:
+                type: number
+                example: 34
+              notCheckConsumerTenant:
+                type: boolean
+                example: true
+          portName:
+            type: string
+            example: swp1(swp1)@softgate1 (Admin)
+          tenant:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 34
+              name:
+                type: string
+                example: admin
+          site:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 34
+              name:
+                type: string
+                example: admin
+          switchId:
+            type: number
+            example: 1
+          switchName:
+            type: string
+            example: switch
+          switchType:
+            type: string
+            example: switch
+    ports:
+      type: array
+      items:
+        $ref: '#/components/schemas/portsItem'
+    portsItem:
+      type: object
+      properties:
+        port_id:
+          type: integer
+          example: 1
+        port:
+          type: string
+          example: ''
+        switch_id:
+          type: integer
+          example: 24
+        vlan_from:
+          type: integer
+          example: 1
+        vlan_to:
+          type: integer
+          example: 4094
+        name:
+          type: string
+          example: ''
+        price:
+          type: integer
+          example: 0
+        present:
+          type: integer
+          example: 1
+        state:
+          type: string
+          example: ''
+        speed:
+          type: string
+          example: ''
+        power:
+          type: string
+          example: ''
+        transceiver:
+          type: string
+          example: ''
+        price_10:
+          type: integer
+          example: 100
+        price_20:
+          type: integer
+          example: 200
+        price_30:
+          type: integer
+          example: 300
+        price_40:
+          type: integer
+          example: 400
+        monthly_fee:
+          type: integer
+          example: 100
+        monthly_fee_partial:
+          type: integer
+          example: 100
+        instance_id:
+          type: integer
+          example: 100
+        type:
+          type: string
+          example: ''
+        port_extension:
+          type: integer
+          example: 0
+        parent_port:
+          type: integer
+          example: 0
+        tenant_id:
+          type: integer
+          example: 0
+        provider_id:
+          type: integer
+          example: 0
+        admin_down:
+          type: integer
+          example: 0
+        1g:
+          type: integer
+          example: 0
+        mtu:
+          type: integer
+          example: 0
+        lacp:
+          type: string
+          example: 'off'
+        port_index:
+          type: integer
+          example: 0
+        modified_date:
+          type: string
+          example: ''
+        switch_name:
+          type: string
+          example: ''
+        bgp_state:
+          type: string
+          example: ''
+        bgp_prefixes:
+          type: string
+          example: ''
+        bgp_uptime:
+          type: string
+          example: ''
+        order_number:
+          type: string
+          example: ''
+        switch_type:
+          type: string
+          example: ''
+    switches:
+      type: array
+      items:
+        $ref: '#/components/schemas/hwItem'
+    hwItem:
+      type: object
+      description: ''
+      properties:
+        id:
+          type: number
+          example: 1
+          description: ''
+        name:
+          type: string
+          example: switch1.netris.ai
+          description: ''
+        description:
+          type: string
+          example: Yerevan Spine Switch
+          description: ''
+        type:
+          type: string
+          example: switch
+          description: ''
+        state:
+          type: string
+          example: ok
+          description: ''
+        nos:
+          type: object
+          properties:
+            id:
+              type: string
+              example: cumulus_linux
+            name:
+              type: string
+              example: Cumulus linux
+          description: ''
+        mainAddress:
+          type: string
+          example: 100.64.77.4
+          description: ''
+        mgmtAddress:
+          type: string
+          example: 10.10.20.4
+          description: ''
+        macAddress:
+          type: string
+          example: 23:00:2F:BE:54:87
+          description: ''
+        portCount:
+          type: number
+          example: 16
+          description: ''
+        asn:
+          type: string
+          example: auto
+          description: ''
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 12
+            name:
+              type: string
+              example: UNIX
+          description: ''
+        site:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 22
+            name:
+              type: string
+              example: Yerevan
+          description: ''
+        profile:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 1
+            name:
+              type: string
+              example: my_profile
+          description: ''
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/linksBody'
+        createdDate:
+          type: number
+          example: 1617280628000
+          description: Time in milliseconds
+        modifiedDate:
+          type: number
+          example: 1617365215000
+          description: Time in milliseconds
+    routemaps:
+      type: array
+      items:
+        $ref: '#/components/schemas/routemapsItem'
+    routemapsItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: ''
+    updatesources:
+      type: array
+      items:
+        $ref: '#/components/schemas/updatesourcesItem'
+    updatesourcesItem:
+      type: object
+      properties:
+        switch_id:
+          type: integer
+          example: 1
+        location:
+          type: string
+          example: ''
+        ip_address:
+          type: string
+          example: ''
+    ebgpAddItem:
+      type: object
+      required:
+        - name
+        - site
+        - ipFamily
+        - localIP
+        - remoteIP
+        - prefixLength
+        - state
+      properties:
+        name:
+          type: string
+          example: name
+        allowAsIn:
+          type: number
+          example: 1000
+        bgpPassword:
+          type: string
+          example: ''
+        bgpCommunity:
+          type: string
+          example: ''
+        description:
+          type: string
+          example: ''
+        inboundRouteMap:
+          oneOf:
+            - type: number
+              example: 1
+            - type: boolean
+        internal:
+          oneOf:
+            - type: boolean
+            - type: number
+        ipFamily:
+          type: string
+          example: ipv4
+        localIP:
+          type: string
+          example: 1.1.1.1
+        localPreference:
+          type: number
+          example: 100
+        multihop:
+          type: number
+          example: 0
+        neighborAddress:
+          type: string
+          example: null
+        neighborAS:
+          type: number
+          example: 23
+        originate:
+          type: string
+          example: disabled
+        outboundRouteMap:
+          oneOf:
+            - type: number
+            - type: boolean
+        prefixLength:
+          type: number
+          example: 30
+        prefixInboundMax:
+          oneOf:
+            - type: number
+            - type: boolean
+        prefixListInbound:
+          type: string
+          example: ''
+        prefixListOutbound:
+          type: string
+          example: ''
+        prependInbound:
+          type: number
+          example: 0
+        prependOutbound:
+          type: number
+          example: 0
+        vnet:
+          $ref: '#/components/schemas/vnet'
+        remoteIP:
+          type: string
+          example: 1.1.1.2
+        site:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 1
+            name:
+              type: string
+              example: name
+        state:
+          type: string
+          example: enabled
+        hardware:
+          $ref: '#/components/schemas/hw'
+        port:
+          type: object
+          properties:
+            id:
+              oneOf:
+                - type: integer
+                  example: 1
+                - type: boolean
+            name:
+              oneOf:
+                - type: string
+                - type: boolean
+        updateSource:
+          oneOf:
+            - type: string
+            - type: boolean
+        vlan:
+          type: number
+          example: 1
+        weight:
+          oneOf:
+            - type: boolean
+            - type: number
+    ebgpEditItem:
+      type: object
+      required:
+        - name
+        - site
+        - neighborAS
+        - ipFamily
+        - prefixLength
+        - state
+      properties:
+        name:
+          type: string
+          example: name
+        allowAsIn:
+          type: number
+          example: 1000
+        bgpPassword:
+          type: string
+          example: ''
+        bgpCommunity:
+          oneOf:
+            - type: boolean
+            - type: string
+        description:
+          type: string
+          example: ''
+        inboundRouteMap:
+          oneOf:
+            - type: number
+            - type: boolean
+        internal:
+          oneOf:
+            - type: boolean
+            - type: number
+        ipFamily:
+          type: string
+          example: ipv4
+        localIP:
+          type: string
+          example: 1.1.1.1
+        localPreference:
+          type: number
+          example: 100
+        multihop:
+          type: number
+          example: 0
+        neighborAddress:
+          oneOf:
+            - type: boolean
+            - type: string
+        neighborAS:
+          type: number
+          example: 23
+        originate:
+          type: string
+          example: disabled
+        outboundRouteMap:
+          oneOf:
+            - type: number
+            - type: boolean
+        prefixLength:
+          type: number
+          example: 30
+        prefixInboundMax:
+          oneOf:
+            - type: number
+            - type: boolean
+        prefixListInbound:
+          type: string
+          example: ''
+        prefixListOutbound:
+          type: string
+          example: ''
+        prependInbound:
+          type: number
+          example: 0
+        prependOutbound:
+          type: number
+          example: 0
+        remoteIP:
+          oneOf:
+            - type: boolean
+            - type: string
+        site:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: name
+        state:
+          type: string
+          example: enabled
+        port:
+          type: object
+          properties:
+            id:
+              oneOf:
+                - type: integer
+                - type: boolean
+            name:
+              oneOf:
+                - type: string
+                - type: boolean
+        hardware:
+          $ref: '#/components/schemas/hw'
+        vnet:
+          $ref: '#/components/schemas/vnet'
+        updateSource:
+          oneOf:
+            - type: string
+            - type: boolean
+        vlan:
+          type: number
+          example: 1
+        weight:
+          oneOf:
+           - type: boolean
+           - type: number
+    vnet:
+      oneOf:
+        - $ref: '#/components/schemas/vnetSelected'
+        - $ref: '#/components/schemas/vnetUnSelected'
+    hw:
+      oneOf:
+        - $ref: '#/components/schemas/hwSelected'
+        - $ref: '#/components/schemas/hwAuto'
+    vnetSelected:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: name
+        internal:
+          type: string
+          example: name
+    vnetUnSelected:
+      type: object
+      properties:
+        id:
+          type: string
+          enum:
+            - none
+        name:
+          type: string
+          enum:
+            - None
+    hwSelected:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: name
+    hwAuto:
+      type: object
+      properties:
+        id:
+          type: string
+          enum:
+            - auto
+        name:
+          type: string
+          enum:
+            - Auto
+    linksBody:
+      type: object
+      properties:
+        local:
+          type: object
+          properties:
+            id:
+              type: number
+            name:
+              type: string
+        remote:
+          type: object
+          properties:
+            id:
+              type: number
+            name:
+              type: string
