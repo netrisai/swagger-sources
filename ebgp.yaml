@@ -96,16 +96,7 @@ paths:
           required: true
           description: ''
           schema:
-              type: integer
-      responses:
-        '200':
-          description: OK
-  /api/v2/ebgp/bgps:
-    get:
-      tags:
-        - E-BGP
-      summary: Request for getting BGPs.
-      parameters: []
+            type: integer
       responses:
         '200':
           description: OK
@@ -119,7 +110,7 @@ paths:
           in: query
           description: ''
           required: true
-          schema: 
+          schema:
             type: string
       responses:
         '200':
@@ -138,12 +129,12 @@ paths:
           in: query
           description: ''
           required: true
-          schema: 
+          schema:
             type: integer
         - name: vnet
           in: query
           description: ''
-          schema: 
+          schema:
             type: integer
       responses:
         '200':
@@ -162,13 +153,13 @@ paths:
           in: query
           description: ''
           required: true
-          schema: 
+          schema:
             type: integer
         - name: vlan
           in: query
           description: ''
           required: true
-          schema: 
+          schema:
             type: integer
       responses:
         '200':
@@ -183,19 +174,19 @@ paths:
           in: query
           description: ''
           required: true
-          schema: 
+          schema:
             type: integer
         - name: offload_port_id
           in: query
           description: ''
           required: true
-          schema: 
+          schema:
             type: integer
         - name: key
           in: query
           description: ''
           required: true
-          schema: 
+          schema:
             type: string
       responses:
         '200':
@@ -306,10 +297,10 @@ components:
           type: object
           properties:
             id:
-                  type: integer
-                  example: 1
+              type: integer
+              example: 1
             name:
-             oneOf:
+              oneOf:
                 - type: string
                 - type: boolean
             ifName:
@@ -368,8 +359,8 @@ components:
           example: ''
         updateSource:
           oneOf:
-              - type: string
-              - type: boolean
+            - type: string
+            - type: boolean
         bgpCommunity:
           type: string
           example: ''
@@ -431,13 +422,20 @@ components:
         circuitName:
           type: string
           example: circuit
+        ports:
+          items:
+            $ref: '#/components/schemas/returnPorts'
+        tags:
+          type: array
+          example:
+            - tag1
+            - tag2
+          items:
+            type: string
         createdDate:
           type: string
         modifiedDate:
           type: string
-        ports:
-          items:
-            $ref: '#/components/schemas/returnPorts'
     returnPorts:
       type: array
       items:
@@ -859,6 +857,13 @@ components:
           oneOf:
             - type: boolean
             - type: number
+        tags:
+          type: array
+          example:
+            - tag1
+            - tag2
+          items:
+            type: string
     ebgpEditItem:
       type: object
       required:
@@ -978,8 +983,15 @@ components:
           example: 1
         weight:
           oneOf:
-           - type: boolean
-           - type: number
+            - type: boolean
+            - type: number
+        tags:
+          type: array
+          example:
+            - tag1
+            - tag2
+          items:
+            type: string
     vnet:
       oneOf:
         - $ref: '#/components/schemas/vnetSelected'
