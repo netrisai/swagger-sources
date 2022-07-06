@@ -1,0 +1,547 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+security:
+  - cookieAuth: []
+paths:
+  /api/v2/vnet:
+    get:
+      tags:
+        - V-Net
+      summary: Request for getting V-Net list.
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/resBody'
+        400:
+          description: "Error"
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/resErrorBody'
+    post:
+      tags:
+        - V-Net
+      summary: Request for adding V-Net.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/vnetAddBody'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/resAddBody'
+        400:
+          description: "Error"
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/resErrorBody'
+  /api/v2/vnet/{id}:
+    get:
+      tags:
+        - V-Net
+      summary: Request for getting V-Net info.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific V-Net
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/resBody'
+        400:
+          description: "Error"
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/resErrorBody'
+    put:
+      tags:
+        - V-Net
+      summary: Request for editting V-Net.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific V-Net
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/vnetEditBody'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/resAddBody'
+        400:
+          description: "Error"
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/resErrorBody'
+    delete:
+      tags:
+        - V-Net
+      summary: Request for deleting V-Net.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the V-Net.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/resDeleteBody'
+        400:
+          description: "Error"
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/resErrorBody'
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    vnetAddBody:
+      type: object
+      required:
+        - name
+        - tenant
+        - sites
+      properties:
+        name:
+          type: string
+          example: uniqueName
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 23
+            name:
+              type: string
+              example: Unix
+          description: ''
+        sites:
+          type: array
+          description: Ports from these sites will be allowed to participate to the V-Net. Multi-site circuits are possible for sites connected through a backbone port.
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 1
+              name:
+                type: string
+                example: Yerevan
+            description: ''
+        vlan:
+          description: Required only when selected site is not Netris managed
+          oneOf:
+            - type: string
+              enum: ["auto"]
+            - type: integer
+        guestTenants:
+          type: array
+          description: List of tenants allowed to add/edit/remove ports to the V-Net but not allowed to manage other parameters of the circuit.
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 34
+              name:
+                type: string
+                example: Guest tenant
+            description: ''
+        state:
+          type: string
+          enum:
+            - active
+            - disabled
+          example: active
+        provisioning:
+          type: boolean
+          example: false
+        vlanAware:
+          type: boolean
+          example: true
+        nativeVlan:
+          description: Required for only vlan-aware v-nets (vlanAware == true).
+          type: integer
+          example: 1
+        vlans:
+          type: string
+          example: 1,3,4
+          description: Required for only vlan-aware v-nets (vlanAware == true).
+        gateways:
+          type: array
+          items:
+            type: object
+            properties:
+              prefix:
+                type: string
+                example: 10.0.0.1/24
+              vlan:
+                type: number
+                example: 1
+                description: Required for only vlan-aware v-nets (vlanAware == true)
+        ports:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 100
+              state:
+                type: string
+                example: active
+              vlan:
+                type: string
+                example: '16'
+              access:
+                type: boolean
+                example: false
+              lacp:
+                type: string
+                enum:
+                  - 'on'
+                  - 'off'
+                example: 'off'
+    vnetEditBody:
+      type: object
+      properties:
+        name:
+          type: string
+          example: uniqueName
+        sites:
+          type: array
+          description: Ports from these sites will be allowed to participate to the V-Net. Multi-site circuits are possible for sites connected through a backbone port.
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 1
+              name:
+                type: string
+                example: Yerevan
+            description: ''
+        vlan:
+          description: Required only when selected site is not Netris managed
+          oneOf:
+            - type: string
+              enum: ["auto"]
+            - type: integer
+        guestTenants:
+          type: array
+          description: List of tenants allowed to add/edit/remove ports to the V-Net but not allowed to manage other parameters of the circuit.
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 34
+              name:
+                type: string
+                example: Guest tenant
+            description: ''
+        state:
+          type: string
+          enum:
+            - active
+            - disabled
+          example: active
+        provisioning:
+          type: boolean
+          example: false
+        nativeVlan:
+          type: number
+          example: 1
+          description: Required for only vlan-aware v-nets (vlanAware == true).
+        vlans:
+          type: string
+          example: 1,3,4
+          description: Required for only vlan-aware v-nets (vlanAware == true).
+        gateways:
+          type: array
+          items:
+            type: object
+            properties:
+              prefix:
+                type: string
+                example: 10.0.0.1/24
+              vlan:
+                type: number
+                example: 1
+                description: Required for only vlan-aware v-nets (vlanAware == true)
+        ports:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 100
+              state:
+                type: string
+                example: active
+              vlan:
+                type: string
+                example: '16'
+              access:
+                type: boolean
+                example: false
+              lacp:
+                type: string
+                enum:
+                  - 'on'
+                  - 'off'
+                example: 'off'
+    vnetBody:
+      type: object
+      required:
+        - name
+        - tenant
+        - sites
+      properties:
+        name:
+          type: string
+          example: uniqueName
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 23
+            name:
+              type: string
+              example: Unix
+          description: ''
+        sites:
+          type: array
+          description: Ports from these sites will be allowed to participate to the V-Net. Multi-site circuits are possible for sites connected through a backbone port.
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 1
+              name:
+                type: string
+                example: Yerevan
+            description: ''
+        vlan:
+          description: Required only when selected site is not Netris managed
+          type: integer
+          example: 567
+        guestTenants:
+          type: array
+          description: List of tenants allowed to add/edit/remove ports to the V-Net but not allowed to manage other parameters of the circuit.
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 34
+              name:
+                type: string
+                example: Guest tenant
+            description: ''
+        state:
+          type: string
+          enum:
+            - active
+            - disabled
+          example: active
+        provisioning:
+          type: boolean
+          example: false
+        vlanAware:
+          type: boolean
+          example: true
+        nativeVlan:
+          type: number
+          example: 1
+          description: Required for only vlan-aware v-nets (vlanAware == true)
+        vlans:
+          type: string
+          example: 1,3,4
+          description: Required for only vlan-aware v-nets (vlanAware == true)
+        gateways:
+          type: array
+          items:
+            type: object
+            properties:
+              prefix:
+                type: string
+                example: 10.0.0.1/24
+              vlan:
+                type: number
+                example: 1
+                description: Required for only vlan-aware v-nets (vlanAware == true)
+        ports:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 100
+              state:
+                type: string
+                example: active
+              vlan:
+                type: string
+                example: '16'
+              access:
+                type: boolean
+                example: false
+              lacp:
+                type: string
+                enum:
+                  - 'on'
+                  - 'off'
+                example: 'off'
+    resBody:
+      type: object
+      description: "Success response"
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/vnetBody'
+        errors:
+          type: array
+          items:
+              type: string
+        message:
+          type: string
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    resAddBody:
+      type: object
+      description: "Success response"
+      properties:
+        data:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 2
+        errors:
+          type: array
+          items:
+              type: string
+        message:
+          type: string
+          example: ""
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    resDeleteBody:
+      type: object
+      description: "Success response"
+      properties:
+        data:
+          type: array
+          items: 
+            type: object
+        errors:
+          type: array
+          items:
+              type: string
+        message:
+          type: string
+          example: ""
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    resErrorBody:
+      type: object
+      description: "Error response"
+      properties:
+        data:
+          type: array
+          items: 
+            type: object
+        errors:
+          type: array
+          example: 
+              - "Error message 1"
+              - "Error message 2"
+          items:
+              type: string
+        message:
+          type: string
+          example: "Error message"
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
