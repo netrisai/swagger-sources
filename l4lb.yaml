@@ -1,0 +1,357 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v1
+security:
+  - cookieAuth: []
+paths:
+  /api/v2/l4lb:
+    get:
+      tags:
+        - L4 Load Balancer
+      summary: Request for getting L4 Load Balancers.
+      parameters:
+        - name: filterBySites
+          in: query
+          description: ''
+          schema:
+            $ref: '#/components/schemas/filterBySites'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/L4LoadBalancer'
+    post:
+      tags:
+        - L4 Load Balancer
+      summary: Request for adding L4 Load Balancer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/l4lbAddItem'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: number
+  /api/v2/l4lb/{id}:
+    put:
+      tags:
+        - L4 Load Balancer
+      summary: Request for editing L4 Load Balancer.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific L4LB
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/l4lbEditItem'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: number
+    delete:
+      tags:
+        - L4 Load Balancer
+      summary: Request for deleting L4 Load Balancer.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific L4LB
+      responses:
+        '200':
+          description: OK
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    filterBySites:
+      type: array
+      items:
+        $ref: '#/components/schemas/selectedSite'
+    selectedSite:
+      type: integer
+    L4LoadBalancer:
+      type: array
+      items:
+        $ref: '#/components/schemas/L4LoadBalancerItem'
+    L4LoadBalancerItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: name
+        tenantId:
+          type: integer
+          example: 1
+        siteId:
+          type: integer
+          example: 1
+        protocol:
+          type: string
+          enum:
+            - TCP
+            - UDP
+          example: TCP
+        ip:
+          type: string
+          example: 1.1.1.1
+        port:
+          type: integer
+          example: 1
+        healthcheck:
+          type: object
+          properties:
+            protocol:
+              type: string
+              enum:
+                - TCP
+                - HTTP
+            timeout:
+              type: integer
+            requestPath:
+              type: string
+          example:
+            HTTP:
+              timeOut: '34'
+              requestPath: ''
+        status:
+          type: string
+          enum:
+            - enable
+            - disable
+          example: enable
+        internal:
+          type: integer
+          example: 1
+        tenantName:
+          type: string
+          example: Admin
+        siteName:
+          type: string
+          example: Santa Clara
+        backendIps:
+          type: array
+          items:
+            $ref: '#/components/schemas/L4LoadBalancerBackendItemResponse'
+    l4lbAddItem:
+      type: object
+      properties:
+        name:
+          type: string
+          example: name
+          description: unique name
+        protocol:
+          type: string
+          example: TCP
+          description: TCP/UDP
+        automatic:
+          type: boolean
+          example: 'true'
+          description: true/false
+        ip:
+          type: string
+          example: 1.1.1.1
+        status:
+          type: string
+          example: enable
+          description: enable/disable
+        tenantID:
+          type: number
+          example: 1
+        siteID:
+          type: number
+          example: 1
+        healthCheck:
+          enum:
+            - None
+            - TCP
+            - HTTP
+          type: string
+          description: only with TCP protocol (TCP, HTTP, None)
+        timeOut:
+          type: string
+          example: 1000
+          description: only with TCP protocol
+        requestPath:
+          type: string
+          description: only with TCP protocol
+        backend:
+          type: array
+          items:
+            $ref: '#/components/schemas/L4LoadBalancerBackend'
+    l4lbEditItem:
+      type: object
+      properties:
+        name:
+          type: string
+          example: name
+          description: unique name
+        protocol:
+          type: string
+          example: TCP
+          description: TCP/UDP
+        automatic:
+          type: boolean
+          example: 'true'
+          description: true/false
+        ip:
+          type: string
+          example: 1.1.1.1
+        status:
+          type: string
+          example: enable
+          description: enable/disable
+        tenantID:
+          type: number
+          example: 1
+        siteID:
+          type: number
+          example: 1
+        healthCheck:
+          type: string
+          example: TCP
+          description: only with TCP protocol (TCP, HTTP, None)
+        timeOut:
+          type: string
+          example: 1000
+          description: only with TCP protocol
+        requestPath:
+          type: string
+          description: only with TCP protocol
+        backend:
+          type: array
+          items:
+            $ref: '#/components/schemas/L4LoadBalancerBackend'
+    L4LoadBalancerBackend:
+      type: array
+      items:
+        $ref: '#/components/schemas/L4LoadBalancerBackendItem'
+    L4LoadBalancerBackendItem:
+      type: object
+      properties:
+        ip:
+          type: string
+          example: 10.0.0.0
+        port:
+          type: integer
+          example: 8080
+        maintenance:
+          type: boolean
+          enum:
+            - true
+            - false
+          example: false
+      required:
+        - ip
+        - port
+        - maintenance
+    L4LoadBalancerBackendAdd:
+      type: array
+      items:
+        $ref: '#/components/schemas/L4LoadBalancerBackendAddItem'
+    L4LoadBalancerBackendAddItem:
+      type: object
+      properties:
+        ip:
+          type: string
+        port:
+          type: number
+          example: number
+        maintenance:
+          type: boolean
+          description: true/false
+      required:
+        - ip
+        - port
+        - maintenance
+    L4LoadBalancerBackendItemResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        ip:
+          type: string
+          example: 10.0.0.0
+        port:
+          type: integer
+          example: 8080
+        status:
+          type: string
+          enum:
+            - ok
+            - failed
+          example: failed
+        response:
+          type: string
+          example: ''
+        maintenance:
+          type: boolean
+          enum:
+            - true
+            - false
+          example: false
+    subnets:
+      type: array
+      items:
+        $ref: '#/components/schemas/subnetsItem'
+    subnetsItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        prefix:
+          type: string
+          example: 10.0.0.0
+        length:
+          type: integer
+          example: 24
+        tenant_id:
+          type: integer
+          example: 1
+        tenantName:
+          type: string
+          example: Admin
+        siteId:
+          type: integer
+          example: 1
+        siteName:
+          type: string
+          example: Santa Clara
+        purpose:
+          type: string
+          example: load-balancer
