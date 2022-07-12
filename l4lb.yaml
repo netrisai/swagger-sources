@@ -22,7 +22,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/L4LoadBalancer'
+                $ref: '#/components/schemas/resBody'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
     post:
       tags:
         - L4 Load Balancer
@@ -39,12 +45,38 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: number
+                $ref: '#/components/schemas/resAddEditBody'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
   /api/v2/l4lb/{id}:
+    get:
+      tags:
+        - L4 Load Balancer
+      summary: Request for getting L4 Load Balancer Net.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific L4LB
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resBodyByID'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
     put:
       tags:
         - L4 Load Balancer
@@ -68,11 +100,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: number
+                $ref: '#/components/schemas/resAddEditBody'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
     delete:
       tags:
         - L4 Load Balancer
@@ -87,6 +121,16 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resDeleteBody'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
 components:
   securitySchemes:
     cookieAuth:
@@ -100,10 +144,6 @@ components:
         $ref: '#/components/schemas/selectedSite'
     selectedSite:
       type: integer
-    L4LoadBalancer:
-      type: array
-      items:
-        $ref: '#/components/schemas/L4LoadBalancerItem'
     L4LoadBalancerItem:
       type: object
       properties:
@@ -324,34 +364,137 @@ components:
             - true
             - false
           example: false
-    subnets:
-      type: array
-      items:
-        $ref: '#/components/schemas/subnetsItem'
-    subnetsItem:
+    resBody:
       type: object
+      description: Success response
       properties:
-        id:
-          type: integer
-          example: 1
-        prefix:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/L4LoadBalancerItem'
+        errors:
+          type: array
+          items:
+            type: string
+        message:
           type: string
-          example: 10.0.0.0
-        length:
-          type: integer
-          example: 24
-        tenant_id:
-          type: integer
-          example: 1
-        tenantName:
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    resBodyByID:
+      type: object
+      description: Success response
+      properties:
+        data:
+          $ref: '#/components/schemas/L4LoadBalancerItem'
+        errors:
+          type: array
+          items:
+            type: string
+        message:
           type: string
-          example: Admin
-        siteId:
-          type: integer
-          example: 1
-        siteName:
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    resAddEditBody:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 2
+        errors:
+          type: array
+          items:
+            type: string
+        message:
           type: string
-          example: Santa Clara
-        purpose:
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    resDeleteBody:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: array
+          items:
+            type: string
+        message:
           type: string
-          example: load-balancer
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    resErrorBody:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: array
+          example:
+            - Error message 1
+            - Error message 2
+          items:
+            type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
