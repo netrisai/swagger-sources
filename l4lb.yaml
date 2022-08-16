@@ -373,9 +373,12 @@ components:
           items:
             $ref: '#/components/schemas/L4LoadBalancerItem'
         errors:
-          type: array
-          items:
-            type: string
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
         message:
           type: string
         isSuccess:
@@ -396,9 +399,12 @@ components:
         data:
           $ref: '#/components/schemas/L4LoadBalancerItem'
         errors:
-          type: array
-          items:
-            type: string
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
         message:
           type: string
         isSuccess:
@@ -425,9 +431,12 @@ components:
                 type: integer
                 example: 2
         errors:
-          type: array
-          items:
-            type: string
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
         message:
           type: string
           example: ''
@@ -451,9 +460,12 @@ components:
           items:
             type: object
         errors:
-          type: array
-          items:
-            type: string
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
         message:
           type: string
           example: ''
@@ -477,12 +489,12 @@ components:
           items:
             type: object
         errors:
-          type: array
+          type: object
           example:
-            - Error message 1
-            - Error message 2
-          items:
-            type: string
+            property_name: Error message
+          properties:
+            key:
+              type: string
         message:
           type: string
           example: Error message
