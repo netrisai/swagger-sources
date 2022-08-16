@@ -443,8 +443,11 @@ components:
           items:
             $ref: '#/components/schemas/vnetBody'
         errors:
-          type: array
-          items:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
               type: string
         message:
           type: string
@@ -472,8 +475,11 @@ components:
                 type: integer
                 example: 2
         errors:
-          type: array
-          items:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
               type: string
         message:
           type: string
@@ -498,8 +504,11 @@ components:
           items: 
             type: object
         errors:
-          type: array
-          items:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
               type: string
         message:
           type: string
@@ -524,11 +533,11 @@ components:
           items: 
             type: object
         errors:
-          type: array
-          example: 
-              - "Error message 1"
-              - "Error message 2"
-          items:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
               type: string
         message:
           type: string
