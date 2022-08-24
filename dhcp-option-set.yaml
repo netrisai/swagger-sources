@@ -284,9 +284,11 @@ components:
           items:
             $ref: '#/components/schemas/DHCPOptionSetAdditionalOptionsItem'
           example:
-            - code: 72
+            - custom: false
+              code: 72
               value: 10.254.131.34
               type: text
+              isArray: true
     DHCPOptionSetItemWithID:
       allOf:
         - type: object
@@ -298,6 +300,8 @@ components:
     DHCPOptionSetAdditionalOptionsItem:
       type: object
       properties:
+        custom:
+          type: boolean
         code:
           type: integer
         value:
@@ -305,6 +309,7 @@ components:
         type:
           type: string
           enum:
+            - binary
             - string
             - boolean
             - uin8
@@ -315,12 +320,42 @@ components:
             - int32
             - ipv4-address
             - fqdn
+        isArray:
+          type: boolean
     filterBySites:
       type: array
       items:
         $ref: '#/components/schemas/selectedSite'
     selectedSite:
       type: integer
+    resOKBody:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DHCPOptionSetItemWithID'
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
     resErrorBody:
       type: object
       description: Error response
@@ -351,31 +386,3 @@ components:
             statusCode:
               type: integer
               example: 400
-    resOKBody:
-      type: object
-      description: Success response
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DHCPOptionSetItemWithID'
-        errors:
-          type: object
-          example:
-            property_name: Error message
-          properties:
-            key:
-              type: string
-        message:
-          type: string
-        isSuccess:
-          type: boolean
-        meta:
-          type: object
-          properties:
-            apiVersion:
-              type: string
-              example: 2
-            statusCode:
-              type: integer
-              example: 200
