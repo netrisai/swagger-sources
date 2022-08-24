@@ -10,12 +10,6 @@ paths:
       tags:
         - DHCP Option Sets
       summary: Request for getting DHCP option sets.
-      parameters:
-        - name: filterBySites
-          in: query
-          description: ''
-          schema:
-            $ref: '#/components/schemas/filterBySites'
       responses:
         '200':
           description: OK
@@ -322,12 +316,6 @@ components:
             - fqdn
         isArray:
           type: boolean
-    filterBySites:
-      type: array
-      items:
-        $ref: '#/components/schemas/selectedSite'
-    selectedSite:
-      type: integer
     resOKBody:
       type: object
       description: Success response
