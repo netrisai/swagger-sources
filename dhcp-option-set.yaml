@@ -67,14 +67,14 @@ paths:
     get:
       tags:
         - DHCP Option Sets
-      summary: Request for getting L4 Load Balancer Net.
+      summary: Request for getting DHCP option set.
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
-          description: The id of a specific L4LB
+          description: The id of a specific DHCP option set
       responses:
         '200':
           description: OK
