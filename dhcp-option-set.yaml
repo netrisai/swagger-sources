@@ -305,7 +305,6 @@ components:
         type:
           type: string
           enum:
-            - binary
             - string
             - boolean
             - uin8
