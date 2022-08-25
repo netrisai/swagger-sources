@@ -246,10 +246,10 @@ components:
           enum:
           - no
           - yes
-        domainName:
+        domainSearch:
           type: string
           default: ''
-          example: example.com
+          example: .example.local
         dnsServers:
           default: []
           type: array
