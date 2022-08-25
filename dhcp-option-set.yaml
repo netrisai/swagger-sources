@@ -106,7 +106,7 @@ paths:
                     properties:
                       errors:
                         example:
-                          property_name: Not Found
+                          propertyName: Not Found
                       message:
                         example: Not found
                       meta:
@@ -164,7 +164,7 @@ paths:
                     properties:
                       errors:
                         example:
-                          property_name: Not Found
+                          propertyName: Not Found
                       message:
                         example: Not found
                       meta:
@@ -216,7 +216,7 @@ paths:
                     properties:
                       errors:
                         example:
-                          property_name: Not Found
+                          propertyName: Not Found
                       message:
                         example: Not found
                       meta:
@@ -246,11 +246,11 @@ components:
           enum:
           - no
           - yes
-        domain_name:
+        domainName:
           type: string
           default: ''
           example: example.com
-        dns_servers:
+        dnsServers:
           default: []
           type: array
           items:
@@ -258,7 +258,7 @@ components:
           example:
             - 8.8.8.8
             - 1.1.1.1
-        ntp_servers:
+        ntpServers:
           default: []
           type: array
           items:
@@ -266,7 +266,7 @@ components:
           example:
             - pool.ntp.org
             - 132.163.96.5
-        lease_time:
+        leaseTime:
           default: 86400
           type: integer
           example: 604800
@@ -278,11 +278,11 @@ components:
           items:
             $ref: '#/components/schemas/DHCPOptionSetAdditionalOptionsItem'
           example:
-            - custom: false
-              code: 72
+            - code: 72
               value: 10.254.131.34
               type: text
               isArray: true
+              isCustom: false
     DHCPOptionSetItemWithID:
       allOf:
         - type: object
@@ -294,8 +294,6 @@ components:
     DHCPOptionSetAdditionalOptionsItem:
       type: object
       properties:
-        custom:
-          type: boolean
         code:
           type: integer
         value:
@@ -303,7 +301,6 @@ components:
         type:
           type: string
           enum:
-            - binary
             - string
             - boolean
             - uin8
@@ -316,6 +313,8 @@ components:
             - fqdn
         isArray:
           type: boolean
+        isCustom:
+          type: boolean
     resOKBody:
       type: object
       description: Success response
@@ -327,7 +326,7 @@ components:
         errors:
           type: object
           example:
-            property_name: Error message
+            propertyName: Error message
           properties:
             key:
               type: string
@@ -355,7 +354,7 @@ components:
         errors:
           type: object
           example:
-            property_name: Error message
+            propertyName: Error message
           properties:
             key:
               type: string
