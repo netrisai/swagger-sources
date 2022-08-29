@@ -282,8 +282,6 @@ components:
             - code: 72
               value: 10.254.131.34
               type: text
-              isArray: true
-              isCustom: false
     DHCPOptionSetItemWithID:
       allOf:
         - type: object
@@ -312,10 +310,6 @@ components:
             - int32
             - ipv4-address
             - fqdn
-        isArray:
-          type: boolean
-        isCustom:
-          type: boolean
     resOKBody:
       type: object
       description: Success response
