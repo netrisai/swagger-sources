@@ -282,6 +282,12 @@ components:
             - code: 72
               value: 10.254.131.34
               type: text
+        createdDate:
+          type: integer
+          example: 1661939802000
+        modifiedDate:
+          type: integer
+          example: 1661939802000
     DHCPOptionSetItemWithID:
       allOf:
         - type: object
