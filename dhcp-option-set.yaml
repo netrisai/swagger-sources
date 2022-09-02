@@ -223,6 +223,59 @@ paths:
                         properties:
                           statusCode:
                             example: 404
+  /api/v2/dhcp-option-set/{id}/set-default:
+    put:
+      tags:
+        - DHCP Option Sets
+      summary: Request for editing isDefault field of DHCP option sets.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific DHCP option set
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/resOKBody'
+                  - type: object
+                    properties:
+                      message:
+                        example: Successfully updated
+                      errors:
+                        example: null
+                      data:
+                        example:
+                          - id: 2
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
 components:
   securitySchemes:
     cookieAuth:
