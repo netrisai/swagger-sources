@@ -294,12 +294,6 @@ components:
         description:
           type: string
           example: My DHCP set
-        isDefault:
-          type: boolean
-          enum:
-          - false
-          - true
-          default: false
         domainSearch:
           type: string
           default: ''
@@ -348,6 +342,12 @@ components:
             id:
               type: integer
               example: 1231
+            isDefault:
+              type: boolean
+              enum:
+              - false
+              - true
+              default: false
         - $ref: '#/components/schemas/DHCPOptionSetItem'
     DHCPOptionSetAdditionalOptionsItem:
       type: object
