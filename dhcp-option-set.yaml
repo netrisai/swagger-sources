@@ -223,11 +223,11 @@ paths:
                         properties:
                           statusCode:
                             example: 404
-  /api/v2/dhcp-option-set/{id}/set-default:
+  /api/v2/dhcp-option-set/{id}/make-default:
     put:
       tags:
         - DHCP Option Sets
-      summary: Request for editing isDefault field of DHCP option sets.
+      summary: Make default the DHCP option set.
       parameters:
         - name: id
           in: path
