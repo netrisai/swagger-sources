@@ -422,6 +422,22 @@ components:
         circuitName:
           type: string
           example: circuit
+        bfd: 
+          type: string
+          enum: 
+          - enabled
+          - disabled
+          default: disabled
+          example: enabled
+        bgpTimers: 
+          type: object
+          properties:
+              hello:
+                type: number
+                example: 3
+              hold:
+                type: number
+                example: 10
         ports:
           items:
             $ref: '#/components/schemas/returnPorts'
@@ -864,6 +880,22 @@ components:
             - tag2
           items:
             type: string
+        bfd: 
+          type: string
+          enum: 
+          - enabled
+          - disabled
+          default: disabled
+          example: enabled
+        bgpTimers: 
+          type: object
+          properties:
+              hello:
+                type: number
+                example: 3
+              hold:
+                type: number
+                example: 10
     ebgpEditItem:
       type: object
       required:
@@ -959,6 +991,22 @@ components:
         state:
           type: string
           example: enabled
+        bfd: 
+          type: string
+          enum: 
+          - enabled
+          - disabled
+          default: disabled
+          example: enabled
+        bgpTimers: 
+          type: object
+          properties:
+              hello:
+                type: number
+                example: 3
+              hold:
+                type: number
+                example: 10
         port:
           type: object
           properties:
