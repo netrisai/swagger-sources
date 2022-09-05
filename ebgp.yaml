@@ -429,7 +429,7 @@ components:
           - disabled
           default: disabled
           example: enabled
-        bgpTimers: 
+        timers: 
           type: object
           properties:
               hello:
@@ -887,7 +887,7 @@ components:
           - disabled
           default: disabled
           example: enabled
-        bgpTimers: 
+        timers: 
           type: object
           properties:
               hello:
@@ -998,7 +998,7 @@ components:
           - disabled
           default: disabled
           example: enabled
-        bgpTimers: 
+        timers: 
           type: object
           properties:
               hello:
