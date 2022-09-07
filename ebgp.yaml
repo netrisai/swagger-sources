@@ -25,6 +25,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ebgps'
+                 '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
     post:
       tags:
         - E-BGP
@@ -46,6 +52,30 @@ paths:
                   id:
                     type: number
                     example: number
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404             
     put:
       tags:
         - E-BGP
@@ -67,6 +97,30 @@ paths:
                   id:
                     type: number
                     example: number
+      '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
   /api/v2/ebgp/{id}:
     get:
       tags:
@@ -86,6 +140,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ebgpItem'
+       '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
     delete:
       tags:
         - E-BGP
@@ -100,6 +160,30 @@ paths:
       responses:
         '200':
           description: OK
+       '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
   /api/v2/ebgp/ports:
     get:
       tags:
@@ -119,6 +203,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ports'
+       '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
   /api/v2/ebgp/hardwares:
     get:
       tags:
@@ -143,6 +251,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/switches'
+         '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
   /api/v2/ebgp/check:
     get:
       tags:
@@ -164,6 +296,30 @@ paths:
       responses:
         '200':
           description: OK
+         '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
   /api/v2/ebgp/updatesources:
     get:
       tags:
@@ -195,6 +351,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/updatesources'
+         '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
   /api/v2/ebgp/changestatus:
     put:
       tags:
@@ -219,6 +381,30 @@ paths:
       responses:
         '200':
           description: OK
+       '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
   /api/v2/ebgp/asnvalidation:
     post:
       tags:
@@ -243,6 +429,30 @@ paths:
       responses:
         '200':
           description: OK
+       '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
   /api/v2/ebgp/routemaps:
     get:
       tags:
@@ -256,6 +466,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/routemaps'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
 components:
   schemas:
     filterBySites:
@@ -1108,3 +1342,33 @@ components:
               type: number
             name:
               type: string
+   resErrorBody:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
