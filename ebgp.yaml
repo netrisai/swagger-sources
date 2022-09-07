@@ -25,7 +25,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ebgps'
-                 '400':
+        '400':
           description: Error
           content:
             application/json:
@@ -103,7 +103,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
-        '404':
+      '404':
           description: Error
           content:
             application/json:
@@ -140,7 +140,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ebgpItem'
-       '400':
+        '400':
           description: Error
           content:
             application/json:
@@ -158,7 +158,7 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+       '200':
           description: OK
        '400':
           description: Error
@@ -166,7 +166,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
-        '404':
+       '404':
           description: Error
           content:
             application/json:
@@ -203,7 +203,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ports'
-       '400':
+        '400':
           description: Error
           content:
             application/json:
@@ -251,7 +251,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/switches'
-         '400':
+        '400':
           description: Error
           content:
             application/json:
@@ -296,7 +296,7 @@ paths:
       responses:
         '200':
           description: OK
-         '400':
+        '400':
           description: Error
           content:
             application/json:
@@ -351,7 +351,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/updatesources'
-         '400':
+        '400':
           description: Error
           content:
             application/json:
@@ -381,7 +381,7 @@ paths:
       responses:
         '200':
           description: OK
-       '400':
+        '400':
           description: Error
           content:
             application/json:
@@ -429,7 +429,7 @@ paths:
       responses:
         '200':
           description: OK
-       '400':
+        '400':
           description: Error
           content:
             application/json:
@@ -1342,7 +1342,7 @@ components:
               type: number
             name:
               type: string
-   resErrorBody:
+    resErrorBody:
       type: object
       description: Error response
       properties:
