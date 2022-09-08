@@ -216,6 +216,29 @@ components:
                 type: number
                 example: 1
                 description: Required for only vlan-aware v-nets (vlanAware == true)
+              isDHCPEnabled:
+                type: boolean
+                description: Is the DHCP service enabled for the V-Net
+                example: true
+              dhcp:
+                type: object
+                description: "It is optional to specify the object, as the backend will automatically fill it on behalf of you"
+                properties:
+                  start:
+                    type: string
+                    example: 10.0.0.2
+                  end:
+                   type: string
+                   example: 10.0.0.254
+                  optionSet:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 21
+                      name:
+                        type: string
+                        example: "MyDefaultOptionSet"
         ports:
           type: array
           items:
@@ -306,6 +329,29 @@ components:
                 type: number
                 example: 1
                 description: Required for only vlan-aware v-nets (vlanAware == true)
+              isDHCPEnabled:
+                type: boolean
+                description: Is DHCP service enabled for the V-Net
+                example: true
+              dhcp:
+                description: It's optional to specify the object, as the backend will automatically fill it on behalf of you
+                type: object
+                properties:
+                  start:
+                    type: string
+                    example: 10.0.0.2
+                  end:
+                   type: string
+                   example: 10.0.0.254
+                  optionSet:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 21
+                      name:
+                        type: string
+                        example: "MyDefaultOptionSet"
         ports:
           type: array
           items:
@@ -411,6 +457,28 @@ components:
                 type: number
                 example: 1
                 description: Required for only vlan-aware v-nets (vlanAware == true)
+              isDHCPEnabled:
+                type: boolean
+                description: Is DHCP service enabled for the V-Net
+                example: true
+              dhcp:
+                type: object
+                properties:
+                  start:
+                    type: string
+                    example: 10.0.0.2
+                  end:
+                   type: string
+                   example: 10.0.0.254
+                  optionSet:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 21
+                      name:
+                        type: string
+                        example: "MyDefaultOptionSet"
         ports:
           type: array
           items:
