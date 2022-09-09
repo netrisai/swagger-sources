@@ -216,7 +216,7 @@ components:
                 type: number
                 example: 1
                 description: Required for only vlan-aware v-nets (vlanAware == true)
-              isDHCPEnabled:
+              dhcpEnabled:
                 type: boolean
                 description: Is the DHCP service enabled for the V-Net
                 example: true
@@ -329,7 +329,7 @@ components:
                 type: number
                 example: 1
                 description: Required for only vlan-aware v-nets (vlanAware == true)
-              isDHCPEnabled:
+              dhcpEnabled:
                 type: boolean
                 description: Is DHCP service enabled for the V-Net
                 example: true
@@ -457,7 +457,11 @@ components:
                 type: number
                 example: 1
                 description: Required for only vlan-aware v-nets (vlanAware == true)
-              isDHCPEnabled:
+              dhcpLeaseCount:
+                type: number
+                description: Count of DHCP leases for the current subnet
+                example: 34
+              dhcpEnabled:
                 type: boolean
                 description: Is DHCP service enabled for the V-Net
                 example: true
