@@ -8,8 +8,8 @@ paths:
   /api/v2/vnet-unmanaged:
     post:
       tags:
-        - V-Net Candidates
-      summary: Request for adding V-Net Candidate.
+        - V-Net Unmanaged
+      summary: Request for adding unmanaged V-Net.
       requestBody:
         required: true
         content:
@@ -32,8 +32,8 @@ paths:
   /api/v2/vnet-unmanaged/{id}:
     put:
       tags:
-        - V-Net Candidates
-      summary: Request for editing V-Net Candidate.
+        - V-Net Unmanaged
+      summary: Request for editing unmanaged V-Net.
       parameters:
       - name: id
         in: path
@@ -93,8 +93,8 @@ paths:
                             example: 404
     delete:
       tags:
-        - V-Net Candidates
-      summary: Request for deleting V-Net Candidate.
+        - V-Net Unmanaged
+      summary: Request for deleting unmanaged V-Net.
       parameters:
       - name: id
         in: path
@@ -165,7 +165,7 @@ components:
       properties:
         name:
           type: string
-          example: Candidate VNet
+          example: Unmanaged VNet
         uuid:
           type: string
           example: bccee743-f491-44ba-9eca-16d8aafa7d98
