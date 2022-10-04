@@ -1,0 +1,258 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+security:
+  - cookieAuth: []
+paths:
+  /api/v2/vnet-unmanaged:
+    post:
+      tags:
+        - V-Net Candidates
+      summary: Request for adding V-Net Candidate.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VNetBody'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/ResponseOK'
+        400:
+          description: "Error"
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/ResponseError'
+  /api/v2/vnet-unmanaged/{id}:
+    put:
+      tags:
+        - V-Net Candidates
+      summary: Request for editing V-Net Candidate.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VNetBody'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+               allOf:
+                 - $ref: '#/components/schemas/ResponseOK'
+                 - type: object
+                   properties:
+                      data:
+                        example:
+        400:
+          description: "Error"
+          content:
+            application/json:
+              schema:
+               allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    data:
+                      example:
+                    errors:
+                      example:
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      data:
+                        example:
+                      errors:
+                        example:
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
+    delete:
+      tags:
+        - V-Net Candidates
+      summary: Request for deleting V-Net Candidate.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      data:
+                        example:
+                      errors:
+                        example:
+                      isSuccess:
+                        example: true
+                      message:
+                        example: Successfully deleted
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 200
+        400:
+          description: "Error"
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/ResponseError'
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    VNetBody:
+      type: object
+      required:
+        - name
+        - site
+        - vlan
+        - tenant
+      properties:
+        name:
+          type: string
+          example: Candidate VNet
+        uuid: 
+          type: string
+          example: bccee743-f491-44ba-9eca-16d8aafa7d98
+          description: Object uuid
+        site:
+          description: Ports from these sites will be allowed to participate to the V-Net. 
+          type: object
+          properties:
+            id:
+              type: number
+              example: 1
+            name:
+              type: string
+              example: CA
+        tenant:
+          description: Owner tenant of the V-Net. 
+          type: object
+          properties:
+            id:
+              type: number
+              example: 34
+            name:
+              type: string
+              example: Admin
+        vlan:
+          description: Required only when selected site is not Netris managed
+          type: integer
+          example: 3213
+        ports:
+          description: Member ports of the v-net
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 898
+        meta:
+          type: object
+          description: Any additional properties
+
+    ResponseOK:
+      type: object
+      description: "Success response"
+      properties:
+        data:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 2
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ""
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseError:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
