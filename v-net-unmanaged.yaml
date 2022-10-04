@@ -17,23 +17,30 @@ paths:
             schema:
               $ref: '#/components/schemas/VNetBody'
       responses:
-        200:
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/ResponseOK'
-        400:
-          description: "Error"
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/ResponseError'
+                $ref: '#/components/schemas/ResponseError'
   /api/v2/vnet-unmanaged/{id}:
     put:
       tags:
         - V-Net Candidates
       summary: Request for editing V-Net Candidate.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of a specific unmanaged V-Net
       requestBody:
         required: true
         content:
@@ -41,31 +48,18 @@ paths:
             schema:
               $ref: '#/components/schemas/VNetBody'
       responses:
-        200:
+        '200':
           description: OK
           content:
             application/json:
               schema:
-               allOf:
-                 - $ref: '#/components/schemas/ResponseOK'
-                 - type: object
-                   properties:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
                       data:
-                        example:
-        400:
-          description: "Error"
-          content:
-            application/json:
-              schema:
-               allOf:
-                - $ref: '#/components/schemas/ResponseError'
-                - type: object
-                  properties:
-                    data:
-                      example:
-                    errors:
-                      example:
-        404:
+                        example: null
+        '400':
           description: Error
           content:
             application/json:
@@ -75,9 +69,22 @@ paths:
                   - type: object
                     properties:
                       data:
-                        example:
+                        example: null
                       errors:
-                        example:
+                        example: null
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      data:
+                        example: null
+                      errors:
+                        example: null
                       message:
                         example: Not found
                       meta:
@@ -88,8 +95,15 @@ paths:
       tags:
         - V-Net Candidates
       summary: Request for deleting V-Net Candidate.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: The id of a specific unmanaged V-Net
       responses:
-        200:
+        '200':
           description: OK
           content:
             application/json:
@@ -99,9 +113,9 @@ paths:
                   - type: object
                     properties:
                       data:
-                        example:
+                        example: null
                       errors:
-                        example:
+                        example: null
                       isSuccess:
                         example: true
                       message:
@@ -110,13 +124,13 @@ paths:
                         properties:
                           statusCode:
                             example: 200
-        400:
-          description: "Error"
+        '400':
+          description: Error
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/ResponseError'
-        404:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
           description: Error
           content:
             application/json:
@@ -152,12 +166,12 @@ components:
         name:
           type: string
           example: Candidate VNet
-        uuid: 
+        uuid:
           type: string
           example: bccee743-f491-44ba-9eca-16d8aafa7d98
           description: Object uuid
         site:
-          description: Ports from these sites will be allowed to participate to the V-Net. 
+          description: Ports from these sites will be allowed to participate to the V-Net.
           type: object
           properties:
             id:
@@ -167,7 +181,7 @@ components:
               type: string
               example: CA
         tenant:
-          description: Owner tenant of the V-Net. 
+          description: Owner tenant of the V-Net.
           type: object
           properties:
             id:
@@ -192,14 +206,13 @@ components:
         meta:
           type: object
           description: Any additional properties
-
     ResponseOK:
       type: object
-      description: "Success response"
+      description: Success response
       properties:
         data:
           type: array
-          items: 
+          items:
             type: object
             properties:
               id:
@@ -214,7 +227,7 @@ components:
               type: string
         message:
           type: string
-          example: ""
+          example: ''
         isSuccess:
           type: boolean
         meta:
