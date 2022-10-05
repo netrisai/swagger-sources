@@ -262,6 +262,11 @@ components:
                   - 'on'
                   - 'off'
                 example: 'off'
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     vnetEditBody:
       type: object
       properties:
@@ -375,6 +380,11 @@ components:
                   - 'on'
                   - 'off'
                 example: 'off'
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     vnetBody:
       type: object
       required:
@@ -506,6 +516,11 @@ components:
                   - 'on'
                   - 'off'
                 example: 'off'
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     resBody:
       type: object
       description: "Success response"
