@@ -440,6 +440,7 @@ components:
           enum:
             - active
             - disabled
+            - unmanaged
           example: active
         provisioning:
           type: boolean
