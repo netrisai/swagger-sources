@@ -1,0 +1,133 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+security:
+  - cookieAuth: []
+paths:
+  /api/v2/reservation/vlan:
+    get:
+      tags:
+        - V-Net Unmanaged
+      summary: Request for getting vlan reservations.
+      parameters:
+      - in: query
+        name: filterBySite
+        description: Filter by site
+        schema:
+          type: integer
+          example: 123
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+  
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    ReservationBody:
+      type: object
+      properties:
+        vlan:
+          type: number
+          example: 453
+          description: Reserved VLAN ID
+        site:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: CA
+        consumer:
+          type: object
+          properties:
+            id:
+              description: The resource id that holds the reservation
+              type: integer
+              example: 3213
+            type:
+              description: The resource type that holds the reservation
+              type: string
+              enum:
+                - bgp
+                - vnet
+        meta:
+          description: Additional information regarding the reservation
+          type: object
+          example:
+              portID: 12
+    ResponseOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationBody'
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseError:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
