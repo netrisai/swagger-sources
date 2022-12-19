@@ -1,0 +1,270 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+security:
+  - cookieAuth: []
+paths:
+  /api/v2/reservation/ip:
+    get:
+      tags:
+        - IP Reservation
+      summary: Request for getting ip reservations.
+      parameters:
+      - in: query
+        name: filterBySite
+        description: Filter by site
+        schema:
+          type: integer
+          example: 123
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    post:
+      tags:
+        - IP Reservation
+      summary: Request for creating ip reservations.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationBodyAdd'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+  /api/v2/reservation/ip/{id}:
+    delete:
+      tags:
+        - IP Reservation
+      summary: Request to delete ip reservation.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Reservation id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    meta:
+                      example: {apiVersion : "2", statusCode : 404}
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    ReservationBodyAdd:
+      type: object
+      properties:
+        host:
+          type: object
+          properties:
+            address:
+              type: string
+              description: Reserved host address
+              example: 10.30.15.2
+            subnet:
+              description: Subnet info the reserved host belongs to
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 12312
+                prefix:
+                  type: string
+                  example: 10.30.15.0/24
+        consumer:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 89
+              description: The resource id that holds the reservation
+            type:
+              description: The resource type that holds the reservation
+              type: string
+              enum:
+                - vnet
+                - bgp
+                - hw
+                - nat
+                - roh
+                - l4lb
+                - sys
+        meta:
+          description: Additional information regarding the reservation
+          type: object
+          example:
+              tag: gateway
+              dhcp:
+                start: 10.30.15.2
+                end: 10.30.15.254
+                option_set_id: 199
+    ReservationBody:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Reservation id.
+          example: 9090
+        host:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: Reserved host id
+              example: 13
+            address:
+              type: string
+              description: Reserved host address
+              example: 10.30.15.2
+            subnet:
+              description: Subnet info the reserved host belongs to
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 12312
+                prefix:
+                  type: string
+                  example: 10.30.15.0/24
+                name:
+                  type: string
+                  example: VNet subnet
+                purpose:
+                  type: string
+                  enum:
+                    - common
+                    - mgmt
+                    - loopback
+                    - load-balancer
+                    - nat
+                    - inactive
+        consumer:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 89
+              description: The resource id that holds the reservation
+            type:
+              description: The resource type that holds the reservation
+              type: string
+              enum:
+                - vnet
+                - bgp
+                - hw
+                - nat
+                - roh
+                - l4lb
+                - sys
+            name:
+              type: string
+              example: MyVNet
+              description: The resource name that holds the reservation
+        meta:
+          description: Additional information regarding the reservation
+          type: object
+          example:
+              tag: gateway
+              dhcp:
+                start: 10.30.15.2
+                end: 10.30.15.254
+                option_set_id: 199
+    ResponseOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationBody'
+        errors:
+          type: object
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseError:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
