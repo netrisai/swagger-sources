@@ -63,7 +63,7 @@ paths:
     get:
       tags:
         - IP Reservation
-      summary: Request for getting ip reservations.
+      summary: Request for getting ip reservations by reservation id.
       parameters:
       - in: query
         name: filterBySite
@@ -131,6 +131,44 @@ paths:
                   properties:
                     meta:
                       example: {apiVersion : "2", statusCode : 404}
+  /api/v2/reservation/ip/{address}:
+    get:
+      tags:
+        - IP Reservation
+      summary: Request for getting ip reservations by IP address.
+      parameters:
+      - in: query
+        name: filterBySite
+        description: Filter by site
+        schema:
+          type: integer
+          example: 123
+      - in: query
+        name: filterByType
+        description: Filter by consumer type
+        schema:
+          type: string
+          example: vnet
+      - in: path 
+        name: address
+        required: true
+        schema:
+          type: integer
+          description: IP address
+          example: 10.123.2.1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
 components:
   securitySchemes:
     cookieAuth:
