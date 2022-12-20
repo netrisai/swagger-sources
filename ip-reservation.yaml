@@ -17,6 +17,12 @@ paths:
         schema:
           type: integer
           example: 123
+      - in: query
+        name: filterByType
+        description: Filter by consumer type
+        schema:
+          type: string
+          example: 'vnet'
       responses:
         '200':
           description: OK
@@ -54,6 +60,42 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseError'
   /api/v2/reservation/ip/{id}:
+    get:
+      tags:
+        - IP Reservation
+      summary: Request for getting ip reservations.
+      parameters:
+      - in: query
+        name: filterBySite
+        description: Filter by site
+        schema:
+          type: integer
+          example: 123
+      - in: query
+        name: filterByType
+        description: Filter by consumer type
+        schema:
+          type: string
+          example: vnet
+      - in: path 
+        name: id
+        required: true
+        schema:
+          type: integer
+          description: Reservation id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
     delete:
       tags:
         - IP Reservation
@@ -268,3 +310,4 @@ components:
             statusCode:
               type: integer
               example: 400
+
