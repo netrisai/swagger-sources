@@ -178,9 +178,11 @@ components:
   schemas:
     ReservationBodyAdd:
       type: object
+      required: [host, consumer]
       properties:
         host:
           type: object
+          required: [address]
           properties:
             address:
               type: string
@@ -192,19 +194,22 @@ components:
               properties:
                 id:
                   type: integer
+                  description: IPv4 or IPv6 subnet id
                   example: 12312
                 prefix:
                   type: string
+                  description: Valid IPv4 or IPv6 prefix
                   example: 10.30.15.0/24
         consumer:
           type: object
+          required: [type]
           properties:
             id:
               type: integer
               example: 89
-              description: The resource id that holds the reservation
+              description: The resource id that holds the reservation. Can be ommited when type value is *sys*
             type:
-              description: The resource type that holds the reservation
+              description: The resource type that holds the reservation.
               type: string
               enum:
                 - vnet
@@ -215,14 +220,14 @@ components:
                 - l4lb
                 - sys
         meta:
-          description: Additional information regarding the reservation
           type: object
+          description: Additional information regarding the reservation
           example:
-              tag: gateway
-              dhcp:
-                start: 10.30.15.2
-                end: 10.30.15.254
-                option_set_id: 199
+                tag: gateway
+                dhcp:
+                  start: 10.30.15.2
+                  end: 10.30.15.254
+                  option_set_id: 199
     ReservationBody:
       type: object
       properties:
