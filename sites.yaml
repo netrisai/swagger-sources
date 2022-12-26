@@ -19,7 +19,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetResponseOK'
+                $ref: '#/components/schemas/ResponseOK'
         '400':
           description: Error
           content:
@@ -43,7 +43,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/GetResponseOK'
+                - $ref: '#/components/schemas/ResponseOK'
                 - type: object
                   properties:
                     data:
@@ -76,7 +76,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetResponseOK'
+                $ref: '#/components/schemas/ResponseOK'
         '400':
           description: Error
           content:
@@ -123,7 +123,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/GetResponseOK'
+                - $ref: '#/components/schemas/ResponseOK'
                 - type: object
                   properties:
                     data:
@@ -184,7 +184,7 @@ paths:
             application/json:
               schema: 
                 allOf:
-                  - $ref: '#/components/schemas/GetResponseOK'
+                  - $ref: '#/components/schemas/ResponseOK'
                   - type: object
                     properties:
                       data:
@@ -230,7 +230,7 @@ paths:
                           example: 404
 components:
   schemas:
-    GetResponseOK:
+    ResponseOK:
       type: object
       description: Success response
       properties:
