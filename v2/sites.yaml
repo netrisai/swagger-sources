@@ -43,7 +43,7 @@ paths:
                       example: new-site
                     id:
                       example:
-                    siteToSiteVpn:
+                    siteMesh:
                       required:
                         - value
                       properties:
@@ -313,12 +313,12 @@ components:
       type: object
       required:
         - name
-        - publicASN
-        - rohASN
-        - vmASN
+        - publicAsn
+        - rohAsn
+        - vmAsn
         - rohProfile
         - aclPolicy
-        - siteToSiteVpn
+        - siteMesh
         - switchFabric
         - vlanRange
       properties:
@@ -329,19 +329,19 @@ components:
         name:
           type: string
           example: site-name
-        publicASN:
+        publicAsn:
           type: number
           example: 65000
           description: Site public ASN that should be used for external bgp peer configuration.
-        rohASN:
+        rohAsn:
           type: number
           example: 65001
           description: ASN for ROH (Routing on the Host) compute instances, should be unique within the scope of a site, can be same for different sites.
-        vmASN:
+        vmAsn:
           type: number
           example: 65002
           description: ASN for ROH (Routing on the Host) virtual compute instances, should be unique within the scope of a site, can be same for different sites.
-        siteToSiteVpn:
+        siteMesh:
           type: object
           properties:
             name:
@@ -413,10 +413,10 @@ components:
         switchFabricProviders:
           type: object
           properties:
-            equinix_metal:
+            equinixMetal:
               type: object
               properties:
-                projectID:
+                projectId:
                   type: string
                   example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
                   description: Your Equinix Metal Project ID.
@@ -449,10 +449,10 @@ components:
                     - la
                     - ch
                     - da
-            phoenixnap_bmc:
+            phoenixNapBmc:
               type: object
               properties:
-                clientID:
+                clientId:
                     type: string
                     example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
                     description: PhoenixNAP OAuth Client ID with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP
