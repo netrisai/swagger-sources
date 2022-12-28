@@ -420,7 +420,7 @@ components:
                   type: string
                   example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
                   description: Your Equinix Metal Project ID.
-                projectAPIKey:
+                projectApiKey:
                   type: string
                   example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
                   description: Equinix Project API key with Read/Write permissions.
