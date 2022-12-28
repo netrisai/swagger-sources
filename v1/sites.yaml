@@ -59,46 +59,6 @@ paths:
                 $ref: '#/components/schemas/ResponseError'
 
   /api/sites/{id}:
-    get:
-      tags:
-        - Sites
-      summary: Request for getting site by id.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: The id of a specific site.
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseOK'
-        '400':
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseError'
-        '404':
-          description: Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                - $ref: '#/components/schemas/ResponseError'
-                - type: object
-                  properties:
-                    message: 
-                      example: 'Not Found'
-                    meta:
-                      type: object
-                      properties:
-                        statusCode:
-                          example: 404
     put:
       tags:
         - Sites
@@ -385,25 +345,6 @@ components:
             - la
             - ch
             - da
-        phoenixNAPClientID:
-            type: string
-            example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
-            description: PhoenixNAP OAuth Client ID with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP
-        phoenixNAPClienSecret:
-            type: string
-            example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
-            description: PhoenixNAP OAuth Client Secret with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP.
-        phoenixNAPLocation:
-            type: string
-            example: phx
-            enum:
-            - phx
-            - chi
-            - aus
-            - sgp
-            - ash
-            - sea
-            - nld
     GetSiteBody:
       type: object
       properties:
@@ -447,29 +388,6 @@ components:
             - hub
             - spoke
             - dspoke
-        rohProfile:
-          type: object
-          description: | 
-                      ROH Routing profile defines set of routing prefixes to be advertised to ROH instances.
-                       - **Default** - Will advertise 0.0.0.0/0 + loopback address of physically connected switch.
-                       - **Default + Aggregate** - Will add prefixes of defined assignments + 'Default' profile.
-                       - **Full** - Will advertise all prefixes available in the routing table of the connected switch.
-          properties:
-            id:
-              type: integer
-              example: 1
-              enum: [1, 2, 3]
-            name:
-              type: string
-              example: Default
-              enum: [Default, Default + Aggregates, Full]
-            tag:
-              type: string
-              example: default
-              enum:
-              - default
-              - default_agg
-              - full_table
         rp_id:
           type: number
           example: 1
@@ -519,6 +437,15 @@ components:
           type: string
           example: 1-4094
           description: Range of VLAN IDs allowed for use at this site.
+        siteToSiteVpn:
+          type: string
+          example: Disabled
+          description: Site Mesh status
+          enum:
+          - Disabled
+          - Hub
+          - Spoke
+          - Dynamic Spoke
         equinixProjectID:
           type: string
           example: ''
@@ -552,22 +479,3 @@ components:
             - la
             - ch
             - da
-        phoenixNAPClientID:
-            type: string
-            example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
-            description: PhoenixNAP OAuth Client ID with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP
-        phoenixNAPClienSecret:
-            type: string
-            example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
-            description: PhoenixNAP OAuth Client Secret with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP.
-        phoenixNAPLocation:
-            type: string
-            example: phx
-            enum:
-            - phx
-            - chi
-            - aus
-            - sgp
-            - ash
-            - sea
-            - nld

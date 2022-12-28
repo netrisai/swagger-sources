@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Netris API
-  version: v1
+  version: v2
 security:
   - cookieAuth: []
 paths:
