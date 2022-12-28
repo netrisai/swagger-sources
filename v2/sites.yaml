@@ -1,0 +1,473 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+  license:
+    name: MIT
+servers:
+  - url: localhost:3000
+paths:
+  /api/v2/sites:
+    get:
+      tags:
+        - Sites
+      summary: Request for getting sites.
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    post:
+      tags:
+        - Sites
+      summary: Request for adding site.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/SiteBody'
+              - type: object
+                properties:
+                    name:
+                      example: new-site
+                    id:
+                      example:
+                    siteToSiteVpn:
+                      required:
+                        - value
+                      properties:
+                        name:
+                          example:
+                        value:
+                          example: hub
+                    rohProfile:
+                      required:
+                      - value
+                      properties:
+                        id:
+                          example:
+                        name:
+                          example:
+                        value:
+                          example: default
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseOK'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        id:
+                          example: 1231
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /api/v2/sites/{id}:
+    get:
+      tags:
+        - Sites
+      summary: Request for getting site by id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific site.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message: 
+                      example: 'Not Found'
+                    meta:
+                      type: object
+                      properties:
+                        statusCode:
+                          example: 404
+    put:
+      tags:
+        - Sites
+      summary: Request for updating site.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific site.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseOK'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        id:
+                          example: 1231
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            example: 1231
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        id:
+                          example: 1231
+                    message: 
+                      example: 'Not Found'
+                    meta:
+                      type: object
+                      properties:
+                        statusCode:
+                          example: 404
+    delete:
+      tags:
+        - Sites
+      summary: Request for deleting site.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the site.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            example: 1231
+                
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema: 
+                allOf:
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            example: 1231
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        id:
+                          example: 1231
+                    message: 
+                      example: 'Not Found'
+                    meta:
+                      type: object
+                      properties:
+                        statusCode:
+                          example: 404
+components:
+  schemas:
+    ResponseOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SiteBody'
+        errors:
+          type: object
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseError:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
+    SiteBody:
+      type: object
+      required:
+        - name
+        - publicASN
+        - rohASN
+        - vmASN
+        - rohProfile
+        - aclPolicy
+        - siteToSiteVpn
+        - switchFabric
+        - vlanRange
+      properties:
+        id:
+          type: integer
+          example: 22
+          description: Site id.
+        name:
+          type: string
+          example: site-name
+        publicASN:
+          type: number
+          example: 65000
+          description: Site public ASN that should be used for external bgp peer configuration.
+        rohASN:
+          type: number
+          example: 65001
+          description: ASN for ROH (Routing on the Host) compute instances, should be unique within the scope of a site, can be same for different sites.
+        vmASN:
+          type: number
+          example: 65002
+          description: ASN for ROH (Routing on the Host) virtual compute instances, should be unique within the scope of a site, can be same for different sites.
+        siteToSiteVpn:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Site Mesh VPN mode name
+              example: Hub
+              enum: [Disabled, Hub, Spoke, Dynamic Spoke]
+            value:
+              type: string
+              example: disabled
+              description: Site Mesh VPN mode value
+              enum:
+                - disabled
+                - hub
+                - spoke
+                - dspoke
+        rohProfile:
+          type: object
+          description: | 
+                      ROH Routing profile defines set of routing prefixes to be advertised to ROH instances.
+                       - **Default** - Will advertise 0.0.0.0/0 + loopback address of physically connected switch.
+                       - **Default + Aggregate** - Will add prefixes of defined assignments + 'Default' profile.
+                       - **Full** - Will advertise all prefixes available in the routing table of the connected switch.
+          properties:
+            id:
+              type: integer
+              example: 1
+              enum: [1, 2, 3]
+            name:
+              type: string
+              example: Default
+              enum: [Default, Default + Aggregates, Full]
+            value:
+              type: string
+              example: default
+              enum:
+              - default
+              - default_agg
+              - full_table
+        aclPolicy:
+          type: string
+          example: permit
+          description: | 
+                      - Deny - Layer-3 packet forwarding is denied by default. ACLs are required to permit necessary traffic flows. Deny ACLs will be applied before Permit ACLs.
+                      - Permit - Layer-3 packet forwarding is allowed by default. ACLs are required to deny unwanted traffic flows. Permit ACLs will be applied before Deny ACLs.
+          enum:
+            - deny
+            - permit
+        switchFabric:
+          type: string
+          example: netris
+          description: | 
+                      Switch fabric types
+                        - **Netris** - I’m going to use Netris to automatically manage my Netris-supported switch fabric. 
+                        - **Equinux Metal** -  Netris will consume Equinix Metal API to dynamically leverage Equinix Metal Fabric. 
+                        - **Dot1q Trunk** - My switch fabric is separate from Netris. I will provide a Dot1q Trunk to Netris SoftGate and my compute servers, so Netris will use VLAN IDs for service encapsulation and isolation.
+                        - **PhoenixNAP BMC** - Netris will collect metadata and dynamically create necessary network resources using PhoenixNAP BMC API.
+
+
+          enum:
+            - netris
+            - equinix_metal
+            - dot1q_trunk
+            - phoenixnap_bmc
+        vlanRange:
+          type: string
+          example: 1-4094
+          description: Range of VLAN IDs allowed for use at this site.
+        switchFabricProviders:
+          type: object
+          properties:
+            equinix_metal:
+              type: object
+              properties:
+                projectID:
+                  type: string
+                  example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
+                  description: Your Equinix Metal Project ID.
+                projectAPIKey:
+                  type: string
+                  example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
+                  description: Equinix Project API key with Read/Write permissions.
+                location:
+                  type: string
+                  example: 'dc'
+                  description: Your Equinix Location.
+                  enum:
+                    - se
+                    - dc
+                    - at
+                    - hk
+                    - am
+                    - ny
+                    - ty
+                    - sl
+                    - md
+                    - sp
+                    - fr
+                    - sy
+                    - ld
+                    - sg
+                    - pa
+                    - tr
+                    - sv
+                    - la
+                    - ch
+                    - da
+            phoenixnap_bmc:
+              type: object
+              properties:
+                clientID:
+                    type: string
+                    example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
+                    description: PhoenixNAP OAuth Client ID with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP
+                clienSecret:
+                    type: string
+                    example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
+                    description: PhoenixNAP OAuth Client Secret with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP.
+                location:
+                    type: string
+                    example: phx
+                    enum:
+                    - phx
+                    - chi
+                    - aus
+                    - sgp
+                    - ash
+                    - sea
+                    - nld
