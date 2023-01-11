@@ -2,10 +2,6 @@ openapi: 3.0.0
 info:
   title: Netris API
   version: v2
-  license:
-    name: MIT
-servers:
-  - url: localhost:3000
 paths:
   /api/v2/hw:
     get:
@@ -140,6 +136,104 @@ paths:
                   id:
                     type: number
                     example: number
+  /api/v2/hw/phoenixnap-bmc-server:
+    post:
+      tags:
+        - Inventory
+      summary: Request for adding hardware type phoenixnap-bmc-server.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/phoenixNapBmcServerBodyExt'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: "#/components/schemas/ResponseOK"
+                - type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                    message:
+                      example: Successfully created
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: "#/components/schemas/ResponseError"
+                - type: object
+                  properties:
+                    message:
+                      example: Error creating server
+  /api/v2/hw/phoenixnap-bmc-server/{id}:
+    put:
+      tags:
+        - Inventory
+      parameters:
+        - name: id
+          description: The id of a specific site.
+          in: path
+          required: true
+          schema:
+            type: integer
+      summary: Request for updating hardware type phoenixnap-bmc-server.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/phoenixNapBmcServerBody'
+              - type: object
+                properties:
+                  name:
+                    example: srv2-123-2342132
+                  description:
+                    example: phoenix bmc server
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: "#/components/schemas/ResponseOK"
+                - type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                    message:
+                      example: Successfully updated
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: "#/components/schemas/ResponseError"
+                - type: object
+                  properties:
+                    message:
+                      example: Error updating server
   /api/v2/hw/controller:
     post:
       tags:
@@ -938,6 +1032,65 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
+    phoenixNapBmcServerBody:
+      type: object
+      required:
+        - name
+        - tenant
+        - site
+        - uuid
+      properties:
+        name:
+          type: string
+          example: srv1-685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+          description: PhoneixNAP BMC server name. Value must comply to RFC-952.
+        description:
+          type: string
+          description: Descriptive name
+          example: srv1 server
+        uuid:
+          type: string
+          example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+    phoenixNapBmcServerBodyExt:
+        allOf:
+        - $ref:  '#/components/schemas/phoenixNapBmcServerBody'
+        - type: object
+          required:
+            - name
+            - tenant
+            - site
+          properties:
+            name:
+              type: string
+              example: srv1-685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+              description: PhoneixNAP BMC server name. Value must comply to RFC-952.
+            description:
+              type: string
+              description: Descriptive name
+              example: srv1 server
+            tenant:
+              type: object
+              properties:
+                id:
+                  type: number
+                  example: 12
+                name:
+                  type: string
+                  example: UNIX
+              description: Users of this tenant will be permitted to edit this unit.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+            site:
+              type: object
+              properties:
+                id:
+                  type: number
+                  example: 22
+                name:
+                  type: string
+                  example: Yerevan
+              description: Select the site where this device belongs.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+            uuid:
+              type: string
+              example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
     equinixMetalServerAddBody:
       type: object
       required:
@@ -1173,4 +1326,57 @@ components:
             name:
               type: string
               example: swp10@switch5.netris.ai
-
+    ResponseOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseError:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
