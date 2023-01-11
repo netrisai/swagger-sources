@@ -158,13 +158,11 @@ paths:
                 - type: object
                   properties:
                     data:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                            example: 1231
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1231
                     message:
                       example: Successfully created
         '400':
@@ -214,13 +212,11 @@ paths:
                 - type: object
                   properties:
                     data:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                            example: 1231
+                      type: object
+                      properties:
+                       id:
+                          type: integer
+                          example: 1235
                     message:
                       example: Successfully updated
         '400':
