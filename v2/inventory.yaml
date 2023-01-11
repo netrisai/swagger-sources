@@ -234,6 +234,23 @@ paths:
                   properties:
                     message:
                       example: Error updating server
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: "#/components/schemas/ResponseError"
+                - type: object
+                  properties:
+                    message:
+                      example: Not found
+                    meta:
+                      type: object
+                      properties:
+                        statusCode:
+                          example: 404
+
   /api/v2/hw/controller:
     post:
       tags:
