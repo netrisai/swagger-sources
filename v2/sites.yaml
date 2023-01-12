@@ -456,7 +456,7 @@ components:
                     type: string
                     example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
                     description: PhoenixNAP OAuth Client ID with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP
-                clienSecret:
+                clientSecret:
                     type: string
                     example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
                     description: PhoenixNAP OAuth Client Secret with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP.
