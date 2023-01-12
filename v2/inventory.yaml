@@ -51,11 +51,18 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: number
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
   /api/v2/hw/switch/{id}:
     put:
       tags:
@@ -80,11 +87,18 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: number
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
   /api/v2/hw/equinix-metal-server:
     post:
       tags:
@@ -102,11 +116,18 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: number
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
   /api/v2/hw/equinix-metal-server/{id}:
     put:
       tags:
@@ -131,11 +152,18 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: number
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
   /api/v2/hw/phoenixnap-bmc-server:
     post:
       tags:
@@ -146,7 +174,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/phoenixNapBmcServerBodyExt'
+              $ref: '#/components/schemas/phoenixNapBmcServerAddBody'
       responses:
         '200':
           description: OK
@@ -154,28 +182,28 @@ paths:
             application/json:
               schema:
                 allOf:
-                - $ref: "#/components/schemas/ResponseOK"
-                - type: object
-                  properties:
-                    data:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1231
-                    message:
-                      example: Successfully created
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
         '400':
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                - $ref: "#/components/schemas/ResponseError"
-                - type: object
-                  properties:
-                    message:
-                      example: Error creating server
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      message:
+                        example: Error creating server
   /api/v2/hw/phoenixnap-bmc-server/{id}:
     put:
       tags:
@@ -194,13 +222,13 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/phoenixNapBmcServerBody'
-              - type: object
-                properties:
-                  name:
-                    example: srv2-123-2342132
-                  description:
-                    example: phoenix bmc server
+                - $ref: '#/components/schemas/phoenixNapBmcServerEditBody'
+                - type: object
+                  properties:
+                    name:
+                      example: srv2-123-2342132
+                    description:
+                      example: phoenix bmc server
       responses:
         '200':
           description: OK
@@ -208,45 +236,44 @@ paths:
             application/json:
               schema:
                 allOf:
-                - $ref: "#/components/schemas/ResponseOK"
-                - type: object
-                  properties:
-                    data:
-                      type: object
-                      properties:
-                       id:
-                          type: integer
-                          example: 1235
-                    message:
-                      example: Successfully updated
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1235
+                      message:
+                        example: Successfully updated
         '400':
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                - $ref: "#/components/schemas/ResponseError"
-                - type: object
-                  properties:
-                    message:
-                      example: Error updating server
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      message:
+                        example: Error updating server
         '404':
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                - $ref: "#/components/schemas/ResponseError"
-                - type: object
-                  properties:
-                    message:
-                      example: Not found
-                    meta:
-                      type: object
-                      properties:
-                        statusCode:
-                          example: 404
-
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
   /api/v2/hw/controller:
     post:
       tags:
@@ -264,11 +291,18 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: number
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
   /api/v2/hw/controller/{id}:
     put:
       tags:
@@ -293,11 +327,18 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: number
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
   /api/v2/hw/softgate:
     post:
       tags:
@@ -315,11 +356,18 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: number
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
   /api/v2/hw/softgate/{id}:
     put:
       tags:
@@ -344,11 +392,18 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: number
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
   /api/v2/hw/{type}/{id}:
     delete:
       tags:
@@ -374,6 +429,20 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          data:
+                            type: object
+                      message:
+                        example: Successfully created
   /api/v2/hw/{type}/{name}:
     delete:
       tags:
@@ -399,6 +468,15 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
   /api/v2/hw/usedips:
     get:
       tags:
@@ -412,6 +490,12 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - data
+                  - errors
+                  - message
+                  - isSuccess
+                  - meta
                 properties:
                   data:
                     type: array
@@ -421,51 +505,13 @@ paths:
                         id:
                           type: integer
                           example: 1
-                        host_id:
-                          type: integer
-                          example: 1
-                        consumer_id:
-                          type: integer
-                          example: 1
-                        consumer_type:
-                          type: string
-                          example: sys
-                        meta:
-                          type: object
-                          items:
-                            type: object
-                            properties:
-                              tag:
-                                type: string
-                                example: network
-                        name:
-                          type: string
-                          example: name
-                        subnet_id:
-                          type: integer
-                          example: 1
-                        address:
-                          type: string
-                          example: 1.1.1.1
-                  statusCode:
-                    type: number
-                    example: 200
-                    description: ''
-                  status:
-                    type: number
-                    example: 1
-                    description: ''
-                  error:
-                    type: number
-                    example: 0
+                  errors:
+                    type: object
+                    example: {}
                     description: ''
                   message:
                     type: string
                     example: ''
-                    description: ''
-                  errors:
-                    type: object
-                    example: {}
                     description: ''
                   isSuccess:
                     type: boolean
@@ -475,6 +521,7 @@ paths:
                     type: object
                     example:
                       apiVersion: v2
+                      statusCode: 200
                     description: ''
   /api/v2/hw/profiles:
     get:
@@ -491,11 +538,8 @@ paths:
                 type: object
                 required:
                   - data
-                  - statusCode
-                  - status
-                  - error
-                  - message
                   - errors
+                  - message
                   - isSuccess
                   - meta
                 properties:
@@ -507,52 +551,13 @@ paths:
                         id:
                           type: integer
                           example: 1
-                        name:
-                          type: string
-                          example: Yerevan Profile
-                        description:
-                          type: string
-                          example: Yerevan
-                        ipv4_ssh:
-                          type: string
-                          example: 10.254.0.0/16,10.0.0.0/24
-                        ipv6_ssh:
-                          type: string
-                          example: 2001:c:1::d/64
-                        timezone:
-                          type: string
-                          example: '{"offset":"+04:00","label":"(GMT+04:00) Yerevan","tzCode":"Asia/Yerevan"}'
-                        ntp_servers:
-                          type: string
-                          example: 84.43.191.2
-                        dns_servers:
-                          type: string
-                          example: 8.8.8.8,1.1.1.1
-                        createdDate:
-                          type: string
-                          example: '2019-03-11T09:24:52.000Z'
-                        modifiedDate:
-                          type: string
-                          example: '2019-04-19T00:35:37.000Z'
-                  statusCode:
-                    type: number
-                    example: 200
-                    description: ''
-                  status:
-                    type: number
-                    example: 1
-                    description: ''
-                  error:
-                    type: number
-                    example: 0
+                  errors:
+                    type: object
+                    example: {}
                     description: ''
                   message:
                     type: string
                     example: ''
-                    description: ''
-                  errors:
-                    type: object
-                    example: {}
                     description: ''
                   isSuccess:
                     type: boolean
@@ -562,6 +567,7 @@ paths:
                     type: object
                     example:
                       apiVersion: v2
+                      statusCode: 200
                     description: ''
   /api/v2/hw/subnets:
     get:
@@ -582,6 +588,12 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - data
+                  - errors
+                  - message
+                  - isSuccess
+                  - meta
                 properties:
                   data:
                     type: array
@@ -591,88 +603,13 @@ paths:
                         id:
                           type: integer
                           example: 1
-                        purpose:
-                          type: string
-                          example: mgmt
-                        parentID:
-                          type: integer
-                          example: 1
-                        allocationID:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: name
-                        description:
-                          type: string
-                          example: description
-                        ipFamily:
-                          type: string
-                          example: ipv4
-                        readonly:
-                          type: string
-                          example: 'no'
-                        prefix:
-                          type: string
-                          example: 12.0.3.0/24
-                        type:
-                          type: string
-                          example: subnet
-                        defaultGateway:
-                          type: string
-                          example: 12.0.3.1
-                        sites:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                example: 1
-                              name:
-                                type: string
-                                example: name
-                        tenant:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                example: 1
-                              name:
-                                type: string
-                                example: name
-                        subnet:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              length:
-                                type: integer
-                                example: 1
-                              prefix:
-                                type: string
-                                example: 12.0.3.0
-                  statusCode:
-                    type: number
-                    example: 200
-                    description: ''
-                  status:
-                    type: number
-                    example: 1
-                    description: ''
-                  error:
-                    type: number
-                    example: 0
+                  errors:
+                    type: object
+                    example: {}
                     description: ''
                   message:
                     type: string
                     example: ''
-                    description: ''
-                  errors:
-                    type: object
-                    example: {}
                     description: ''
                   isSuccess:
                     type: boolean
@@ -682,6 +619,7 @@ paths:
                     type: object
                     example:
                       apiVersion: v2
+                      statusCode: 200
                     description: ''
   /api/v2/hw/nos:
     get:
@@ -698,11 +636,8 @@ paths:
                 type: object
                 required:
                   - data
-                  - statusCode
-                  - status
-                  - error
-                  - message
                   - errors
+                  - message
                   - isSuccess
                   - meta
                 properties:
@@ -714,31 +649,13 @@ paths:
                         id:
                           type: integer
                           example: 1
-                        name:
-                          type: string
-                          example: Cumulus Linux
-                        tag:
-                          type: string
-                          example: cumulus_linux
-                  statusCode:
-                    type: number
-                    example: 200
-                    description: ''
-                  status:
-                    type: number
-                    example: 1
-                    description: ''
-                  error:
-                    type: number
-                    example: 0
+                  errors:
+                    type: object
+                    example: {}
                     description: ''
                   message:
                     type: string
                     example: ''
-                    description: ''
-                  errors:
-                    type: object
-                    example: {}
                     description: ''
                   isSuccess:
                     type: boolean
@@ -748,6 +665,7 @@ paths:
                     type: object
                     example:
                       apiVersion: v2
+                      statusCode: 200
                     description: ''
 components:
   schemas:
@@ -755,11 +673,8 @@ components:
       type: object
       required:
         - data
-        - statusCode
-        - status
-        - error
-        - message
         - errors
+        - message
         - isSuccess
         - meta
       properties:
@@ -767,25 +682,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/hwItem'
-        statusCode:
-          type: number
-          example: 200
-          description: ''
-        status:
-          type: number
-          example: 1
-          description: ''
-        error:
-          type: number
-          example: 0
+        errors:
+          type: object
+          example: {}
           description: ''
         message:
           type: string
           example: ''
-          description: ''
-        errors:
-          type: object
-          example: {}
           description: ''
         isSuccess:
           type: boolean
@@ -795,6 +698,7 @@ components:
           type: object
           example:
             apiVersion: v2
+            statusCode: 200
           description: ''
     hwItem:
       type: object
@@ -924,28 +828,44 @@ components:
             tag:
               type: string
               example: sonic
-          description: Network operating system of the unit.<br> Allowed values:<br> - cumulus_linux<br> - sonic<br> - ubuntu_switch_dev<br>
+          description: >-
+            Network operating system of the unit.<br> Allowed values:<br> -
+            cumulus_linux<br> - sonic<br> - ubuntu_switch_dev<br>
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: >-
+            A unique IP address which will be used as a loopback address of this
+            unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: A unique IP address to be used on out of band management interface. Choose DHCP if you want to let IP address assignment to your out of band management network DHCP server.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: >-
+            A unique IP address to be used on out of band management interface.
+            Choose DHCP if you want to let IP address assignment to your out of
+            band management network DHCP server.<br> Allowed values:<br> - \<ip
+            address\><br> - "auto"<br>
         macAddress:
           type: string
           example: 23:00:2F:BE:54:87
-          description: The MAC address is used for unit identification during zero touch provisioning of the operating system.
+          description: >-
+            The MAC address is used for unit identification during zero touch
+            provisioning of the operating system.
         portCount:
           type: number
           example: 16
-          description: Preliminary port count is used for definition of topology. When hardware unit registers itself with Netris, the port count will sync up with the real count.
+          description: >-
+            Preliminary port count is used for definition of topology. When
+            hardware unit registers itself with Netris, the port count will sync
+            up with the real count.
         asn:
           enum:
             - auto
             - manual
-          description: BGP ASN number of the unit.<br> We recommend assigning unique AS numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> - "auto"
+          description: >-
+            BGP ASN number of the unit.<br> We recommend assigning unique AS
+            numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> -
+            "auto"
         tenant:
           type: object
           properties:
@@ -955,7 +875,11 @@ components:
             name:
               type: string
               example: UNIX
-          description: Users of this tenant will be permitted to edit this unit.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Users of this tenant will be permitted to edit this unit.<br>
+            Allowed values:<br> Can be specified either <b>id</b> or
+            <b>name</b>. When both the <b>id</b> and <b>name</b> are specified,
+            <b>id</b> is used
         site:
           type: object
           properties:
@@ -965,7 +889,10 @@ components:
             name:
               type: string
               example: Yerevan
-          description: Select the site where this device belongs.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Select the site where this device belongs.<br> Allowed values:<br>
+            Can be specified either <b>id</b> or <b>name</b>. When both the
+            <b>id</b> and <b>name</b> are specified, <b>id</b> is used
         profile:
           type: object
           properties:
@@ -975,7 +902,11 @@ components:
             name:
               type: string
               example: my_profile
-          description: Select an inventory profile to define global configuration (NTP, DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Select an inventory profile to define global configuration (NTP,
+            DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either
+            <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b>
+            are specified, <b>id</b> is used
         links:
           type: array
           items:
@@ -1009,24 +940,37 @@ components:
             tag:
               type: string
               example: sonic
-          description: Network operating system of the unit.<br> Allowed values:<br> - cumulus_linux<br> - sonic<br> - ubuntu_switch_dev<br>
+          description: >-
+            Network operating system of the unit.<br> Allowed values:<br> -
+            cumulus_linux<br> - sonic<br> - ubuntu_switch_dev<br>
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: >-
+            A unique IP address which will be used as a loopback address of this
+            unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: A unique IP address to be used on out of band management interface. Choose DHCP if you want to let IP address assignment to your out of band management network DHCP server.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: >-
+            A unique IP address to be used on out of band management interface.
+            Choose DHCP if you want to let IP address assignment to your out of
+            band management network DHCP server.<br> Allowed values:<br> - \<ip
+            address\><br> - "auto"<br>
         macAddress:
           type: string
           example: 23:00:2F:BE:54:87
-          description: The MAC address is used for unit identification during zero touch provisioning of the operating system.
+          description: >-
+            The MAC address is used for unit identification during zero touch
+            provisioning of the operating system.
         asn:
           enum:
             - auto
             - manual
-          description: BGP ASN number of the unit.<br> We recommend assigning unique AS numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> - "auto"
+          description: >-
+            BGP ASN number of the unit.<br> We recommend assigning unique AS
+            numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> -
+            "auto"
         profile:
           type: object
           properties:
@@ -1036,7 +980,11 @@ components:
             name:
               type: string
               example: my_profile
-          description: Select an inventory profile to define global configuration (NTP, DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Select an inventory profile to define global configuration (NTP,
+            DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either
+            <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b>
+            are specified, <b>id</b> is used
         maintenanceMode:
           type: boolean
           description: ''
@@ -1045,65 +993,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
-    phoenixNapBmcServerBody:
-      type: object
-      required:
-        - name
-        - tenant
-        - site
-        - uuid
-      properties:
-        name:
-          type: string
-          example: srv1-685abcdf-43e1-421e-b7b5-d05dfb3ee98e
-          description: PhoneixNAP BMC server name. Value must comply to RFC-952.
-        description:
-          type: string
-          description: Descriptive name
-          example: srv1 server
-        uuid:
-          type: string
-          example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
-    phoenixNapBmcServerBodyExt:
-        allOf:
-        - $ref:  '#/components/schemas/phoenixNapBmcServerBody'
-        - type: object
-          required:
-            - name
-            - tenant
-            - site
-          properties:
-            name:
-              type: string
-              example: srv1-685abcdf-43e1-421e-b7b5-d05dfb3ee98e
-              description: PhoneixNAP BMC server name. Value must comply to RFC-952.
-            description:
-              type: string
-              description: Descriptive name
-              example: srv1 server
-            tenant:
-              type: object
-              properties:
-                id:
-                  type: number
-                  example: 12
-                name:
-                  type: string
-                  example: UNIX
-              description: Users of this tenant will be permitted to edit this unit.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
-            site:
-              type: object
-              properties:
-                id:
-                  type: number
-                  example: 22
-                name:
-                  type: string
-                  example: Yerevan
-              description: Select the site where this device belongs.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
-            uuid:
-              type: string
-              example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
     equinixMetalServerAddBody:
       type: object
       required:
@@ -1129,7 +1018,11 @@ components:
             name:
               type: string
               example: UNIX
-          description: Users of this tenant will be permitted to edit this unit.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Users of this tenant will be permitted to edit this unit.<br>
+            Allowed values:<br> Can be specified either <b>id</b> or
+            <b>name</b>. When both the <b>id</b> and <b>name</b> are specified,
+            <b>id</b> is used
         site:
           type: object
           properties:
@@ -1139,7 +1032,10 @@ components:
             name:
               type: string
               example: Yerevan
-          description: Select the site where this device belongs.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Select the site where this device belongs.<br> Allowed values:<br>
+            Can be specified either <b>id</b> or <b>name</b>. When both the
+            <b>id</b> and <b>name</b> are specified, <b>id</b> is used
         uuid:
           type: string
           example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
@@ -1157,6 +1053,70 @@ components:
           type: string
           description: Descriptive name
           example: hyper1 server
+    phoenixNapBmcServerAddBody:
+      type: object
+      required:
+        - name
+        - tenant
+        - site
+        - uuid
+      properties:
+        name:
+          type: string
+          example: hyper1-685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+          description: Equinix metal server name-id. Value must comply to RFC-952.
+        description:
+          type: string
+          description: Descriptive name
+          example: hyper1 server
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 12
+            name:
+              type: string
+              example: UNIX
+          description: >-
+            Users of this tenant will be permitted to edit this unit.<br>
+            Allowed values:<br> Can be specified either <b>id</b> or
+            <b>name</b>. When both the <b>id</b> and <b>name</b> are specified,
+            <b>id</b> is used
+        site:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 22
+            name:
+              type: string
+              example: Yerevan
+          description: >-
+            Select the site where this device belongs.<br> Allowed values:<br>
+            Can be specified either <b>id</b> or <b>name</b>. When both the
+            <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+        uuid:
+          type: string
+          example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+    phoenixNapBmcServerEditBody:
+      type: object
+      required:
+        - name
+        - description
+        - uuid
+      properties:
+        name:
+          type: string
+          example: hyper1-685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+          description: Equinix metal server name-id. Value must comply to RFC-952.
+        description:
+          type: string
+          description: Descriptive name
+          example: hyper1 server
+        uuid:
+          type: string
+          example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
     controllerAddBody:
       type: object
       required:
@@ -1176,7 +1136,9 @@ components:
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: >-
+            A unique IP address which will be used as a loopback address of this
+            unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         tenant:
           type: object
           properties:
@@ -1186,7 +1148,11 @@ components:
             name:
               type: string
               example: UNIX
-          description: Users of this tenant will be permitted to edit this unit.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Users of this tenant will be permitted to edit this unit.<br>
+            Allowed values:<br> Can be specified either <b>id</b> or
+            <b>name</b>. When both the <b>id</b> and <b>name</b> are specified,
+            <b>id</b> is used
         site:
           type: object
           properties:
@@ -1196,7 +1162,10 @@ components:
             name:
               type: string
               example: Yerevan
-          description: Select the site where this device belongs.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Select the site where this device belongs.<br> Allowed values:<br>
+            Can be specified either <b>id</b> or <b>name</b>. When both the
+            <b>id</b> and <b>name</b> are specified, <b>id</b> is used
     controllerEditBody:
       type: object
       required:
@@ -1214,7 +1183,9 @@ components:
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: >-
+            A unique IP address which will be used as a loopback address of this
+            unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         maintenanceMode:
           type: boolean
           description: ''
@@ -1239,11 +1210,17 @@ components:
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: >-
+            A unique IP address which will be used as a loopback address of this
+            unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: A unique IP address to be used on out of band management interface. Choose DHCP if you want to let IP address assignment to your out of band management network DHCP server.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: >-
+            A unique IP address to be used on out of band management interface.
+            Choose DHCP if you want to let IP address assignment to your out of
+            band management network DHCP server.<br> Allowed values:<br> - \<ip
+            address\><br> - "auto"<br>
         tenant:
           type: object
           properties:
@@ -1253,7 +1230,11 @@ components:
             name:
               type: string
               example: UNIX
-          description: Users of this tenant will be permitted to edit this unit.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Users of this tenant will be permitted to edit this unit.<br>
+            Allowed values:<br> Can be specified either <b>id</b> or
+            <b>name</b>. When both the <b>id</b> and <b>name</b> are specified,
+            <b>id</b> is used
         site:
           type: object
           properties:
@@ -1263,7 +1244,10 @@ components:
             name:
               type: string
               example: Yerevan
-          description: Select the site where this device belongs.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Select the site where this device belongs.<br> Allowed values:<br>
+            Can be specified either <b>id</b> or <b>name</b>. When both the
+            <b>id</b> and <b>name</b> are specified, <b>id</b> is used
         profile:
           type: object
           properties:
@@ -1273,7 +1257,11 @@ components:
             name:
               type: string
               example: my_profile
-          description: Select an inventory profile to define global configuration (NTP, DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Select an inventory profile to define global configuration (NTP,
+            DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either
+            <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b>
+            are specified, <b>id</b> is used
         links:
           type: array
           items:
@@ -1296,11 +1284,17 @@ components:
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: >-
+            A unique IP address which will be used as a loopback address of this
+            unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: A unique IP address to be used on out of band management interface. Choose DHCP if you want to let IP address assignment to your out of band management network DHCP server.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: >-
+            A unique IP address to be used on out of band management interface.
+            Choose DHCP if you want to let IP address assignment to your out of
+            band management network DHCP server.<br> Allowed values:<br> - \<ip
+            address\><br> - "auto"<br>
         profile:
           type: object
           properties:
@@ -1310,7 +1304,11 @@ components:
             name:
               type: string
               example: my_profile
-          description: Select an inventory profile to define global configuration (NTP, DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Select an inventory profile to define global configuration (NTP,
+            DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either
+            <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b>
+            are specified, <b>id</b> is used
         links:
           type: array
           items:
@@ -1321,7 +1319,10 @@ components:
       properties:
         local:
           type: object
-          description: Current unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Current unit physical port<br> Allowed values:<br> Can be specified
+            either <b>id</b> or <b>name</b>. When both the <b>id</b> and
+            <b>name</b> are specified, <b>id</b> is used
           properties:
             id:
               type: number
@@ -1331,7 +1332,10 @@ components:
               example: swp56@switch22.netris.ai
         remote:
           type: object
-          description: Remote unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: >-
+            Remote unit physical port<br> Allowed values:<br> Can be specified
+            either <b>id</b> or <b>name</b>. When both the <b>id</b> and
+            <b>name</b> are specified, <b>id</b> is used
           properties:
             id:
               type: number
