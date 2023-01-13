@@ -1309,6 +1309,10 @@ components:
             DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either
             <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b>
             are specified, <b>id</b> is used
+        maintenanceMode:
+          type: boolean
+          description: ''
+          example: false
         links:
           type: array
           items:
