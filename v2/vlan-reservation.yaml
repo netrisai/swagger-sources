@@ -8,7 +8,7 @@ paths:
   /api/v2/reservation/vlan:
     get:
       tags:
-        - V-Net Unmanaged
+        - VLAN Reservation
       summary: Request for getting vlan reservations.
       parameters:
       - in: query
@@ -17,6 +17,16 @@ paths:
         schema:
           type: integer
           example: 123
+      - in: query
+        name: filterByType
+        description: Filter by consumer type
+        schema:
+          type: string
+          enum:
+          - sys
+          - bgp
+          - vnet
+          example: sys
       responses:
         '200':
           description: OK
@@ -24,13 +34,90 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseOK'
+
         '400':
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseError'
-  
+    post:
+      tags:
+        - VLAN Reservation
+      summary: Request for creating ip reservations.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationBodySys'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOKSys'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+  /api/v2/reservation/vlan/{vlanId}/{consumerType}/{siteId}:
+    delete:
+      tags:
+        - Vlan Reservation
+      summary: Request to delete VLAN reservation.
+      parameters:
+      - name: vlanId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: VLAN id to unreserve.
+      - name: consumerType
+        in: path
+        required: true
+        description: Consumer type that holds the reservation.
+        schema:
+          type: string
+          enum:
+            - sys
+      - name: siteId
+        in: path
+        required: true
+        description: Site id where the VLAN is reserved.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOKSys'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message:
+                      example: VLAN reservation is not found.
+                    meta:
+                      example:
+                        apiVersion : "2" 
+                        statusCode : 404
 components:
   securitySchemes:
     cookieAuth:
@@ -38,6 +125,41 @@ components:
       in: cookie
       name: Web Service Cookie
   schemas:
+    ReservationBodySys:
+      type: object
+      required:
+      - vlan
+      - site
+      - consumer
+      properties:
+        vlan:
+          type: number
+          example: 453
+          description: Reserved VLAN ID
+        site:
+          type: object
+          required:
+          - id
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: CA
+        consumer:
+          type: object
+          required:
+          - type
+          properties:
+            type:
+              description: The resource type that holds the reservation
+              type: string
+              enum:
+                - sys
+        meta:
+          description: Additional information regarding the reservation
+          type: object
     ReservationBody:
       type: object
       properties:
@@ -67,6 +189,7 @@ components:
               enum:
                 - bgp
                 - vnet
+                - sys
         meta:
           description: Additional information regarding the reservation
           type: object
@@ -131,3 +254,32 @@ components:
             statusCode:
               type: integer
               example: 400
+    ResponseOKSys:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationBodySys'
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
