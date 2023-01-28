@@ -64,11 +64,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseError'
-  /api/v2/reservation/vlan/{vlanId}/{consumerType}/{siteId}:
+  /api/v2/reservation/vlan/{vlanId}/{siteId}:
     delete:
       tags:
-        - Vlan Reservation
-      summary: Request to delete VLAN reservation.
+        - VLAN Reservation
+      summary: Request to delete VLAN reservation only for consumer type sys.
       parameters:
       - name: vlanId
         in: path
@@ -76,14 +76,6 @@ paths:
         schema:
           type: integer
         description: VLAN id to unreserve.
-      - name: consumerType
-        in: path
-        required: true
-        description: Consumer type that holds the reservation.
-        schema:
-          type: string
-          enum:
-            - sys
       - name: siteId
         in: path
         required: true
