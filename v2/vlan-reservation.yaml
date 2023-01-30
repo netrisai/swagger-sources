@@ -17,16 +17,61 @@ paths:
         schema:
           type: integer
           example: 123
-      - in: query
-        name: filterByType
-        description: Filter by consumer type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    post:
+      tags:
+        - VLAN Reservation
+      summary: Request for creating ip reservations.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationBodySys'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOKSys'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+  /api/v2/reservation/vlan/{vlanId}:
+    get:
+      tags:
+        - VLAN Reservation
+      summary: Request for getting vlan reservations.
+      parameters:
+      - name: vlanId
+        in: path
+        required: true
         schema:
-          type: string
-          enum:
-          - sys
-          - bgp
-          - vnet
-          example: sys
+          type: integer
+        description: VLAN id.
+      - in: query
+        name: filterBySite
+        description: Filter by site
+        schema:
+          type: integer
+          example: 123
       responses:
         '200':
           description: OK
