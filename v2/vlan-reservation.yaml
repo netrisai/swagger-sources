@@ -86,29 +86,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseError'
-    post:
-      tags:
-        - VLAN Reservation
-      summary: Request for creating ip reservations.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ReservationBodySys'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseOKSys'
-        '400':
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseError'
   /api/v2/reservation/vlan/{vlanId}/{siteId}:
     delete:
       tags:
