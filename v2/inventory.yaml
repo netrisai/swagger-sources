@@ -714,7 +714,7 @@ components:
           description: ''
         description:
           type: string
-          example: Yerevan Spine Switch
+          example: Spine Switch
           description: ''
         type:
           type: string
@@ -772,7 +772,7 @@ components:
               example: 22
             name:
               type: string
-              example: Yerevan
+              example: CA
           description: ''
         profile:
           type: object
@@ -788,6 +788,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
         createdDate:
           type: number
           example: 1617280628000
@@ -815,7 +820,7 @@ components:
         description:
           type: string
           description: Descriptive name
-          example: Yerevan Spine Switch
+          example: Spine Switch
         nos:
           type: object
           properties:
@@ -888,7 +893,7 @@ components:
               example: 22
             name:
               type: string
-              example: Yerevan
+              example: CA
           description: >-
             Select the site where this device belongs.<br> Allowed values:<br>
             Can be specified either <b>id</b> or <b>name</b>. When both the
@@ -911,6 +916,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     switchEditBody:
       type: object
       required:
@@ -927,7 +937,7 @@ components:
         description:
           type: string
           description: Descriptive name
-          example: Yerevan Spine Switch
+          example: Spine Switch
         nos:
           type: object
           properties:
@@ -993,6 +1003,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     equinixMetalServerAddBody:
       type: object
       required:
@@ -1031,7 +1046,7 @@ components:
               example: 22
             name:
               type: string
-              example: Yerevan
+              example: CA
           description: >-
             Select the site where this device belongs.<br> Allowed values:<br>
             Can be specified either <b>id</b> or <b>name</b>. When both the
@@ -1039,6 +1054,11 @@ components:
         uuid:
           type: string
           example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     equinixMetalServerEditBody:
       type: object
       required:
@@ -1053,6 +1073,11 @@ components:
           type: string
           description: Descriptive name
           example: hyper1 server
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     phoenixNapBmcServerAddBody:
       type: object
       required:
@@ -1091,7 +1116,7 @@ components:
               example: 22
             name:
               type: string
-              example: Yerevan
+              example: CA
           description: >-
             Select the site where this device belongs.<br> Allowed values:<br>
             Can be specified either <b>id</b> or <b>name</b>. When both the
@@ -1099,6 +1124,11 @@ components:
         uuid:
           type: string
           example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     phoenixNapBmcServerEditBody:
       type: object
       required:
@@ -1117,6 +1147,11 @@ components:
         uuid:
           type: string
           example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     controllerAddBody:
       type: object
       required:
@@ -1132,7 +1167,7 @@ components:
         description:
           type: string
           description: Descriptive name
-          example: Yerevan Spine Switch
+          example: Spine Switch
         mainAddress:
           type: string
           example: 100.64.77.4
@@ -1161,11 +1196,16 @@ components:
               example: 22
             name:
               type: string
-              example: Yerevan
+              example: CA
           description: >-
             Select the site where this device belongs.<br> Allowed values:<br>
             Can be specified either <b>id</b> or <b>name</b>. When both the
             <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     controllerEditBody:
       type: object
       required:
@@ -1179,7 +1219,7 @@ components:
         description:
           type: string
           description: Descriptive name
-          example: Yerevan Spine Switch
+          example: Spine Switch
         mainAddress:
           type: string
           example: 100.64.77.4
@@ -1190,6 +1230,11 @@ components:
           type: boolean
           description: ''
           example: false
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     softgateAddBody:
       type: object
       required:
@@ -1206,7 +1251,7 @@ components:
         description:
           type: string
           description: Descriptive name
-          example: Yerevan Spine Switch
+          example: Spine Switch
         mainAddress:
           type: string
           example: 100.64.77.4
@@ -1243,7 +1288,7 @@ components:
               example: 22
             name:
               type: string
-              example: Yerevan
+              example: CA
           description: >-
             Select the site where this device belongs.<br> Allowed values:<br>
             Can be specified either <b>id</b> or <b>name</b>. When both the
@@ -1266,6 +1311,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     softgateEditBody:
       type: object
       required:
@@ -1280,7 +1330,7 @@ components:
         description:
           type: string
           description: Descriptive name
-          example: Yerevan Spine Switch
+          example: Spine Switch
         mainAddress:
           type: string
           example: 100.64.77.4
@@ -1317,6 +1367,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["tag1", "tag2"]
     linksBody:
       type: object
       description: Physical connection
