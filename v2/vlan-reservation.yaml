@@ -34,7 +34,7 @@ paths:
     post:
       tags:
         - VLAN Reservation
-      summary: Request for creating vlan reservations.
+      summary: Request for creating vlan reservation.
       requestBody:
         required: true
         content:
@@ -47,7 +47,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseCreateOK'
+                $ref: '#/components/schemas/ResponseOK'
         '400':
           description: Error
           content:
@@ -90,7 +90,7 @@ paths:
     delete:
       tags:
         - VLAN Reservation
-      summary: Request to delete VLAN reservation only for consumer type sys.
+      summary: Request to delete VLAN reservation.
       parameters:
       - name: vlanId
         in: path
@@ -110,7 +110,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseCreateOK'
+                $ref: '#/components/schemas/ResponseOK'
         '400':
           description: Error
           content:
@@ -130,7 +130,7 @@ paths:
                       example: VLAN reservation is not found.
                     meta:
                       example:
-                        apiVersion : "2" 
+                        apiVersion : "2"
                         statusCode : 404
 components:
   securitySchemes:
@@ -148,7 +148,7 @@ components:
       properties:
         vlan:
           type: number
-          example: 453
+          example: 0
           description: Value 0 will trigger automatic generation of the VLAN.
         strategy:
           default: next
@@ -168,15 +168,20 @@ components:
         consumer:
           type: object
           required:
+          - id
           - type
           properties:
+            id:
+              type: number
+              example: 3213
+              description: The resource id that holds the reservation
             type:
               description: The resource type that holds the reservation
               type: string
               enum:
-                - sys
                 - bgp
                 - hw
+                - sys
                 - vnet
                 - vrf
         meta:
