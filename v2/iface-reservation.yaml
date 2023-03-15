@@ -1,0 +1,313 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+security:
+  - cookieAuth: []
+paths:
+  /api/v2/reservation/iface:
+    get:
+      tags:
+        - Interface Reservation
+      summary: Request for getting interface reservations.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    post:
+      tags:
+        - Interface Reservation
+      summary: Request for creating interface reservation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationCreateBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+  /api/v2/reservation/iface/{ifaceId}:
+    get:
+      tags:
+        - Interface Reservation
+      summary: Request for getting interface reservations.
+      parameters:
+      - name: ifaceId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Hardware interface identifier.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    delete:
+      tags:
+        - Interface Reservation
+      summary: Request to delete all reservations that relate to the interface.
+      parameters:
+      - name: ifaceId
+        in: path
+        required: true
+        description: Interface identifier.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message:
+                      example: VXLAN reservation is not found.
+                    meta:
+                      example:
+                        apiVersion : "2"
+                        statusCode : 404  
+  /api/v2/reservation/iface/{ifaceId}/{consumerId}:
+    delete:
+      tags:
+        - Interface Reservation
+      summary: Request to delete interface reservation that holds by the consumer.
+      parameters:
+      - name: ifaceId
+        in: path
+        required: true
+        description: Interface identifier.
+        schema:
+          type: integer
+      - name: consumerId
+        in: path
+        required: true
+        description: |
+         Identifier of the resource that holds the reservation.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message:
+                      example: VXLAN reservation is not found.
+                    meta:
+                      example:
+                        apiVersion : "2"
+                        statusCode : 404
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    ReservationCreateBody:
+      type: object
+      required:
+      - ifaceId
+      - consumer
+      properties:
+        ifaceId:
+          type: number
+          example: 123
+          description: Hardware interface identifier.
+        consumer:
+          type: object
+          required:
+          - id
+          - type
+          properties:
+            id:
+              type: number
+              example: 3213
+              description: The resource id that holds the reservation
+            type:
+              description: The resource type that holds the reservation
+              type: string
+              enum:
+                - bgp
+                - port
+                - roh
+                - vnet
+        meta:
+          description: Additional information regarding the reservation
+          type: object
+    ReservationBody:
+      type: object
+      properties:
+        ifaceId:
+          type: number
+          example: 453
+          description: Interface identifier
+        consumer:
+          type: object
+          properties:
+            id:
+              description: The resource id that holds the reservation
+              type: integer
+              example: 3213
+            type:
+              description: The resource type that holds the reservation
+              type: string
+              enum:
+                - bgp
+                - port
+                - roh
+                - vnet
+        meta:
+          description: Additional information regarding the reservation
+          type: object
+          example:
+            prop1: 12
+            prop2: "test"
+    ResponseOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationBody'
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseCreateOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationCreateBody'
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseError:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
