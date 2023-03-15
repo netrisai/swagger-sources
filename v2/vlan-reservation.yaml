@@ -215,8 +215,10 @@ components:
               type: string
               enum:
                 - bgp
-                - vnet
+                - hw
                 - sys
+                - vnet
+                - vrf
         meta:
           description: Additional information regarding the reservation
           type: object
