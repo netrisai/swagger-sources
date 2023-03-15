@@ -34,20 +34,20 @@ paths:
     post:
       tags:
         - VLAN Reservation
-      summary: Request for creating ip reservations.
+      summary: Request for creating vlan reservations.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReservationBodySys'
+              $ref: '#/components/schemas/ReservationCreateBody'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseOKSys'
+                $ref: '#/components/schemas/ResponseCreateOK'
         '400':
           description: Error
           content:
@@ -110,7 +110,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseOKSys'
+                $ref: '#/components/schemas/ResponseCreateOK'
         '400':
           description: Error
           content:
@@ -139,7 +139,7 @@ components:
       in: cookie
       name: Web Service Cookie
   schemas:
-    ReservationBodySys:
+    ReservationCreateBody:
       type: object
       required:
       - vlan
@@ -149,18 +149,22 @@ components:
         vlan:
           type: number
           example: 453
-          description: Reserved VLAN ID
+          description: Value 0 will trigger automatic generation of the VLAN.
+        strategy:
+          default: next
+          type: string
+          enum:
+            - next
+            - last
+          description: |
+            Strategy for the automatic VLAN generation. \
+            Applicable when VLAN value is 0 (automatic VLAN generation) \
+            Reserve vlan from the beginning(next) or the end(last) of the VLAN range.
         site:
-          type: object
-          required:
-          - id
-          properties:
-            id:
-              type: integer
-              example: 1
-            name:
-              type: string
-              example: CA
+          oneOf:
+            - $ref: "#/components/schemas/SiteBody"
+            - $ref: "#/components/schemas/SiteBodyId"
+            - $ref: "#/components/schemas/SiteBodyName"
         consumer:
           type: object
           required:
@@ -171,6 +175,10 @@ components:
               type: string
               enum:
                 - sys
+                - bgp
+                - hw
+                - vnet
+                - vrf
         meta:
           description: Additional information regarding the reservation
           type: object
@@ -208,7 +216,8 @@ components:
           description: Additional information regarding the reservation
           type: object
           example:
-              portID: 12
+              prop1: 12
+              prop2: "test"
     ResponseOK:
       type: object
       description: Success response
@@ -217,6 +226,35 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReservationBody'
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseCreateOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationCreateBody'
         errors:
           type: object
           example:
@@ -268,32 +306,30 @@ components:
             statusCode:
               type: integer
               example: 400
-    ResponseOKSys:
+    SiteBody:
       type: object
-      description: Success response
+      required:
+        - id
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReservationBodySys'
-        errors:
-          type: object
-          example:
-            property_name: Error message
-          properties:
-            key:
-              type: string
-        message:
+        id:
+          type: integer
+          example: 1
+        name:
           type: string
-          example: ''
-        isSuccess:
-          type: boolean
-        meta:
-          type: object
-          properties:
-            apiVersion:
-              type: string
-              example: 2
-            statusCode:
-              type: integer
-              example: 200
+          example: CA
+    SiteBodyName:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: CA
+    SiteBodyId:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          example: 1
