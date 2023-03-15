@@ -1,0 +1,264 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+security:
+  - cookieAuth: []
+paths:
+  /api/v2/reservation/vxlan:
+    get:
+      tags:
+        - VXLAN Reservation
+      summary: Request for getting VXLAN reservations.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    post:
+      tags:
+        - VXLAN Reservation
+      summary: Request for creating VXLAN reservation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationCreateBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+  /api/v2/reservation/vxlan/{vxlan}:
+    get:
+      tags:
+        - VXLAN Reservation
+      summary: Request for getting VXLAN reservations.
+      parameters:
+      - name: vxlan
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: VXLAN.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    delete:
+      tags:
+        - VXLAN Reservation
+      summary: Request to delete VXLAN reservation.
+      parameters:
+      - name: vxlan
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: VXLAN to unreserve.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message:
+                      example: VXLAN reservation is not found.
+                    meta:
+                      example:
+                        apiVersion : "2"
+                        statusCode : 404
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    ReservationCreateBody:
+      type: object
+      required:
+      - vxlan
+      - consumer
+      properties:
+        vxlan:
+          type: number
+          example: 0
+          description: |
+            Value 0 will trigger automatic generation of the VXLAN.
+        consumer:
+          type: object
+          required:
+          - id
+          - type
+          properties:
+            id:
+              type: number
+              example: 3213
+              description: The resource id that holds the reservation
+            type:
+              description: The resource type that holds the reservation
+              type: string
+              enum:
+                - vlan
+                - vnet
+        meta:
+          description: Additional information regarding the reservation
+          type: object
+    ReservationBody:
+      type: object
+      properties:
+        vxlan:
+          type: number
+          example: 453
+          description: Reserved VXLAN
+        consumer:
+          type: object
+          properties:
+            id:
+              description: The resource id that holds the reservation
+              type: integer
+              example: 3213
+            type:
+              description: The resource type that holds the reservation
+              type: string
+              enum:
+                - vlan
+                - vnet
+        meta:
+          description: Additional information regarding the reservation
+          type: object
+          example:
+              prop1: 12
+              prop2: "test"
+    ResponseOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationBody'
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseCreateOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationCreateBody'
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseError:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
