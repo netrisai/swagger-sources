@@ -149,17 +149,11 @@ components:
         vlan:
           type: number
           example: 0
-          description: Value 0 will trigger automatic generation of the VLAN.
-        strategy:
-          default: next
-          type: string
-          enum:
-            - next
-            - last
-          description: |
-            Strategy for the automatic VLAN generation. \
-            Applicable when VLAN value is 0 (automatic VLAN generation) \
-            Reserve vlan from the beginning(next) or the end(last) of the VLAN range.
+          description: | 
+            Desired VLAN id to reserve. \
+            To automatically select a VLAN id, enter 0 or -1.
+             *  0 ***: provides the next free VLAN counting from the bottom to the top.***
+             * -1 ***: provides the next free VLAN counting from the top to the bottom.***
         site:
           oneOf:
             - $ref: "#/components/schemas/SiteBody"
@@ -185,7 +179,8 @@ components:
                 - vnet
                 - vrf
         meta:
-          description: Additional information regarding the reservation
+          description: |
+            Any extra information regarding the reservation.
           type: object
     ReservationBody:
       type: object
@@ -220,11 +215,12 @@ components:
                 - vnet
                 - vrf
         meta:
-          description: Additional information regarding the reservation
+          description: |
+            Any extra information regarding the reservation.
           type: object
           example:
-              prop1: 12
-              prop2: "test"
+              property1: 12
+              property2: "test"
     ResponseOK:
       type: object
       description: Success response
