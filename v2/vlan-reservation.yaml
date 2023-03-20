@@ -180,7 +180,7 @@ components:
                 - vrf
         meta:
           description: |
-            Any extra information regarding the reservation.
+            Additional information regarding the reservation.
           type: object
     ReservationBody:
       type: object
@@ -216,7 +216,7 @@ components:
                 - vrf
         meta:
           description: |
-            Any extra information regarding the reservation.
+            Additional information regarding the reservation.
           type: object
           example:
               property1: 12
@@ -232,7 +232,7 @@ components:
         errors:
           type: object
           example:
-            property_name: Error message
+            propertyName: Error message
           properties:
             key:
               type: string
@@ -261,7 +261,7 @@ components:
         errors:
           type: object
           example:
-            property_name: Error message
+            propertyName: Error message
           properties:
             key:
               type: string

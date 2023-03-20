@@ -57,7 +57,7 @@ paths:
         required: true
         schema:
           type: integer
-        description: Hardware interface identifier.
+        description: Interface identifier.
       responses:
         '200':
           description: OK
@@ -74,7 +74,7 @@ paths:
     delete:
       tags:
         - Interface Reservation
-      summary: Request to delete all reservations that relate to the interface.
+      summary: Request to delete all reservations related to the interface.
       parameters:
       - name: ifaceId
         in: path
@@ -105,7 +105,7 @@ paths:
                 - type: object
                   properties:
                     message:
-                      example: VXLAN reservation is not found.
+                      example: Interface reservation is not found.
                     meta:
                       example:
                         apiVersion : "2"
@@ -152,7 +152,7 @@ paths:
                 - type: object
                   properties:
                     message:
-                      example: VXLAN reservation is not found.
+                      example: Iterface reservation is not found.
                     meta:
                       example:
                         apiVersion : "2"
@@ -173,7 +173,7 @@ components:
         ifaceId:
           type: number
           example: 123
-          description: Hardware interface identifier.
+          description: Interface identifier.
         consumer:
           type: object
           required:
@@ -221,8 +221,8 @@ components:
           description: Additional information regarding the reservation
           type: object
           example:
-            prop1: 12
-            prop2: "test"
+            property1: 12
+            property2: "test"
     ResponseOK:
       type: object
       description: Success response
@@ -234,7 +234,7 @@ components:
         errors:
           type: object
           example:
-            property_name: Error message
+            propertyName: Error message
           properties:
             key:
               type: string
@@ -263,7 +263,7 @@ components:
         errors:
           type: object
           example:
-            property_name: Error message
+            propertyName: Error message
           properties:
             key:
               type: string

@@ -186,7 +186,7 @@ components:
         errors:
           type: object
           example:
-            property_name: Error message
+            propertyName: Error message
           properties:
             key:
               type: string
@@ -215,7 +215,7 @@ components:
         errors:
           type: object
           example:
-            property_name: Error message
+            propertyName: Error message
           properties:
             key:
               type: string
