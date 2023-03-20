@@ -128,7 +128,8 @@ components:
           type: number
           example: 0
           description: |
-            Value 0 will trigger automatic generation of the VXLAN.
+            Desired VXLAN id to reserve.
+            #### **0** - to automatically select the next available VXLAN id.
         consumer:
           type: object
           required:
@@ -172,8 +173,8 @@ components:
           description: Additional information regarding the reservation
           type: object
           example:
-              prop1: 12
-              prop2: "test"
+              property1: 12
+              property2: "test"
     ResponseOK:
       type: object
       description: Success response
