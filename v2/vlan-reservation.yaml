@@ -161,23 +161,9 @@ components:
             - $ref: "#/components/schemas/SiteBodyName"
         consumer:
           type: object
-          required:
-          - id
-          - type
-          properties:
-            id:
-              type: number
-              example: 3213
-              description: The resource id that holds the reservation
-            type:
-              description: The resource type that holds the reservation
-              type: string
-              enum:
-                - bgp
-                - hw
-                - sys
-                - vnet
-                - vrf
+          oneOf:
+            - $ref: '#/components/schemas/ConsumerBody'
+            - $ref: '#/components/schemas/ConsumerBodySys'
         meta:
           description: |
             Additional information regarding the reservation.
@@ -200,11 +186,14 @@ components:
               example: CA
         consumer:
           type: object
+          required:
+          - id
+          - type
           properties:
             id:
-              description: The resource id that holds the reservation
-              type: integer
+              type: number
               example: 3213
+              description: The resource id that holds the reservation
             type:
               description: The resource type that holds the reservation
               type: string
@@ -336,3 +325,31 @@ components:
         id:
           type: integer
           example: 1
+    ConsumerBody:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: number
+          example: 3213
+          description: The resource id that holds the reservation
+        type:
+          description: The resource type that holds the reservation
+          type: string
+          enum:
+            - bgp
+            - hw
+            - vnet
+            - vrf
+    ConsumerBodySys:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          description: The resource type that holds the reservation
+          type: string
+          enum:
+            - sys
