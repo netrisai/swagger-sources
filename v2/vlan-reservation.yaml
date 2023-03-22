@@ -132,6 +132,116 @@ paths:
                       example:
                         apiVersion : "2"
                         statusCode : 404
+  /api/v2/reservation/vlan/{vlanId}/{siteId}/{consumerType}:
+    delete:
+      tags:
+        - VLAN Reservation
+      summary: Request to delete VLAN reservation.
+      parameters:
+      - name: vlanId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: VLAN id to unreserve.
+      - name: siteId
+        in: path
+        required: true
+        description: Site id where the VLAN is reserved.
+        schema:
+          type: integer
+      - name: consumerType
+        in: path
+        required: true
+        description: Resource type that holds the reservation.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message:
+                      example: VLAN reservation is not found.
+                    meta:
+                      example:
+                        apiVersion : "2"
+                        statusCode : 404
+  /api/v2/reservation/vlan/{vlanId}/{siteId}/{consumerType}/{consumerId}:
+    delete:
+      tags:
+        - VLAN Reservation
+      summary: Request to delete VLAN reservation.
+      parameters:
+      - name: vlanId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: VLAN id to unreserve.
+      - name: siteId
+        in: path
+        required: true
+        description: Site id where the VLAN is reserved.
+        schema:
+          type: integer
+      - name: consumerType
+        in: path
+        required: true
+        description: Resource type that holds the reservation.
+        schema:
+          type: string
+      - name: consumerId
+        in: path
+        required: true
+        description: Resource id that holds the reservation.
+        schema:
+          type: number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message:
+                      example: VLAN reservation is not found.
+                    meta:
+                      example:
+                        apiVersion : "2"
+                        statusCode : 404
 components:
   securitySchemes:
     cookieAuth:
