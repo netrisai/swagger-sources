@@ -71,45 +71,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseError'
-    delete:
-      tags:
-        - Interface Reservation
-      summary: Request to delete all reservations related to the interface.
-      parameters:
-      - name: ifaceId
-        in: path
-        required: true
-        description: Interface identifier.
-        schema:
-          type: integer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseOK'
-        '400':
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseError'
-        '404':
-          description: Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                - $ref: '#/components/schemas/ResponseError'
-                - type: object
-                  properties:
-                    message:
-                      example: Interface reservation is not found.
-                    meta:
-                      example:
-                        apiVersion : "2"
-                        statusCode : 404  
   /api/v2/reservation/iface/{ifaceId}/{consumerId}/{consumerType}:
     delete:
       tags:
