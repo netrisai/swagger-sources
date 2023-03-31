@@ -110,7 +110,7 @@ paths:
                       example:
                         apiVersion : "2"
                         statusCode : 404  
-  /api/v2/reservation/iface/{ifaceId}/{consumerId}:
+  /api/v2/reservation/iface/{ifaceId}/{consumerId}/{consumerType}:
     delete:
       tags:
         - Interface Reservation
@@ -129,6 +129,14 @@ paths:
          Identifier of the resource that holds the reservation.
         schema:
           type: integer
+      - name: consumerType
+        in: path
+        required: true
+        description: |
+          Resource type that holds the reservation.
+        schema:
+          type: string
+          enum: ['bgp', 'port', 'roh', 'vnet', 'vrf']
       responses:
         '200':
           description: OK
