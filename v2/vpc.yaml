@@ -1,0 +1,257 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+security:
+  - cookieAuth: []
+paths:
+  /api/v2/vpc/:
+    get:
+      tags:
+        - VPC
+      summary: Request for getting VPC list.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    post:
+      tags:
+        - VPC
+      summary: Request for creating interface reservation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VPCCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+  /api/v2/vpc/{vpcId}:
+    get:
+      tags:
+        - VPC
+      summary: Request for getting VPC object.
+      parameters:
+      - name: vpcId 
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: VPC Identifier.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    delete:
+      tags:
+        - VPC
+      summary: Request to delete VPC object by id.
+      parameters:
+      - name: vpcId 
+        in: path
+        required: true
+        description: VPC identifier.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message:
+                      example: Iterface reservation is not found.
+                    meta:
+                      example:
+                        apiVersion : "2"
+                        statusCode : 404
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    VPCCreate:
+      allOf:
+        - $ref: '#/components/schemas/VPC'
+    VPCListing:
+      allOf:
+        - $ref: '#/components/schemas/VPC'
+        - type: object
+          properties:
+            system:
+              description: System-generated VPC that isn't allowed to be deleted.
+              example: 'no'
+              type: string
+              enum: 
+                - 'yes'
+                - 'no'
+            vxlan:
+              description: The system reserves VXLAN ID upon creating a VPC object.
+              type: integer
+              example: 2131
+    VPC:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'MyVPC'
+          description: Name of VPC object
+        adminTenant:
+          type: integer
+          description: |
+            Users who have been granted permission as the tenant owner are able to manage the parameters of the VPC
+        guestTenants:
+          description: |
+            List of tenants allowed to add/remove services to the VPC but not allowed to manage other parameters of the it.
+          example: [3, 5]
+          type: array
+          items:
+            type: integer
+        default:
+          description: Default VPC. Only one VPC can and must be marked as default.
+          example: 'yes'
+          type: string
+          enum: 
+            - 'yes'
+            - 'no'
+        tags:
+          example: ["tag1", "tag2"]
+          description: Tags are universal labels that you assign to a resource.
+          type: array
+          items:
+            type: string
+    ResponseOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/VPCListing'
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseCreateOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/VPCCreate'
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseError:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
