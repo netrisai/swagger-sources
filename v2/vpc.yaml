@@ -143,11 +143,8 @@ components:
           properties:
             system:
               description: System-generated VPC that isn't allowed to be deleted.
-              example: 'no'
-              type: string
-              enum: 
-                - 'yes'
-                - 'no'
+              example: true
+              type: boolean
             vni:
               description: The system reserves VXLAN ID upon creating a VPC object.
               type: integer
@@ -155,33 +152,50 @@ components:
     VPC:
       type: object
       required:
-        - adminTenantId
+        - adminTenant
       properties:
         name:
           type: string
           example: 'MyVPC'
           description: Name of VPC object
-        adminTenantId:
-          type: integer
-          example: 12
+        adminTenant:
           description: |
             Users who have been designated as the tenant owner are authorized to manage the parameters of the VPC.
-        guestTenantId:
-          example: [3, 5]
+          type: object 
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              example: 1
+              description: Tenant identifier.
+            name:
+              type: string
+              example: 'Admin'
+              description: Tenant name.
+        guestTenant:
           description: |
             This is a list of tenants who are authorized to add or remove services to the VPC, but are not permitted to manage any other parameters of the VPC.
           type: array
           items:
-            type: integer 
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: integer
+                example: 2
+                description: Tenant identifier.
+              name:
+                type: string
+                example: 'Unix'
+                description: Tenant name.
         default:
-          default: 'no'
+          type: boolean
+          default: false
+          example: false
           description: |
             Default VPC. There must be exactly one VPC designated as the default VPC.
-          example: 'no'
-          type: string
-          enum: 
-            - 'yes'
-            - 'no'
         tags:
           example: ["tag1", "tag2"]
           description: Tags are universal labels that you assign to a resource.
