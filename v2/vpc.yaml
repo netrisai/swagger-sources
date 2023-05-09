@@ -71,6 +71,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseError'
+
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message:
+                      example: VPC is not found.
+                    meta:
+                      example:
+                        apiVersion : "2"
+                        statusCode : 404
     delete:
       tags:
         - VPC
@@ -132,31 +148,36 @@ components:
               enum: 
                 - 'yes'
                 - 'no'
-            vxlan:
+            vni:
               description: The system reserves VXLAN ID upon creating a VPC object.
               type: integer
               example: 2131
     VPC:
       type: object
+      required:
+        - adminTenantId
       properties:
         name:
           type: string
           example: 'MyVPC'
           description: Name of VPC object
-        adminTenant:
+        adminTenantId:
           type: integer
+          example: 12
           description: |
-            Users who have been granted permission as the tenant owner are able to manage the parameters of the VPC
-        guestTenants:
-          description: |
-            List of tenants allowed to add/remove services to the VPC but not allowed to manage other parameters of the it.
+            Users who have been designated as the tenant owner are authorized to manage the parameters of the VPC.
+        guestTenantId:
           example: [3, 5]
+          description: |
+            This is a list of tenants who are authorized to add or remove services to the VPC, but are not permitted to manage any other parameters of the VPC.
           type: array
           items:
-            type: integer
+            type: integer 
         default:
-          description: Default VPC. Only one VPC can and must be marked as default.
-          example: 'yes'
+          default: 'no'
+          description: |
+            Default VPC. There must be exactly one VPC designated as the default VPC.
+          example: 'no'
           type: string
           enum: 
             - 'yes'
