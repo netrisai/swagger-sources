@@ -87,6 +87,7 @@ paths:
                       example:
                         apiVersion : "2"
                         statusCode : 404
+
     delete:
       tags:
         - VPC
@@ -111,6 +112,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message:
+                      example: VPC is not found.
+                    meta:
+                      example:
+                        apiVersion : "2"
+                        statusCode : 404
+  /api/v2/vpc/{vpcId}/make-default:
+    put:
+      tags:
+        - VPC
+      summary: Request for set VPC as default VPC.
+      parameters:
+      - name: vpcId 
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: VPC Identifier.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseMakeDefaultOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
         '404':
           description: Error
           content:
@@ -290,3 +332,37 @@ components:
             statusCode:
               type: integer
               example: 400
+    ResponseMakeDefaultOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+                description: VPC Indentifier.
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
