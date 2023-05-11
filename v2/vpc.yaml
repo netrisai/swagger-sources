@@ -187,6 +187,12 @@ components:
               description: System-generated VPC that isn't allowed to be deleted.
               example: true
               type: boolean
+            isDefault:
+              type: boolean
+              default: false
+              example: false
+              description: |
+                Default VPC. There must be exactly one VPC designated as the default VPC.
             vni:
               description: The system reserves VXLAN ID upon creating a VPC object.
               type: integer
@@ -238,12 +244,6 @@ components:
           type: array
           items:
             type: string
-        isDefault:
-          type: boolean
-          default: false
-          example: false
-          description: |
-            Default VPC. There must be exactly one VPC designated as the default VPC.
     ResponseOK:
       type: object
       description: Success response
