@@ -88,6 +88,52 @@ paths:
                         apiVersion : "2"
                         statusCode : 404
 
+    put:
+      tags:
+        - VPC
+      summary: Request to update VPC object by id.
+      parameters:
+      - name: vpcId 
+        in: path
+        required: true
+        description: VPC identifier.
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/VPCUpdate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message:
+                      example: VPC is not found.
+                    meta:
+                      example:
+                        apiVersion : "2"
+                        statusCode : 404
     delete:
       tags:
         - VPC
@@ -175,6 +221,14 @@ components:
       in: cookie
       name: Web Service Cookie
   schemas:
+
+    VPCUpdate:
+      allOf:
+        - $ref: '#/components/schemas/VPC'
+        - type : object
+          properties:
+            adminTenant:
+              readOnly: true
     VPCCreate:
       allOf:
         - $ref: '#/components/schemas/VPC'
