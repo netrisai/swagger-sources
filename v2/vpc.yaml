@@ -214,6 +214,47 @@ paths:
                       example:
                         apiVersion : "2"
                         statusCode : 404
+  /api/v2/vpc/{vpcId}/resources:
+    get:
+      tags:
+        - VPC
+      summary: Request for getting resources used in VPC.
+      parameters:
+      - name: vpcId 
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: VPC Identifier.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseResourceOK'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ResponseError'
+                - type: object
+                  properties:
+                    message:
+                      example: VPC is not found.
+                    meta:
+                      example:
+                        apiVersion : "2"
+                        statusCode : 404
 components:
   securitySchemes:
     cookieAuth:
@@ -263,7 +304,94 @@ components:
                   vlan:
                     type: integer
                     example: 343
-
+    VPCResource:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: VPC Identifier.
+          example: 2
+        resources:
+          type: array
+          items:
+            type: object
+            properties:
+              site:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Site object identifier.
+                    example: 1
+                  name:
+                    type: string
+                    description: Site object name.
+                    example: MySite
+              bgp:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: BGP object identifier.
+                      example: 13
+                    name:
+                      type: string
+                      description: BGP object name.
+                      example: bgp1
+              roh:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: ROH object identifier.
+                      example: 91
+                    name:
+                      type: string
+                      description: ROH object name.
+                      example: roh1
+              vnet:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: V-Net object identifier.
+                      example: 16
+                    name:
+                      type: string
+                      description: V-Net object name.
+                      example: vnet1
+              ipam:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: Subnet object identifier.
+                      example: 41
+                    name:
+                      type: string
+                      description: Subnet object name.
+                      example: "10.10.10.0/24"
+              route:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: Static route object identifier.
+                      example: 1
+                    name:
+                      type: string
+                      description: Static route object name.
+                      example: 21
     VPC:
       type: object
       required:
@@ -348,6 +476,35 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/VPCCreate'
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseResourceOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/VPCResource'
         errors:
           type: object
           example:
