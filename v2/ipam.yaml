@@ -2,10 +2,8 @@ openapi: 3.0.0
 info:
   title: Netris API
   version: v2
-  license:
-    name: MIT
-servers:
-  - url: localhost:3000
+security:
+  - cookieAuth: []
 paths:
   /api/v2/ipam:
     get:
@@ -27,14 +25,18 @@ paths:
       responses:
         '200':
           description: OK
-  /api/v2/ipam/hosts/{subnetID}:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ipTreeSubnet'
+  /api/v2/ipam/hosts/{id}:
     get:
       tags:
         - IPAM
       summary: Request for getting hosts.
       parameters:
         - in: path
-          name: subnetID
+          name: id
           schema:
             type: integer
           required: true
@@ -79,7 +81,7 @@ paths:
           schema:
             type: integer
           required: true
-          description: Numeric ID of the allocation
+          description: Numeric Id of the allocation.
       requestBody:
         required: true
         content:
@@ -197,6 +199,11 @@ paths:
         '200':
           description: OK
 components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
   schemas:
     ipTree:
       type: object
@@ -251,6 +258,16 @@ components:
           type: number
           example: 1
           description: ''
+        vpc:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: DefaultVpc
         name:
           type: string
           example: main
@@ -315,7 +332,10 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ipTreeSubnet'
+            type: object
+            properties:
+              prop1:
+                $ref: '#/components/schemas/ipTreeSubnet'
     ipTreeSubnet:
       type: object
       description: ''
@@ -324,6 +344,16 @@ components:
           type: number
           example: 2
           description: ''
+        vpc:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: DefaultVpc
         parentID:
           type: number
           example: 0
@@ -360,7 +390,7 @@ components:
                 example: 1
               name:
                 type: string
-                example: Yerevan
+                example: Santa-Clara
             description: ''
         ipFamily:
           type: string
@@ -412,6 +442,12 @@ components:
             - subnet
           example: subnet
           description: ''
+        children:
+          type: array
+          items:
+            type: object
+            allOf:
+              - $ref: '#/components/schemas/ipTreeSubnet2'
         createdDate:
           type: number
           example: 1617280628000
@@ -420,9 +456,9 @@ components:
           type: number
           example: 1617365215000
           description: Time in milliseconds
-        children:
-          type: array
-          items: {}
+    ipTreeSubnet2:
+      allOf:
+        - $ref: '#/components/schemas/ipTreeSubnet'
     ipHosts:
       type: object
       required:
@@ -566,6 +602,18 @@ components:
           type: string
           example: main
           description: ''
+        vpc:
+          type: object
+          nullable: true
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: DefaultVpc
         description:
           type: string
           example: ''
@@ -590,7 +638,7 @@ components:
                 example: 1
               name:
                 type: string
-                example: Yerevan
+                example: Santa-Clara
             description: ''
         purpose:
           type: string
@@ -618,4 +666,3 @@ components:
               - tag2
           items:
             type: string
-            
