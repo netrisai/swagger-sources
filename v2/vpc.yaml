@@ -436,6 +436,14 @@ components:
           type: array
           items:
             type: string
+        createdDate:
+          example: 1688375758000
+          description: The timestamp when the VPC has been created.
+          type: integer
+        modifiedDate:
+          example: 1688375758000
+          description: The timestamp when the VPC has been modified.
+          type: integer
     VPCResponseOK:
       type: object
       description: Success response
