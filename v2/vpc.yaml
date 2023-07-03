@@ -16,13 +16,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseOK'
+                $ref: '#/components/schemas/VPCResponseOK'
         '400':
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseError'
+                $ref: '#/components/schemas/VPCResponseError'
     post:
       tags:
         - VPC
@@ -39,13 +39,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseOK'
+                $ref: '#/components/schemas/VPCResponseOK'
         '400':
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseError'
+                $ref: '#/components/schemas/VPCResponseError'
   /api/v2/vpc/{vpcId}:
     get:
       tags:
@@ -64,20 +64,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseObjectOK'
+                $ref: '#/components/schemas/VPCResponseObjectOK'
         '400':
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseObjectError'
+                $ref: '#/components/schemas/VPCResponseObjectError'
         '404':
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseObjectError'
+                  - $ref: '#/components/schemas/VPCResponseObjectError'
                   - type: object
                     properties:
                       message:
@@ -110,20 +110,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseOK'
+                $ref: '#/components/schemas/VPCResponseOK'
         '400':
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseError'
+                $ref: '#/components/schemas/VPCResponseError'
         '404':
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseError'
+                  - $ref: '#/components/schemas/VPCResponseError'
                   - type: object
                     properties:
                       message:
@@ -149,20 +149,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseOK'
+                $ref: '#/components/schemas/VPCResponseOK'
         '400':
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseError'
+                $ref: '#/components/schemas/VPCResponseError'
         '404':
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseError'
+                  - $ref: '#/components/schemas/VPCResponseError'
                   - type: object
                     properties:
                       message:
@@ -189,20 +189,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseMakeDefaultOK'
+                $ref: '#/components/schemas/VPCResponseMakeDefaultOK'
         '400':
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseError'
+                $ref: '#/components/schemas/VPCResponseError'
         '404':
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseError'
+                  - $ref: '#/components/schemas/VPCResponseError'
                   - type: object
                     properties:
                       message:
@@ -229,20 +229,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseResourceOK'
+                $ref: '#/components/schemas/VPCResponseResourceOK'
         '400':
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseError'
+                $ref: '#/components/schemas/VPCResponseError'
         '404':
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseError'
+                  - $ref: '#/components/schemas/VPCResponseError'
                   - type: object
                     properties:
                       message:
@@ -436,7 +436,7 @@ components:
           type: array
           items:
             type: string
-    ResponseOK:
+    VPCResponseOK:
       type: object
       description: Success response
       properties:
@@ -465,7 +465,7 @@ components:
             statusCode:
               type: integer
               example: 200
-    ResponseObjectOK:
+    VPCResponseObjectOK:
       type: object
       description: Success response
       properties:
@@ -492,7 +492,7 @@ components:
             statusCode:
               type: integer
               example: 200
-    ResponseCreateOK:
+    VPCResponseCreateOK:
       type: object
       description: Success response
       properties:
@@ -521,7 +521,7 @@ components:
             statusCode:
               type: integer
               example: 200
-    ResponseResourceOK:
+    VPCResponseResourceOK:
       type: object
       description: Success response
       properties:
@@ -550,7 +550,7 @@ components:
             statusCode:
               type: integer
               example: 200
-    ResponseObjectError:
+    VPCResponseObjectError:
       type: object
       description: Error response
       properties:
@@ -578,7 +578,7 @@ components:
             statusCode:
               type: integer
               example: 400
-    ResponseError:
+    VPCResponseError:
       type: object
       description: Error response
       properties:
@@ -608,7 +608,7 @@ components:
             statusCode:
               type: integer
               example: 400
-    ResponseMakeDefaultOK:
+    VPCResponseMakeDefaultOK:
       type: object
       description: Success response
       properties:
@@ -642,4 +642,3 @@ components:
             statusCode:
               type: integer
               example: 200
-
