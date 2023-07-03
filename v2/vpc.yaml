@@ -52,53 +52,51 @@ paths:
         - VPC
       summary: Request for getting VPC object.
       parameters:
-      - name: vpcId 
-        in: path
-        required: true
-        schema:
-          type: integer
-        description: VPC Identifier.
+        - name: vpcId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: VPC Identifier.
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseOK'
+                $ref: '#/components/schemas/ResponseObjectOK'
         '400':
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseError'
-
+                $ref: '#/components/schemas/ResponseObjectError'
         '404':
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/ResponseError'
-                - type: object
-                  properties:
-                    message:
-                      example: VPC is not found.
-                    meta:
-                      example:
-                        apiVersion : "2"
-                        statusCode : 404
-
+                  - $ref: '#/components/schemas/ResponseObjectError'
+                  - type: object
+                    properties:
+                      message:
+                        example: VPC is not found.
+                      meta:
+                        example:
+                          apiVersion: '2'
+                          statusCode: 404
     put:
       tags:
         - VPC
       summary: Request to update VPC object by id.
       parameters:
-      - name: vpcId 
-        in: path
-        required: true
-        description: VPC identifier.
-        schema:
-          type: integer
+        - name: vpcId
+          in: path
+          required: true
+          description: VPC identifier.
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -125,26 +123,26 @@ paths:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/ResponseError'
-                - type: object
-                  properties:
-                    message:
-                      example: VPC is not found.
-                    meta:
-                      example:
-                        apiVersion : "2"
-                        statusCode : 404
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      message:
+                        example: VPC is not found.
+                      meta:
+                        example:
+                          apiVersion: '2'
+                          statusCode: 404
     delete:
       tags:
         - VPC
       summary: Request to delete VPC object by id.
       parameters:
-      - name: vpcId 
-        in: path
-        required: true
-        description: VPC identifier.
-        schema:
-          type: integer
+        - name: vpcId
+          in: path
+          required: true
+          description: VPC identifier.
+          schema:
+            type: integer
       responses:
         '200':
           description: OK
@@ -164,27 +162,27 @@ paths:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/ResponseError'
-                - type: object
-                  properties:
-                    message:
-                      example: VPC is not found.
-                    meta:
-                      example:
-                        apiVersion : "2"
-                        statusCode : 404
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      message:
+                        example: VPC is not found.
+                      meta:
+                        example:
+                          apiVersion: '2'
+                          statusCode: 404
   /api/v2/vpc/{vpcId}/make-default:
     put:
       tags:
         - VPC
       summary: Request for set VPC as default VPC.
       parameters:
-      - name: vpcId 
-        in: path
-        required: true
-        schema:
-          type: integer
-        description: VPC Identifier.
+        - name: vpcId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: VPC Identifier.
       responses:
         '200':
           description: OK
@@ -198,34 +196,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseError'
-
         '404':
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/ResponseError'
-                - type: object
-                  properties:
-                    message:
-                      example: VPC is not found.
-                    meta:
-                      example:
-                        apiVersion : "2"
-                        statusCode : 404
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      message:
+                        example: VPC is not found.
+                      meta:
+                        example:
+                          apiVersion: '2'
+                          statusCode: 404
   /api/v2/vpc/{vpcId}/resources:
     get:
       tags:
         - VPC
       summary: Request for getting resources used in VPC.
       parameters:
-      - name: vpcId 
-        in: path
-        required: true
-        schema:
-          type: integer
-        description: VPC Identifier.
+        - name: vpcId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: VPC Identifier.
       responses:
         '200':
           description: OK
@@ -239,22 +236,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseError'
-
         '404':
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/ResponseError'
-                - type: object
-                  properties:
-                    message:
-                      example: VPC is not found.
-                    meta:
-                      example:
-                        apiVersion : "2"
-                        statusCode : 404
+                  - $ref: '#/components/schemas/ResponseError'
+                  - type: object
+                    properties:
+                      message:
+                        example: VPC is not found.
+                      meta:
+                        example:
+                          apiVersion: '2'
+                          statusCode: 404
 components:
   securitySchemes:
     cookieAuth:
@@ -262,11 +258,10 @@ components:
       in: cookie
       name: Web Service Cookie
   schemas:
-
     VPCUpdate:
       allOf:
         - $ref: '#/components/schemas/VPC'
-        - type : object
+        - type: object
           properties:
             adminTenant:
               readOnly: true
@@ -378,7 +373,7 @@ components:
                     name:
                       type: string
                       description: Subnet object name.
-                      example: "10.10.10.0/24"
+                      example: 10.10.10.0/24
               route:
                 type: array
                 items:
@@ -399,12 +394,12 @@ components:
       properties:
         name:
           type: string
-          example: 'MyVPC'
+          example: MyVPC
           description: Name of VPC object
         adminTenant:
           description: |
             Users who have been designated as the tenant owner are authorized to manage the parameters of the VPC.
-          type: object 
+          type: object
           required:
             - id
           properties:
@@ -414,7 +409,7 @@ components:
               description: Tenant identifier.
             name:
               type: string
-              example: 'Admin'
+              example: Admin
               description: Tenant name.
         guestTenant:
           description: |
@@ -431,10 +426,12 @@ components:
                 description: Tenant identifier.
               name:
                 type: string
-                example: 'Unix'
+                example: Unix
                 description: Tenant name.
         tags:
-          example: ["tag1", "tag2"]
+          example:
+            - tag1
+            - tag2
           description: Tags are universal labels that you assign to a resource.
           type: array
           items:
@@ -446,6 +443,33 @@ components:
         data:
           type: array
           items:
+            $ref: '#/components/schemas/VPCListing'
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    ResponseObjectOK:
+      type: object
+      description: Success response
+      properties:
+        data:
             $ref: '#/components/schemas/VPCListing'
         errors:
           type: object
@@ -526,6 +550,34 @@ components:
             statusCode:
               type: integer
               example: 200
+    ResponseObjectError:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: object
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
     ResponseError:
       type: object
       description: Error response
@@ -590,3 +642,4 @@ components:
             statusCode:
               type: integer
               example: 200
+
