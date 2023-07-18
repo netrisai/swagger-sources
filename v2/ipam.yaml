@@ -10,6 +10,18 @@ paths:
       tags:
         - IPAM
       summary: Request for getting ips tree.
+      parameters:
+        - name: filterBySites
+          in: query
+          description: 'Filter result by Site id.'
+          schema:
+            $ref: '#/components/schemas/filterBySites'
+        - name: filterByVpc
+          in: query
+          description: |
+            Filter result by VPC id. If no VPC ID is specified, the results will be filtered based on the default VPC.
+          schema:
+            $ref: '#/components/schemas/filterByVpc'
       responses:
         '200':
           description: OK
@@ -22,6 +34,13 @@ paths:
       tags:
         - IPAM
       summary: Request for getting subnets.
+      parameters:
+        - name: filterByVpc
+          in: query
+          description: |
+            Filter result by VPC id. If no VPC ID is specified, the results will be filtered based on the default VPC.
+          schema:
+            $ref: '#/components/schemas/filterByVpc'
       responses:
         '200':
           description: OK
@@ -205,6 +224,14 @@ components:
       in: cookie
       name: Web Service Cookie
   schemas:
+    filterByVpc:
+      type: array
+      items:
+        type: integer
+    filterBySites:
+      type: array
+      items:
+        type: integer
     ipTree:
       type: object
       required:
@@ -354,6 +381,12 @@ components:
             name:
               type: string
               example: DefaultVpc
+            isDefault:
+              type: boolean
+              example: true
+            isSystem:
+              type: boolean
+              example: false
         parentID:
           type: number
           example: 0
@@ -588,6 +621,18 @@ components:
           type: string
           example: 10.0.0.0/16
           description: ''
+        vpc:
+          type: object
+          nullable: true
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: DefaultVpc
     subnetBody:
       type: object
       description: ''
