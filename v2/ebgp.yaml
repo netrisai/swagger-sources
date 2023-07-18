@@ -15,7 +15,13 @@ paths:
       parameters:
         - name: filterBySites
           in: query
-          description: ''
+          description: 'Filter result by Site id.'
+          schema:
+            $ref: '#/components/schemas/filterBySites'
+        - name: filterByVpc
+          in: query
+          description: |
+            Filter result by VPC id. If no VPC ID is specified, the results will be filtered based on the default VPC.
           schema:
             $ref: '#/components/schemas/filterBySites'
       responses:
@@ -97,13 +103,13 @@ paths:
                   id:
                     type: number
                     example: number
-      '400':
+        '400':
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
-      '404':
+        '404':
           description: Error
           content:
             application/json:
@@ -492,6 +498,10 @@ paths:
                             example: 404
 components:
   schemas:
+    filterByVpc:
+      type: array
+      items:
+        type: integer
     filterBySites:
       type: array
       items:
@@ -523,6 +533,21 @@ components:
             name:
               type: string
               example: name
+        vpc:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 2
+            name:
+              type: string
+              example: MyVpc
+            isDefault:
+              type: boolean
+              example: true
+            isSystem:
+              type: boolean
+              example: false
         vnet:
           $ref: '#/components/schemas/vnet'
         hardware:
@@ -1079,6 +1104,15 @@ components:
             name:
               type: string
               example: name
+        vpc:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 2
+            name:
+              type: string
+              example: MyVpc
         state:
           type: string
           example: enabled
@@ -1222,6 +1256,15 @@ components:
             name:
               type: string
               example: name
+        vpc:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 2
+            name:
+              type: string
+              example: MyVpc
         state:
           type: string
           example: enabled
