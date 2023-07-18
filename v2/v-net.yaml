@@ -10,6 +10,18 @@ paths:
       tags:
         - V-Net
       summary: Request for getting V-Net list.
+      parameters:
+        - name: filterBySites
+          in: query
+          description: 'Filter result by Site id.'
+          schema:
+            $ref: '#/components/schemas/filterBySites'
+        - name: filterByVpc
+          in: query
+          description: |
+            Filter result by VPC id. If no VPC ID is specified, the results will be filtered based on the default VPC.
+          schema:
+            $ref: '#/components/schemas/filterByVpc'
       responses:
         200:
           description: "OK"
@@ -132,6 +144,14 @@ components:
       in: cookie
       name: Web Service Cookie
   schemas:
+    filterByVpc:
+      type: array
+      items:
+        type: integer
+    filterBySites:
+      type: array
+      items:
+        type: integer
     vnetAddBody:
       type: object
       required:
@@ -418,6 +438,22 @@ components:
                 type: string
                 example: Yerevan
             description: ''
+        vpc:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: DefaultVpc
+            isDefault:
+              type: boolean
+              example: true
+            isSystem:
+              type: boolean
+              example: false
         vlan:
           description: Required only when selected site is not Netris managed
           type: integer
