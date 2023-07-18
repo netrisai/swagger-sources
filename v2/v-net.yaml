@@ -183,7 +183,7 @@ components:
                 example: 1
               name:
                 type: string
-                example: Yerevan
+                example: Santa-Clara 
             description: ''
         vlan:
           description: Required only when selected site is not Netris managed
@@ -304,7 +304,7 @@ components:
                 example: 1
               name:
                 type: string
-                example: Yerevan
+                example: Santa-Clara 
             description: ''
         vlan:
           description: Required only when selected site is not Netris managed
@@ -436,7 +436,7 @@ components:
                 example: 1
               name:
                 type: string
-                example: Yerevan
+                example: Santa-Clara 
             description: ''
         vpc:
           type: object
