@@ -24,17 +24,17 @@ paths:
             $ref: '#/components/schemas/filterByVpc'
       responses:
         200:
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/resBody'
+                $ref: '#/components/schemas/resBody'
         400:
-          description: "Error"
+          description: Error
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/resErrorBody'
+                $ref: '#/components/schemas/resErrorBody'
     post:
       tags:
         - V-Net
@@ -51,13 +51,13 @@ paths:
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/resAddBody'
+                $ref: '#/components/schemas/resAddBody'
         400:
-          description: "Error"
+          description: Error
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/resErrorBody'
+                $ref: '#/components/schemas/resErrorBody'
   /api/v2/vnet/{id}:
     get:
       tags:
@@ -72,17 +72,17 @@ paths:
           description: The id of a specific V-Net
       responses:
         200:
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/resBody'
+                $ref: '#/components/schemas/resBody'
         400:
-          description: "Error"
+          description: Error
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/resErrorBody'
+                $ref: '#/components/schemas/resErrorBody'
     put:
       tags:
         - V-Net
@@ -106,13 +106,13 @@ paths:
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/resAddBody'
+                $ref: '#/components/schemas/resAddBody'
         400:
-          description: "Error"
+          description: Error
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/resErrorBody'
+                $ref: '#/components/schemas/resErrorBody'
     delete:
       tags:
         - V-Net
@@ -130,13 +130,13 @@ paths:
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/resDeleteBody'
+                $ref: '#/components/schemas/resDeleteBody'
         400:
-          description: "Error"
+          description: Error
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/resErrorBody'
+                $ref: '#/components/schemas/resErrorBody'
 components:
   securitySchemes:
     cookieAuth:
@@ -171,7 +171,7 @@ components:
             name:
               type: string
               example: Unix
-          description: ''
+          description: ""
         sites:
           type: array
           description: Ports from these sites will be allowed to participate to the V-Net. Multi-site circuits are possible for sites connected through a backbone port.
@@ -183,13 +183,14 @@ components:
                 example: 1
               name:
                 type: string
-                example: Santa-Clara 
-            description: ''
+                example: Santa-Clara
+            description: ""
         vlan:
           description: Required only when selected site is not Netris managed
           oneOf:
             - type: string
-              enum: ["auto"]
+              enum:
+                - auto
             - type: integer
         guestTenants:
           type: array
@@ -203,7 +204,7 @@ components:
               name:
                 type: string
                 example: Guest tenant
-            description: ''
+            description: ""
         state:
           type: string
           enum:
@@ -217,9 +218,15 @@ components:
           type: boolean
           example: true
         nativeVlan:
-          description: Required for only vlan-aware v-nets (vlanAware == true).
-          type: integer
-          example: 1
+          oneOf:
+            - description: Native VLAN ID
+              type: string
+              nullable: true
+            - description: Native VLAN ID.
+              type: integer
+              minimum: 1
+              maximum: 4094
+              example: 1
         vlans:
           type: string
           example: 1,3,4
@@ -242,14 +249,14 @@ components:
                 example: true
               dhcp:
                 type: object
-                description: "It is optional to specify the object, as the backend will automatically fill it on behalf of you"
+                description: It is optional to specify the object, as the backend will automatically fill it on behalf of you
                 properties:
                   start:
                     type: string
                     example: 10.0.0.2
                   end:
-                   type: string
-                   example: 10.0.0.254
+                    type: string
+                    example: 10.0.0.254
                   optionSet:
                     type: object
                     properties:
@@ -258,7 +265,7 @@ components:
                         example: 21
                       name:
                         type: string
-                        example: "MyDefaultOptionSet"
+                        example: MyDefaultOptionSet
         ports:
           type: array
           items:
@@ -272,21 +279,23 @@ components:
                 example: active
               vlan:
                 type: string
-                example: '16'
+                example: "16"
               access:
                 type: boolean
                 example: false
               lacp:
                 type: string
                 enum:
-                  - 'on'
-                  - 'off'
-                example: 'off'
+                  - "on"
+                  - "off"
+                example: "off"
         tags:
           type: array
           items:
             type: string
-          example: ["tag1", "tag2"]
+          example:
+            - tag1
+            - tag2
     vnetEditBody:
       type: object
       properties:
@@ -304,13 +313,14 @@ components:
                 example: 1
               name:
                 type: string
-                example: Santa-Clara 
-            description: ''
+                example: Santa-Clara
+            description: ""
         vlan:
           description: Required only when selected site is not Netris managed
           oneOf:
             - type: string
-              enum: ["auto"]
+              enum:
+                - auto
             - type: integer
         guestTenants:
           type: array
@@ -324,7 +334,7 @@ components:
               name:
                 type: string
                 example: Guest tenant
-            description: ''
+            description: ""
         state:
           type: string
           enum:
@@ -335,9 +345,15 @@ components:
           type: boolean
           example: false
         nativeVlan:
-          type: number
-          example: 1
-          description: Required for only vlan-aware v-nets (vlanAware == true).
+          oneOf:
+            - description: Native VLAN ID
+              type: string
+              nullable: true
+            - description: Native VLAN ID.
+              type: integer
+              minimum: 1
+              maximum: 4094
+              example: 1
         vlans:
           type: string
           example: 1,3,4
@@ -366,8 +382,8 @@ components:
                     type: string
                     example: 10.0.0.2
                   end:
-                   type: string
-                   example: 10.0.0.254
+                    type: string
+                    example: 10.0.0.254
                   optionSet:
                     type: object
                     properties:
@@ -376,7 +392,7 @@ components:
                         example: 21
                       name:
                         type: string
-                        example: "MyDefaultOptionSet"
+                        example: MyDefaultOptionSet
         ports:
           type: array
           items:
@@ -390,21 +406,23 @@ components:
                 example: active
               vlan:
                 type: string
-                example: '16'
+                example: "16"
               access:
                 type: boolean
                 example: false
               lacp:
                 type: string
                 enum:
-                  - 'on'
-                  - 'off'
-                example: 'off'
+                  - "on"
+                  - "off"
+                example: "off"
         tags:
           type: array
           items:
             type: string
-          example: ["tag1", "tag2"]
+          example:
+            - tag1
+            - tag2
     vnetBody:
       type: object
       required:
@@ -424,7 +442,7 @@ components:
             name:
               type: string
               example: Unix
-          description: ''
+          description: ""
         sites:
           type: array
           description: Ports from these sites will be allowed to participate to the V-Net. Multi-site circuits are possible for sites connected through a backbone port.
@@ -436,8 +454,8 @@ components:
                 example: 1
               name:
                 type: string
-                example: Santa-Clara 
-            description: ''
+                example: Santa-Clara
+            description: ""
         vpc:
           type: object
           nullable: true
@@ -470,7 +488,7 @@ components:
               name:
                 type: string
                 example: Guest tenant
-            description: ''
+            description: ""
         state:
           type: string
           enum:
@@ -485,9 +503,15 @@ components:
           type: boolean
           example: true
         nativeVlan:
-          type: number
-          example: 1
-          description: Required for only vlan-aware v-nets (vlanAware == true)
+          oneOf:
+            - description: Native VLAN ID
+              type: string
+              nullable: true
+            - description: Native VLAN ID.
+              type: integer
+              minimum: 1
+              maximum: 4094
+              example: 1
         vlans:
           type: string
           example: 1,3,4
@@ -519,8 +543,8 @@ components:
                     type: string
                     example: 10.0.0.2
                   end:
-                   type: string
-                   example: 10.0.0.254
+                    type: string
+                    example: 10.0.0.254
                   optionSet:
                     type: object
                     properties:
@@ -529,7 +553,7 @@ components:
                         example: 21
                       name:
                         type: string
-                        example: "MyDefaultOptionSet"
+                        example: MyDefaultOptionSet
         ports:
           type: array
           items:
@@ -543,24 +567,26 @@ components:
                 example: active
               vlan:
                 type: string
-                example: '16'
+                example: "16"
               access:
                 type: boolean
                 example: false
               lacp:
                 type: string
                 enum:
-                  - 'on'
-                  - 'off'
-                example: 'off'
+                  - "on"
+                  - "off"
+                example: "off"
         tags:
           type: array
           items:
             type: string
-          example: ["tag1", "tag2"]
+          example:
+            - tag1
+            - tag2
     resBody:
       type: object
-      description: "Success response"
+      description: Success response
       properties:
         data:
           type: array
@@ -588,11 +614,11 @@ components:
               example: 200
     resAddBody:
       type: object
-      description: "Success response"
+      description: Success response
       properties:
         data:
           type: array
-          items: 
+          items:
             type: object
             properties:
               id:
@@ -621,11 +647,11 @@ components:
               example: 200
     resDeleteBody:
       type: object
-      description: "Success response"
+      description: Success response
       properties:
         data:
           type: array
-          items: 
+          items:
             type: object
         errors:
           type: object
@@ -650,11 +676,11 @@ components:
               example: 200
     resErrorBody:
       type: object
-      description: "Error response"
+      description: Error response
       properties:
         data:
           type: array
-          items: 
+          items:
             type: object
         errors:
           type: object
@@ -665,7 +691,7 @@ components:
               type: string
         message:
           type: string
-          example: "Error message"
+          example: Error message
         isSuccess:
           type: boolean
           example: false
