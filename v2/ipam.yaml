@@ -38,7 +38,7 @@ paths:
         - name: filterByVpc
           in: query
           description: |
-            Filter result by VPC id. If no VPC ID is specified, the results will be filtered based on the default VPC.
+            Filter result by VPC id.
           schema:
             $ref: '#/components/schemas/filterByVpc'
       responses:
