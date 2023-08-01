@@ -2,10 +2,8 @@ openapi: 3.0.0
 info:
   title: Netris API
   version: v2
-  license:
-    name: MIT
-servers:
-  - url: localhost:3000
+security:
+  - cookieAuth: []
 paths:
   /api/v2/ebgp:
     get:
@@ -15,7 +13,7 @@ paths:
       parameters:
         - name: filterBySites
           in: query
-          description: 'Filter result by Site id.'
+          description: Filter result by Site id.
           schema:
             $ref: '#/components/schemas/filterBySites'
         - name: filterByVpc
@@ -25,13 +23,13 @@ paths:
           schema:
             $ref: '#/components/schemas/filterBySites'
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ebgps'
-        '400':
+        "400":
           description: Error
           content:
             application/json:
@@ -48,7 +46,7 @@ paths:
             schema:
               $ref: '#/components/schemas/ebgpAddItem'
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -58,58 +56,13 @@ paths:
                   id:
                     type: number
                     example: number
-        '400':
+        "400":
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
-        '404':
-          description: Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/resErrorBody'
-                  - type: object
-                    properties:
-                      errors:
-                        example:
-                          propertyName: Not Found
-                      message:
-                        example: Not found
-                      meta:
-                        properties:
-                          statusCode:
-                            example: 404             
-    put:
-      tags:
-        - E-BGP
-      summary: Request for editting E-BGP.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ebgpEditItem'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: number
-        '400':
-          description: Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/resErrorBody'
-        '404':
+        "404":
           description: Error
           content:
             application/json:
@@ -127,6 +80,51 @@ paths:
                         properties:
                           statusCode:
                             example: 404
+    put:
+      "400":
+        description: Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/resErrorBody'
+      "404":
+        description: Error
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/resErrorBody'
+                - type: object
+                  properties:
+                    errors:
+                      example:
+                        propertyName: Not Found
+                    message:
+                      example: Not found
+                    meta:
+                      properties:
+                        statusCode:
+                          example: 404
+      tags:
+        - E-BGP
+      summary: Request for editting E-BGP.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ebgpEditItem'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: number
   /api/v2/ebgp/{id}:
     get:
       tags:
@@ -138,15 +136,15 @@ paths:
           required: true
           schema:
             type: integer
-          description: ''
+          description: ""
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ebgpItem'
-        '400':
+        "400":
           description: Error
           content:
             application/json:
@@ -160,19 +158,19 @@ paths:
         - name: id
           in: path
           required: true
-          description: ''
+          description: ""
           schema:
             type: integer
       responses:
-       '200':
+        "200":
           description: OK
-       '400':
+        "400":
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
-       '404':
+        "404":
           description: Error
           content:
             application/json:
@@ -198,24 +196,24 @@ paths:
       parameters:
         - name: idoftheselectedsite
           in: query
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ports'
-        '400':
+        "400":
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
-        '404':
+        "404":
           description: Error
           content:
             application/json:
@@ -241,29 +239,29 @@ paths:
       parameters:
         - name: site
           in: query
-          description: ''
+          description: ""
           required: true
           schema:
             type: integer
         - name: vnet
           in: query
-          description: ''
+          description: ""
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/switches'
-        '400':
+        "400":
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
-        '404':
+        "404":
           description: Error
           content:
             application/json:
@@ -289,26 +287,26 @@ paths:
       parameters:
         - name: switch_port_id
           in: query
-          description: ''
+          description: ""
           required: true
           schema:
             type: integer
         - name: vlan
           in: query
-          description: ''
+          description: ""
           required: true
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: OK
-        '400':
+        "400":
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
-        '404':
+        "404":
           description: Error
           content:
             application/json:
@@ -334,30 +332,30 @@ paths:
       parameters:
         - name: switch_port_id
           in: query
-          description: ''
+          description: ""
           required: true
           schema:
             type: integer
         - name: offload_port_id
           in: query
-          description: ''
+          description: ""
           required: true
           schema:
             type: integer
         - name: key
           in: query
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/updatesources'
-        '400':
+        "400":
           description: Error
           content:
             application/json:
@@ -385,15 +383,15 @@ paths:
                   type: string
                   example: disabled
       responses:
-        '200':
+        "200":
           description: OK
-        '400':
+        "400":
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
-        '404':
+        "404":
           description: Error
           content:
             application/json:
@@ -433,15 +431,15 @@ paths:
                   type: number
                   example: 3242
       responses:
-        '200':
+        "200":
           description: OK
-        '400':
+        "400":
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
-        '404':
+        "404":
           description: Error
           content:
             application/json:
@@ -466,19 +464,19 @@ paths:
       summary: Request for getting Route Maps.
       parameters: []
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/routemaps'
-        '400':
+        "400":
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
-        '404':
+        "404":
           description: Error
           content:
             application/json:
@@ -523,7 +521,7 @@ components:
           example: name
         description:
           type: string
-          example: ''
+          example: ""
         site:
           type: object
           properties:
@@ -582,7 +580,7 @@ components:
           example: 1.1.1.2
         bgpPassword:
           type: string
-          example: ''
+          example: ""
         vlan:
           type: integer
           example: 2
@@ -615,14 +613,14 @@ components:
           example: 0
         neighborAddress:
           type: string
-          example: ''
+          example: ""
         updateSource:
           oneOf:
             - type: string
             - type: boolean
         bgpCommunity:
           type: string
-          example: ''
+          example: ""
         allowAsIn:
           type: integer
           example: 0
@@ -637,19 +635,19 @@ components:
           example: 65008
         inboundRouteMapName:
           type: string
-          example: ''
+          example: ""
         outboundRouteMapName:
           type: string
-          example: ''
+          example: ""
         bgp_state:
           type: string
-          example: ''
+          example: ""
         bgpPrefixes:
           type: string
-          example: ''
+          example: ""
         bgpUptime:
           type: string
-          example: ''
+          example: ""
         ipFamily:
           type: string
           enum:
@@ -681,22 +679,22 @@ components:
         circuitName:
           type: string
           example: circuit
-        bfd: 
+        bfd:
           type: string
-          enum: 
-          - enabled
-          - disabled
+          enum:
+            - enabled
+            - disabled
           default: disabled
           example: enabled
-        timers: 
+        timers:
           type: object
           properties:
-              hello:
-                type: number
-                example: 3
-              hold:
-                type: number
-                example: 10
+            hello:
+              type: number
+              example: 3
+            hold:
+              type: number
+              example: 10
         ports:
           items:
             $ref: '#/components/schemas/returnPorts'
@@ -779,7 +777,7 @@ components:
           example: 1
         port:
           type: string
-          example: ''
+          example: ""
         switch_id:
           type: integer
           example: 24
@@ -791,7 +789,7 @@ components:
           example: 4094
         name:
           type: string
-          example: ''
+          example: ""
         price:
           type: integer
           example: 0
@@ -800,16 +798,16 @@ components:
           example: 1
         state:
           type: string
-          example: ''
+          example: ""
         speed:
           type: string
-          example: ''
+          example: ""
         power:
           type: string
-          example: ''
+          example: ""
         transceiver:
           type: string
-          example: ''
+          example: ""
         price_10:
           type: integer
           example: 100
@@ -833,7 +831,7 @@ components:
           example: 100
         type:
           type: string
-          example: ''
+          example: ""
         port_extension:
           type: integer
           example: 0
@@ -857,59 +855,59 @@ components:
           example: 0
         lacp:
           type: string
-          example: 'off'
+          example: off
         port_index:
           type: integer
           example: 0
         modified_date:
           type: string
-          example: ''
+          example: ""
         switch_name:
           type: string
-          example: ''
+          example: ""
         bgp_state:
           type: string
-          example: ''
+          example: ""
         bgp_prefixes:
           type: string
-          example: ''
+          example: ""
         bgp_uptime:
           type: string
-          example: ''
+          example: ""
         order_number:
           type: string
-          example: ''
+          example: ""
         switch_type:
           type: string
-          example: ''
+          example: ""
     switches:
       type: array
       items:
         $ref: '#/components/schemas/hwItem'
     hwItem:
       type: object
-      description: ''
+      description: ""
       properties:
         id:
           type: number
           example: 1
-          description: ''
+          description: ""
         name:
           type: string
-          example: switch1.netris.ai
-          description: ''
+          example: switch1.netris.io
+          description: ""
         description:
           type: string
-          example: Yerevan Spine Switch
-          description: ''
+          example: Santa-Clara Spine Switch
+          description: ""
         type:
           type: string
           example: switch
-          description: ''
+          description: ""
         state:
           type: string
           example: ok
-          description: ''
+          description: ""
         nos:
           type: object
           properties:
@@ -919,27 +917,27 @@ components:
             name:
               type: string
               example: Cumulus linux
-          description: ''
+          description: ""
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: ''
+          description: ""
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: ''
+          description: ""
         macAddress:
           type: string
           example: 23:00:2F:BE:54:87
-          description: ''
+          description: ""
         portCount:
           type: number
           example: 16
-          description: ''
+          description: ""
         asn:
           type: string
           example: auto
-          description: ''
+          description: ""
         tenant:
           type: object
           properties:
@@ -949,7 +947,7 @@ components:
             name:
               type: string
               example: UNIX
-          description: ''
+          description: ""
         site:
           type: object
           properties:
@@ -958,8 +956,8 @@ components:
               example: 22
             name:
               type: string
-              example: Yerevan
-          description: ''
+              example: Santa-Clara
+          description: ""
         profile:
           type: object
           properties:
@@ -969,18 +967,18 @@ components:
             name:
               type: string
               example: my_profile
-          description: ''
+          description: ""
         links:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
         createdDate:
           type: number
-          example: 1617280628000
+          example: 1.617280628e+12
           description: Time in milliseconds
         modifiedDate:
           type: number
-          example: 1617365215000
+          example: 1.617365215e+12
           description: Time in milliseconds
     routemaps:
       type: array
@@ -994,7 +992,7 @@ components:
           example: 1
         name:
           type: string
-          example: ''
+          example: ""
     updatesources:
       type: array
       items:
@@ -1007,15 +1005,16 @@ components:
           example: 1
         location:
           type: string
-          example: ''
+          example: ""
         ip_address:
           type: string
-          example: ''
+          example: ""
     ebgpAddItem:
       type: object
       required:
         - name
         - site
+        - vlan
         - ipFamily
         - localIP
         - remoteIP
@@ -1030,13 +1029,13 @@ components:
           example: 1000
         bgpPassword:
           type: string
-          example: ''
+          example: ""
         bgpCommunity:
           type: string
-          example: ''
+          example: ""
         description:
           type: string
-          example: ''
+          example: ""
         inboundRouteMap:
           oneOf:
             - type: number
@@ -1080,10 +1079,10 @@ components:
             - type: boolean
         prefixListInbound:
           type: string
-          example: ''
+          example: ""
         prefixListOutbound:
           type: string
-          example: ''
+          example: ""
         prependInbound:
           type: number
           example: 0
@@ -1130,13 +1129,17 @@ components:
               oneOf:
                 - type: string
                 - type: boolean
+        vlan:
+          oneOf:
+            - type: number
+            - type: string
+        untagged:
+          type: boolean
+          default: false
         updateSource:
           oneOf:
             - type: string
             - type: boolean
-        vlan:
-          type: number
-          example: 1
         weight:
           oneOf:
             - type: boolean
@@ -1148,28 +1151,29 @@ components:
             - tag2
           items:
             type: string
-        bfd: 
+        bfd:
           type: string
-          enum: 
-          - enabled
-          - disabled
+          enum:
+            - enabled
+            - disabled
           default: disabled
           example: enabled
-        timers: 
+        timers:
           type: object
           properties:
-              hello:
-                type: number
-                example: 3
-              hold:
-                type: number
-                example: 10
+            hello:
+              type: number
+              example: 3
+            hold:
+              type: number
+              example: 10
     ebgpEditItem:
       type: object
       required:
         - name
         - site
         - neighborAS
+        - vlan
         - ipFamily
         - prefixLength
         - state
@@ -1182,14 +1186,14 @@ components:
           example: 1000
         bgpPassword:
           type: string
-          example: ''
+          example: ""
         bgpCommunity:
           oneOf:
             - type: boolean
             - type: string
         description:
           type: string
-          example: ''
+          example: ""
         inboundRouteMap:
           oneOf:
             - type: number
@@ -1233,10 +1237,10 @@ components:
             - type: boolean
         prefixListInbound:
           type: string
-          example: ''
+          example: ""
         prefixListOutbound:
           type: string
-          example: ''
+          example: ""
         prependInbound:
           type: number
           example: 0
@@ -1268,22 +1272,22 @@ components:
         state:
           type: string
           example: enabled
-        bfd: 
+        bfd:
           type: string
-          enum: 
-          - enabled
-          - disabled
+          enum:
+            - enabled
+            - disabled
           default: disabled
           example: enabled
-        timers: 
+        timers:
           type: object
           properties:
-              hello:
-                type: number
-                example: 3
-              hold:
-                type: number
-                example: 10
+            hello:
+              type: number
+              example: 3
+            hold:
+              type: number
+              example: 10
         port:
           type: object
           properties:
@@ -1295,6 +1299,13 @@ components:
               oneOf:
                 - type: string
                 - type: boolean
+        vlan:
+          oneOf:
+            - type: number
+            - type: string
+        untagged:
+          type: boolean
+          default: false
         hardware:
           $ref: '#/components/schemas/hw'
         vnet:
@@ -1303,9 +1314,6 @@ components:
           oneOf:
             - type: string
             - type: boolean
-        vlan:
-          type: number
-          example: 1
         weight:
           oneOf:
             - type: boolean
