@@ -695,6 +695,9 @@ components:
             hold:
               type: number
               example: 10
+            connect:
+              type: number
+              example: 10
         ports:
           items:
             $ref: '#/components/schemas/returnPorts'
@@ -855,7 +858,7 @@ components:
           example: 0
         lacp:
           type: string
-          example: off
+          example: "off"
         port_index:
           type: integer
           example: 0
@@ -974,11 +977,11 @@ components:
             $ref: '#/components/schemas/linksBody'
         createdDate:
           type: number
-          example: 1.617280628e+12
+          example: 1617280628000
           description: Time in milliseconds
         modifiedDate:
           type: number
-          example: 1.617365215e+12
+          example: 1617365215000
           description: Time in milliseconds
     routemaps:
       type: array
@@ -1167,6 +1170,9 @@ components:
             hold:
               type: number
               example: 10
+            connect:
+              type: number
+              example: 10
     ebgpEditItem:
       type: object
       required:
@@ -1286,6 +1292,9 @@ components:
               type: number
               example: 3
             hold:
+              type: number
+              example: 10
+            connect:
               type: number
               example: 10
         port:
