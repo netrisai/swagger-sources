@@ -14,18 +14,18 @@ paths:
       summary: Request for getting sites.
       parameters: []
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseOK'
-        '400':
+                $ref: '#/components/schemas/SitesV2ResponseOK'
+        "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseError'
+                $ref: '#/components/schemas/SitesV2ResponseError'
     post:
       tags:
         - Sites
@@ -36,53 +36,52 @@ paths:
           application/json:
             schema:
               allOf:
-              - $ref: '#/components/schemas/SiteBody'
-              - type: object
-                properties:
+                - $ref: '#/components/schemas/SiteV2Body'
+                - type: object
+                  properties:
                     name:
                       example: new-site
                     id:
-                      example:
+                      example: null
                     siteMesh:
                       required:
                         - value
                       properties:
                         name:
-                          example:
+                          example: null
                         value:
                           example: hub
                     rohProfile:
                       required:
-                      - value
+                        - value
                       properties:
                         id:
-                          example:
+                          example: null
                         name:
-                          example:
+                          example: null
                         value:
                           example: default
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/ResponseOK'
-                - type: object
-                  properties:
-                    data:
-                      type: object
-                      properties:
-                        id:
-                          example: 1231
-        '400':
+                  - $ref: '#/components/schemas/SitesV2ResponseOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            example: 1231
+        "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseError'
-
+                $ref: '#/components/schemas/SitesV2ResponseError'
   /api/v2/sites/{id}:
     get:
       tags:
@@ -96,34 +95,34 @@ paths:
             type: integer
           description: The id of a specific site.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseOK'
-        '400':
+                $ref: '#/components/schemas/SitesV2ResponseOK'
+        "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseError'
-        '404':
+                $ref: '#/components/schemas/SitesV2ResponseError'
+        "404":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/ResponseError'
-                - type: object
-                  properties:
-                    message: 
-                      example: 'Not Found'
-                    meta:
-                      type: object
-                      properties:
-                        statusCode:
-                          example: 404
+                  - $ref: '#/components/schemas/SitesV2ResponseError'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not Found
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
     put:
       tags:
         - Sites
@@ -140,29 +139,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SiteBody'
+              $ref: '#/components/schemas/SiteV2Body'
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/ResponseOK'
-                - type: object
-                  properties:
-                    data:
-                      type: object
-                      properties:
-                        id:
-                          example: 1231
-        '400':
-          description: Error
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/ResponseError'
+                  - $ref: '#/components/schemas/SitesV2ResponseOK'
                   - type: object
                     properties:
                       data:
@@ -170,27 +155,41 @@ paths:
                         properties:
                           id:
                             example: 1231
-        '404':
+        "400":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/ResponseError'
-                - type: object
-                  properties:
-                    data:
-                      type: object
-                      properties:
-                        id:
-                          example: 1231
-                    message: 
-                      example: 'Not Found'
-                    meta:
-                      type: object
-                      properties:
-                        statusCode:
-                          example: 404
+                  - $ref: '#/components/schemas/SitesV2ResponseError'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            example: 1231
+        "404":
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SitesV2ResponseError'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            example: 1231
+                      message:
+                        example: Not Found
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
     delete:
       tags:
         - Sites
@@ -203,13 +202,13 @@ paths:
           required: true
           description: Numeric ID of the site.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: '#/components/schemas/SitesV2ResponseOK'
                   - type: object
                     properties:
                       data:
@@ -217,52 +216,51 @@ paths:
                         properties:
                           id:
                             example: 1231
-                
-        '400':
-          description: Error
-          content:
-            application/json:
-              schema: 
-                allOf:
-                  - $ref: '#/components/schemas/ResponseError'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        properties:
-                          id:
-                            example: 1231
-        '404':
+        "400":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/ResponseError'
-                - type: object
-                  properties:
-                    data:
-                      type: object
-                      properties:
-                        id:
-                          example: 1231
-                    message: 
-                      example: 'Not Found'
-                    meta:
-                      type: object
-                      properties:
-                        statusCode:
-                          example: 404
+                  - $ref: '#/components/schemas/SitesV2ResponseError'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            example: 1231
+        "404":
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SitesV2ResponseError'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            example: 1231
+                      message:
+                        example: Not Found
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
 components:
   schemas:
-    ResponseOK:
+    SitesV2ResponseOK:
       type: object
       description: Success response
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/SiteBody'
+            $ref: '#/components/schemas/SiteV2Body'
         errors:
           type: object
           properties:
@@ -281,7 +279,7 @@ components:
             statusCode:
               type: integer
               example: 200
-    ResponseError:
+    SitesV2ResponseError:
       type: object
       description: Error response
       properties:
@@ -309,7 +307,7 @@ components:
             statusCode:
               type: integer
               example: 400
-    SiteBody:
+    SiteV2Body:
       type: object
       required:
         - name
@@ -348,7 +346,11 @@ components:
               type: string
               description: Site Mesh VPN mode name
               example: Hub
-              enum: [Disabled, Hub, Spoke, Dynamic Spoke]
+              enum:
+                - Disabled
+                - Hub
+                - Spoke
+                - Dynamic Spoke
             value:
               type: string
               example: disabled
@@ -360,47 +362,46 @@ components:
                 - dspoke
         rohProfile:
           type: object
-          description: | 
-                      ROH Routing profile defines set of routing prefixes to be advertised to ROH instances.
-                       - **Default** - Will advertise 0.0.0.0/0 + loopback address of physically connected switch.
-                       - **Default + Aggregate** - Will add prefixes of defined assignments + 'Default' profile.
-                       - **Full** - Will advertise all prefixes available in the routing table of the connected switch.
+          description: |
+            ROH Routing profile defines set of routing prefixes to be advertised to ROH instances.
+             - **Default** - Will advertise 0.0.0.0/0 + loopback address of physically connected switch.
+             - **Default + Aggregate** - Will add prefixes of defined assignments + 'Default' profile.
+             - **Full** - Will advertise all prefixes available in the routing table of the connected switch.
           properties:
             id:
               type: integer
               example: 1
-              enum: [1, 2, 3]
+              enum:
+                - 1
+                - 2
+                - 3
             name:
               type: string
               example: Default
-              enum: [Default, Default + Aggregates, Full]
+              enum:
+                - Default
+                - Default + Aggregates
+                - Full
             value:
               type: string
               example: default
               enum:
-              - default
-              - default_agg
-              - full_table
+                - default
+                - default_agg
+                - full_table
         aclPolicy:
           type: string
           example: permit
-          description: | 
-                      - Deny - Layer-3 packet forwarding is denied by default. ACLs are required to permit necessary traffic flows. Deny ACLs will be applied before Permit ACLs.
-                      - Permit - Layer-3 packet forwarding is allowed by default. ACLs are required to deny unwanted traffic flows. Permit ACLs will be applied before Deny ACLs.
+          description: |
+            - Deny - Layer-3 packet forwarding is denied by default. ACLs are required to permit necessary traffic flows. Deny ACLs will be applied before Permit ACLs.
+            - Permit - Layer-3 packet forwarding is allowed by default. ACLs are required to deny unwanted traffic flows. Permit ACLs will be applied before Deny ACLs.
           enum:
             - deny
             - permit
         switchFabric:
           type: string
           example: netris
-          description: | 
-                      Switch fabric types
-                        - **Netris** - I’m going to use Netris to automatically manage my Netris-supported switch fabric. 
-                        - **Equinux Metal** -  Netris will consume Equinix Metal API to dynamically leverage Equinix Metal Fabric. 
-                        - **Dot1q Trunk** - My switch fabric is separate from Netris. I will provide a Dot1q Trunk to Netris SoftGate and my compute servers, so Netris will use VLAN IDs for service encapsulation and isolation.
-                        - **PhoenixNAP BMC** - Netris will collect metadata and dynamically create necessary network resources using PhoenixNAP BMC API.
-
-
+          description: "Switch fabric types\n  - **Netris** - I’m going to use Netris to automatically manage my Netris-supported switch fabric. \n  - **Equinux Metal** -  Netris will consume Equinix Metal API to dynamically leverage Equinix Metal Fabric. \n  - **Dot1q Trunk** - My switch fabric is separate from Netris. I will provide a Dot1q Trunk to Netris SoftGate and my compute servers, so Netris will use VLAN IDs for service encapsulation and isolation.\n  - **PhoenixNAP BMC** - Netris will collect metadata and dynamically create necessary network resources using PhoenixNAP BMC API.\n"
           enum:
             - netris
             - equinix_metal
@@ -409,7 +410,11 @@ components:
         vlanRange:
           type: string
           example: 1-4094
-          description: Range of VLAN IDs allowed for use at this site.
+          description: The range of VLAN IDs allowed for use at this site.
+        autoAssignVlanRange:
+          type: string
+          example: 2-4094
+          description: The range of VLAN IDs for automatic VLAN assignment. If not specified it will be the same value as ```vlanRange```.
         switchFabricProviders:
           type: object
           properties:
@@ -418,15 +423,15 @@ components:
               properties:
                 projectId:
                   type: string
-                  example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
+                  example: 12f41658-5328-gc3d-b683-g1042bee0cb0
                   description: Your Equinix Metal Project ID.
                 projectApiKey:
                   type: string
-                  example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
+                  example: 12f41658-5328-gc3d-b683-g1042bee0cb0
                   description: Equinix Project API key with Read/Write permissions.
                 location:
                   type: string
-                  example: 'dc'
+                  example: dc
                   description: Your Equinix Location.
                   enum:
                     - se
@@ -453,17 +458,17 @@ components:
               type: object
               properties:
                 clientId:
-                    type: string
-                    example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
-                    description: PhoenixNAP OAuth Client ID with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP
+                  type: string
+                  example: 12f41658-5328-gc3d-b683-g1042bee0cb0
+                  description: PhoenixNAP OAuth Client ID with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP
                 clientSecret:
-                    type: string
-                    example: '12f41658-5328-gc3d-b683-g1042bee0cb0'
-                    description: PhoenixNAP OAuth Client Secret with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP.
+                  type: string
+                  example: 12f41658-5328-gc3d-b683-g1042bee0cb0
+                  description: PhoenixNAP OAuth Client Secret with BMC scope permissions. This field is mandatory when selected switch fabric is PhoenixNAP.
                 location:
-                    type: string
-                    example: phx
-                    enum:
+                  type: string
+                  example: phx
+                  enum:
                     - phx
                     - chi
                     - aus
