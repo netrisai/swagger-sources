@@ -411,7 +411,7 @@ components:
           type: string
           example: 1-4094
           description: The range of VLAN IDs allowed for use at this site.
-        autoAssignVlanRange:
+        vlanRangeAutoAssign:
           type: string
           example: 2-4094
           description: The range of VLAN IDs for automatic VLAN assignment. If not specified it will be the same value as ```vlanRange```.
