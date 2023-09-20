@@ -1241,7 +1241,6 @@ components:
         - name
         - tenant
         - site
-        - mgmtAddress
         - mainAddress
       properties:
         name:
@@ -1321,7 +1320,6 @@ components:
       required:
         - name
         - mainAddress
-        - mgmtAddress
       properties:
         name:
           type: string
