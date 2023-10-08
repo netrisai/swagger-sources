@@ -1,0 +1,327 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v1
+security:
+  - cookieAuth: []
+paths:
+  /api/routes:
+    get:
+      tags:
+        - Routes
+      summary: Request for getting the routes.
+      parameters:
+        - name: filterBySites
+          in: query
+          description: |
+            Filter result by Site Id.
+          schema:
+            $ref: '#/components/schemas/filterBySites'
+        - name: filterByVpc
+          in: query
+          description: |
+            Filter result by VPC Id. If no VPC Id is specified, the results will be filtered based on the default VPC.
+          schema:
+            $ref: '#/components/schemas/filterByVpc'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routes.response.get.ok'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routes.response.error'
+    post:
+      tags:
+        - Routes
+      summary: Request for adding a route.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/routes.post.body'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      staticRouteID:
+                        type: number
+                        example: 23
+                  isSuccess: 
+                    type: boolean
+                    example: true
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routes.response.error'
+    put:
+      tags:
+        - Routes
+      summary: Request for editing a route.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/routes.put.body'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                  isSuccess: 
+                    type: boolean
+                    example: true
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routes.response.error'
+    delete:
+      tags:
+        - Routes
+      summary: Request for deleting a route.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/routes.body.id'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                  isSuccess: 
+                    type: boolean
+                    example: true
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routes.response.error'
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    filterByVpc:
+      type: array
+      items:
+        type: integer
+    filterBySites:
+      type: array
+      items:
+       type: integer
+    routes.response.get.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/routes.get.body'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    routes.response.error:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 1
+            statusCode:
+              type: integer
+              example: 400
+    routes.get.body:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/routes.body.id'
+        - $ref: '#/components/schemas/routes.body.name'
+        - $ref: '#/components/schemas/routes.body.prefix_length'
+        - $ref: '#/components/schemas/routes.body'
+        - $ref: '#/components/schemas/routes.body.filteredSwitches'
+        - $ref: '#/components/schemas/routes.body.vpc'
+        - $ref: '#/components/schemas/routes.body.dates'
+    routes.post.body:
+      type: object
+      required:
+        - prefix
+        - next_hop
+        - site_id
+        - stateStatus
+        - switches
+      allOf:
+        - $ref: '#/components/schemas/routes.body'
+        - $ref: '#/components/schemas/routes.body.vpc'
+        - type: object
+          properties:
+            prefix:
+              example: "10.10.10.0/24"
+    routes.put.body:
+      type: object
+      required:
+        - route_id
+        - prefix
+        - next_hop
+        - site_id
+        - stateStatus
+        - switches
+      allOf:
+        - $ref: '#/components/schemas/routes.body.route_id'
+        - $ref: '#/components/schemas/routes.body'
+        - type: object
+          properties:
+            prefix:
+              example: "10.10.10.0/24"
+
+    routes.body:
+      type: object
+      properties:
+        prefix:
+          type: string
+          example: 10.10.10.0
+        next_hop:
+          type: string
+          example: 169.254.254.1
+        description:
+          type: string
+          example: "ISP 1"
+        site_id:
+          type: number
+          example: 2
+        stateStatus:
+          description: State.
+          type: string
+          enum:
+            - active
+            - disabled
+        switches:
+          description: List of devices's id where the specific route is configured.
+          type: array
+          items:
+            type: number
+          example: [12]
+    routes.body.id:
+      type: object
+      properties:
+        id:
+          description: Route unique identifier.
+          type: integer
+          example: 123
+    routes.body.name:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 10.10.10.0/24
+    routes.body.prefix_length:
+      type: object
+      properties:
+        prefix_length:
+          type: integer
+          example: 24
+    routes.body.dates:
+      type: object
+      properties:
+        create_date:
+          type: number
+          example: 1617280628000
+          description: Time in milliseconds
+        modified_date:
+          type: number
+          example: 1617365215000
+          description: Time in milliseconds
+    routes.body.filteredSwitches:
+      type: object
+      properties:
+        filteredSwitches:
+          description: List of devices's id where the specific route should be forcibly configured.
+          type: array
+          items:
+            type: number
+          example: [12, 23]
+    routes.body.vpc:
+      type: object
+      properties:
+        vpc:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: DefaultVpc
+            isDefault:
+              type: boolean
+              example: true
+            isSystem:
+              type: boolean
+              example: false
+    routes.body.route_id:
+      type: object
+      properties:
+        id:
+          description: Route unique identifier.
+          type: integer
+          example: 55
