@@ -631,8 +631,13 @@ components:
           type: integer
           example: 1
         localAsn:
-          type: integer
-          example: 65008
+          oneOf:
+            - type: integer
+              example: 123456
+            - type: string
+              enum:
+                - public-as
+                - switch-local-as
         inboundRouteMapName:
           type: string
           example: ""
@@ -1154,6 +1159,14 @@ components:
             - tag2
           items:
             type: string
+        localAsn:
+          oneOf:
+            - type: integer
+              example: 123456
+            - type: string
+              enum:
+                - public-as
+                - switch-local-as
         bfd:
           type: string
           enum:
@@ -1278,6 +1291,14 @@ components:
         state:
           type: string
           example: enabled
+        localAsn:
+          oneOf:
+            - type: integer
+              example: 123456
+            - type: string
+              enum:
+                - public-as
+                - switch-local-as
         bfd:
           type: string
           enum:
