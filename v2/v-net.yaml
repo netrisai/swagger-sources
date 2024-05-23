@@ -28,13 +28,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resBody'
+                $ref: '#/components/schemas/vnetResListBody'
         400:
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: '#/components/schemas/vnetResErrorBody'
     post:
       tags:
         - V-Net
@@ -51,13 +51,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resAddBody'
+                $ref: '#/components/schemas/vnetResAddBody'
         400:
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: '#/components/schemas/vnetResErrorBody'
   /api/v2/vnet/{id}:
     get:
       tags:
@@ -76,13 +76,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resBody'
+                $ref: '#/components/schemas/vnetResListByIdBody'
         400:
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: '#/components/schemas/vnetResErrorBody'
     put:
       tags:
         - V-Net
@@ -106,13 +106,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resAddBody'
+                $ref: '#/components/schemas/vnetResAddBody'
         400:
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: '#/components/schemas/vnetResErrorBody'
     delete:
       tags:
         - V-Net
@@ -130,13 +130,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resDeleteBody'
+                $ref: '#/components/schemas/vnetResDeleteBody'
         400:
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: '#/components/schemas/vnetResErrorBody'
 components:
   securitySchemes:
     cookieAuth:
@@ -215,6 +215,9 @@ components:
           type: boolean
           example: false
         vlanAware:
+          type: boolean
+          example: true
+        l3vpn:
           type: boolean
           example: true
         nativeVlan:
@@ -344,6 +347,9 @@ components:
         provisioning:
           type: boolean
           example: false
+        l3vpn:
+          type: boolean
+          example: true
         nativeVlan:
           oneOf:
             - description: Native VLAN ID
@@ -424,6 +430,10 @@ components:
             - tag1
             - tag2
     vnetBody:
+      allOf:
+        - $ref: '#/components/schemas/vnetsBody'
+        - $ref: '#/components/schemas/vnetPortBody'
+    vnetsBody:
       type: object
       required:
         - name
@@ -502,6 +512,9 @@ components:
         vlanAware:
           type: boolean
           example: true
+        l3vpn:
+          type: boolean
+          example: false
         nativeVlan:
           oneOf:
             - description: Native VLAN ID
@@ -554,29 +567,6 @@ components:
                       name:
                         type: string
                         example: MyDefaultOptionSet
-        ports:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: number
-                example: 100
-              state:
-                type: string
-                example: active
-              vlan:
-                type: string
-                example: "16"
-              access:
-                type: boolean
-                example: false
-              lacp:
-                type: string
-                enum:
-                  - "on"
-                  - "off"
-                example: "off"
         tags:
           type: array
           items:
@@ -584,7 +574,61 @@ components:
           example:
             - tag1
             - tag2
-    resBody:
+    vnetPortBody:
+        type: object
+        properties:
+          ports:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: number
+                  example: 100
+                state:
+                  type: string
+                  example: active
+                vlan:
+                  type: string
+                  example: "16"
+                access:
+                  type: boolean
+                  example: false
+                lacp:
+                  type: string
+                  enum:
+                    - "on"
+                    - "off"
+                  example: "off"
+    vnetResListBody:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/vnetsBody'
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    vnetResListByIdBody:
       type: object
       description: Success response
       properties:
@@ -612,7 +656,7 @@ components:
             statusCode:
               type: integer
               example: 200
-    resAddBody:
+    vnetResAddBody:
       type: object
       description: Success response
       properties:
@@ -645,7 +689,7 @@ components:
             statusCode:
               type: integer
               example: 200
-    resDeleteBody:
+    vnetResDeleteBody:
       type: object
       description: Success response
       properties:
@@ -674,7 +718,7 @@ components:
             statusCode:
               type: integer
               example: 200
-    resErrorBody:
+    vnetResErrorBody:
       type: object
       description: Error response
       properties:
