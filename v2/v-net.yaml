@@ -272,26 +272,7 @@ components:
         ports:
           type: array
           items:
-            type: object
-            properties:
-              id:
-                type: number
-                example: 100
-              state:
-                type: string
-                example: active
-              vlan:
-                type: string
-                example: "16"
-              access:
-                type: boolean
-                example: false
-              lacp:
-                type: string
-                enum:
-                  - "on"
-                  - "off"
-                example: "off"
+            $ref: '#/components/schemas/vnetPortEditBody'
         tags:
           type: array
           items:
@@ -402,26 +383,7 @@ components:
         ports:
           type: array
           items:
-            type: object
-            properties:
-              id:
-                type: number
-                example: 100
-              state:
-                type: string
-                example: active
-              vlan:
-                type: string
-                example: "16"
-              access:
-                type: boolean
-                example: false
-              lacp:
-                type: string
-                enum:
-                  - "on"
-                  - "off"
-                example: "off"
+            $ref: '#/components/schemas/vnetPortEditBody'
         tags:
           type: array
           items:
@@ -591,15 +553,42 @@ components:
                 vlan:
                   type: string
                   example: "16"
-                access:
+                accessMode:
                   type: boolean
                   example: false
-                lacp:
+                macCount:
+                  type: number
+                  example: 3
+                ipv4Cidr:
                   type: string
-                  enum:
-                    - "on"
-                    - "off"
-                  example: "off"
+                  example: "169.254.12.1/31"
+                ipv6Cidr:
+                  type: string
+                  example: "fe80::e29:efff:fece:fb20/64"
+    vnetPortEditBody:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 100
+        state:
+          type: string
+          enum:
+            - "active"
+            - "disabled"
+          example: active
+        vlan:
+          type: string
+          example: "16"
+        accessMode:
+          type: boolean
+          example: false
+        ipv4Cidr:
+          type: string
+          example: "169.254.12.1/31"
+        ipv6Cidr:
+          type: string
+          example: "fe80::e29:efff:fece:fb20/64"
     vnetResListBody:
       type: object
       description: Success response
