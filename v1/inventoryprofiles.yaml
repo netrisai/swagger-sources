@@ -1,0 +1,308 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v1
+security:
+  - cookieAuth: []
+paths:
+  /api/inventoryProfiles:
+    get:
+      tags:
+        - Inventory Profiles
+      summary: Request for getting Inventory Profiles.
+      parameters:
+        - name: id
+          in: query
+          description: id for getting exact inventory profile by id
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inventoryprofiles'
+    post:
+      tags:
+        - Inventory Profiles
+      summary: Request for adding Inventory Profiles.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventoryProfilesAddItem'
+      responses:
+        "200":
+          description: OK
+    put:
+      tags:
+        - Inventory Profiles
+      summary: Request for editting Inventory Profiles.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inventoryProfilesEditItem'
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags:
+        - Inventory Profiles
+      summary: Request for deleting Inventory Profiles.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 11
+      responses:
+        "200":
+          description: OK
+  /api/inventoryProfiles/inventoryListOfProfiles:
+    get:
+      tags:
+        - Inventory Profiles
+      summary: Request for getting Inventory Profiles.
+      parameters:
+        - name: id
+          in: query
+          description: ""
+          required: true
+          type: number
+      responses:
+        "200":
+          description: OK
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    inventoryprofiles:
+      type: array
+      items:
+        $ref: '#/components/schemas/inventoryprofilesItem'
+    inventoryprofilesItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: name
+        description:
+          type: string
+          example: description
+        siteId:
+          type: integer
+          example: 1
+        ipv4_ssh:
+          type: string
+          example: 0.0.0.0/0,10.254.128.0/24
+        ipv6_ssh:
+          type: string
+          example: ::/0
+        timezone:
+          type: string
+          example: '{"offset":"-05:00","label":"(GMT-05:00) Eastern Time","tzCode":"America/New_York"}'
+        ntp_servers:
+          type: string
+          example: 62.159.200.1,162.159.200.123,195.43.74.123,am.pool.ntp.org
+        dns_servers:
+          type: string
+          example: 1.1.1.1,1.0.0.1,8.8.8.8,8.8.4.4
+        customRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/rule'
+        createdDate:
+          type: integer
+        modifiedDate:
+          type: integer
+    inventoryprofilesCustomRules:
+      type: array
+      items:
+        $ref: '#/components/schemas/rule'
+    rule:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        description:
+          type: string
+        srcSubnet:
+          type: string
+          example: 10.0.0.0
+        srcPort:
+          type: string
+          example: "54"
+        dstPort:
+          type: string
+          example: ""
+        protocol:
+          type: string
+          enum:
+            - tcp
+            - udp
+            - any
+    inventoryProfilesAddItem:
+      type: object
+      required:
+        - name
+        - ipv4_list
+      properties:
+        name:
+          type: string
+          example: name
+          description: Unique name
+        description:
+          type: string
+          example: description
+        ipv4_list:
+          type: string
+          example: 0.0.0.0/0,10.254.128.0/24
+          description: SSH access will be restricted to be sourced from the listed IPv4 addresses for devices using this inventory profile.
+        ipv6_list:
+          type: string
+          example: ""
+          description: SSH access will be restricted to be sourced from the listed IPv6 addresses for devices using this inventory profile.
+        timezone:
+          type: object
+          properties:
+            offset:
+              type: string
+              example: -05:00
+            label:
+              type: string
+              example: (GMT-05:00) Eastern Time
+            tzCode:
+              type: string
+              example: America/New_York
+          description: Devices using this inventory profile will adjust their system time to selected timezone.
+        ntp_servers:
+          type: string
+          example: 0.0.0.0,10.254.128.0
+          description: List of domain names or IP addresses of NTP servers
+        dns_servers:
+          type: string
+          example: ""
+          description: List of IP addresses of DNS servers
+        customRules:
+          type: array
+          description: User defined rules to allow certain traffic
+          items:
+            $ref: '#/components/schemas/ruleAddItem'
+        gpuClusterProps:
+          type: object
+          description: GPU cluster specific settings
+          properties:
+            roce:
+              type: boolean
+              example: true
+            roceAdaptiveRouting:
+              type: boolean
+              example: true
+            congestionControl:
+              type: boolean
+              example: true
+            asicMonitoring:
+              type: boolean
+              example: true
+    inventoryProfilesEditItem:
+      type: object
+      required:
+        - id
+        - name
+        - ipv4_list
+      properties:
+        id:
+          type: integer
+          example: 1231
+        name:
+          type: string
+          example: name
+          description: Unique name
+        description:
+          type: string
+          example: description
+        ipv4_list:
+          type: string
+          example: 0.0.0.0/0,10.254.128.0/24
+          description: SSH access will be restricted to be sourced from the listed IPv4 addresses for devices using this inventory profile.
+        ipv6_list:
+          type: string
+          example: ""
+          description: SSH access will be restricted to be sourced from the listed IPv6 addresses for devices using this inventory profile.
+        timezone:
+          type: object
+          properties:
+            offset:
+              type: string
+              example: -05:00
+            label:
+              type: string
+              example: (GMT-05:00) Eastern Time
+            tzCode:
+              type: string
+              example: America/New_York
+          description: Devices using this inventory profile will adjust their system time to selected timezone.
+        ntp_servers:
+          type: string
+          example: 0.0.0.0,10.254.128.0
+          description: List of domain names or IP addresses of NTP servers
+        dns_servers:
+          type: string
+          example: ""
+          description: List of IP addresses of DNS servers
+        customRules:
+          type: array
+          description: User defined rules to allow certain traffic
+          items:
+            $ref: '#/components/schemas/ruleAddItem'
+        gpuClusterProps:
+          type: object
+          description: GPU cluster specific settings
+          properties:
+            roce:
+              type: boolean
+              example: true
+            roceAdaptiveRouting:
+              type: boolean
+              example: true
+            congestionControl:
+              type: boolean
+              example: true
+            asicMonitoring:
+              type: boolean
+              example: true
+    ruleAddItem:
+      type: object
+      properties:
+        description:
+          type: string
+        srcSubnet:
+          type: string
+          example: 10.0.0.0
+        srcPort:
+          type: string
+          example: "54"
+        dstPort:
+          type: string
+          example: ""
+        protocol:
+          type: string
+          enum:
+            - tcp
+            - udp
+            - any
+

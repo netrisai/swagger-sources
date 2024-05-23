@@ -1,0 +1,273 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+security:
+  - cookieAuth: []
+paths:
+  /api/v2/link:
+    get:
+      tags:
+        - Link
+      summary: Request for getting links.
+      parameters:
+        - name: filterBySites
+          in: query
+          description: Filter by provided sites.
+          schema:
+            type: array
+            items:
+              oneOf:
+                - type: number
+                - type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/linkBody'
+                  errors:
+                    example: null
+                  message:
+                    example: ""
+                  isSuccess:
+                    example: true
+                  meta:
+                    properties:
+                      apiVersion:
+                        example: "2"
+                      statusCode:
+                        example: 200
+    post:
+      tags:
+        - Link
+      summary: Request for adding link.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/linkBody'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Successfully added.
+    delete:
+      tags:
+        - Link
+      summary: Request for deleting link.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/linkBody'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Successfully deleted.
+  /api/v2/link/{id}:
+    get:
+      tags:
+        - Link
+      summary: Request for getting link by ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: number
+          description: Link ID.
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/linkBody'
+                  errors:
+                    example: null
+                  message:
+                    example: ""
+                  isSuccess:
+                    example: true
+                  meta:
+                    properties:
+                      apiVersion:
+                        example: "2"
+                      statusCode:
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/linkResErrorBody'
+        "404":
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/linkResErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
+    delete:
+      tags:
+        - Link
+      summary: Request for deleting link by ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Link ID.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    example: null
+                  message:
+                    example: Successfully deleted.
+                  isSuccess:
+                    example: true
+                  meta:
+                    properties:
+                      apiVersion:
+                        example: "2"
+                      statusCode:
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/linkResErrorBody'
+        "404":
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/linkResErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    linkBody:
+      type: object
+      description: Physical connection
+      properties:
+        id:
+          type: number
+          desription: Link ID.
+          example: 323123
+        local:
+          type: object
+          description: Current unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          properties:
+            id:
+              type: number
+              example: 21311
+            name:
+              type: string
+              example: swp56@switch22
+            ipv4:
+              type: string
+              example: 169.254.2.1/31
+            ipv6:
+              type: string
+              example: fe80::e29:efff:fece:fb20/64
+        remote:
+          type: object
+          description: Remote unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          properties:
+            id:
+              type: number
+              example: 43534
+            name:
+              type: string
+              example: swp10@switch5
+            ipv4:
+              type: string
+              example: 169.254.2.2/31
+            ipv6:
+              type: string
+              example: fe80::e29:efff:fece:fb21/64
+    linkResErrorBody:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
+
