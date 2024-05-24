@@ -261,6 +261,8 @@ components:
           description: User defined rules to allow certain traffic
           items:
             $ref: '#/components/schemas/ruleAddItem'
+        fabricProps:
+          $ref: '#/components/schemas/fabricProps'
         gpuClusterProps:
           $ref: '#/components/schemas/gpuClusterProps'
     ruleAddItem:
@@ -309,8 +311,7 @@ components:
             optimiseBgpOverlay:
               type: boolean
               example: true
+              default: true
             unnumberedBgpUnderlay:
               type: boolean
               example: false
-         
-
