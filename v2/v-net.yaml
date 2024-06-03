@@ -559,10 +559,10 @@ components:
                 macCount:
                   type: number
                   example: 3
-                ipv4Cidr:
+                ipv4:
                   type: string
                   example: "169.254.12.1/31"
-                ipv6Cidr:
+                ipv6:
                   type: string
                   example: "fe80::e29:efff:fece:fb20/64"
     vnetPortEditBody:
@@ -583,10 +583,10 @@ components:
         accessMode:
           type: boolean
           example: false
-        ipv4Cidr:
+        ipv4:
           type: string
           example: "169.254.12.1/31"
-        ipv6Cidr:
+        ipv6:
           type: string
           example: "fe80::e29:efff:fece:fb20/64"
     vnetResListBody:
