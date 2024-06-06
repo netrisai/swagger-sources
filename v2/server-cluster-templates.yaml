@@ -3,7 +3,7 @@ info:
   title: Netris API
   version: v2
 paths:
-  /api/v2/cluster-server-templates:
+  /api/v2/cluster-server-template:
     get:
       tags:
         - Cluster Server Templates
@@ -42,19 +42,69 @@ paths:
                   data:
                     type: object
                     properties:
-                      staticRouteID:
+                      id:
                         type: number
                         example: 23
+                  message:
+                    example: "Successfully created."
                   isSuccess: 
                     type: boolean
                     example: true
+                  meta:
+                        type: object
+                        properties:
+                          apiVersion:
+                            example: 2
+                          statusCode:
+                            example: 200
+                          
         400:
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/clustersrvtmpl.response.error'
-  /api/v2/cluster-server-templates/{id}:
+  /api/v2/cluster-server-template/{id}:
+    get:
+      tags:
+        - Cluster Server Templates
+      summary: Request for getting the cluster server templates.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific cluster server template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrvtmpl.response.get.one.ok'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrvtmpl.response.error'
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/clustersrvtmpl.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
     put:
       tags:
         - Cluster Server Templates
@@ -82,15 +132,43 @@ paths:
                 properties:
                   data:
                     type: object
+                    properties:
+                      id:
+                        example: 23
+                  message:
+                    example: "Successfully updated."
                   isSuccess: 
                     type: boolean
                     example: true
+                  meta:
+                        type: object
+                        properties:
+                          apiVersion:
+                            example: 2
+                          statusCode:
+                            example: 200
         400:
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/clustersrvtmpl.response.error'
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/clustersrvtmpl.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
     delete:
       tags:
         - Cluster Server Templates
@@ -140,6 +218,8 @@ paths:
                   - $ref: '#/components/schemas/clustersrvtmpl.response.error'
                   - type: object
                     properties:
+                      message:
+                        example: Not found.
                       meta:
                         type: object
                         properties:
@@ -155,17 +235,19 @@ components:
         - type: object
           properties:
             vnet:
-              allOf:
-              - type: object
-                properties:
-                  id:
-                    example: 42
-              - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
+              type: array
+              items:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/clustersrvtmpl.body.vnet.id'
+                  - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
     clustersrvtmpl.post.body:
       type: object
       allOf:
         - $ref: '#/components/schemas/clustersrvtmpl.body.name'
         - type: object
+          required:
+            - vnet
           properties:
             vnet:
               allOf:
@@ -175,15 +257,23 @@ components:
       allOf:
         - $ref: '#/components/schemas/clustersrvtmpl.body.name'
         - type: object
+          required:
+            - vnet
           properties:
             vnet:
-              allOf:
-              - type: object
-                properties:
-                  id:
-                    example: 42
-              - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
+              type: array
+              items:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/clustersrvtmpl.body.vnet.id'
+                  - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
     clustersrvtmpl.body.vnet:
+      required:
+        - postfix
+        - type
+        - vlan
+        - vlanID
+        - serverNics
       type: object
       properties:
         postfix:
@@ -199,25 +289,56 @@ components:
           example: "untagged"
         vlanID:
           type: string
-          enum: ["auto"]
+          enum: ["auto", "dynamic"]
           example: "auto"
-        ipv4Gateway:
-          type: string
-          nullable: true
-          example: "10.10.10.254/24"
         serverNics:
           type: array
           items:
             type: string
           example: ["eth1", "eth2", "eth3", "eth4"]
+        ipv4Gateway:
+          oneOf:
+            - type: string
+              nullable: true
+              description: "IPv4 gateway address. Must be a valid IPv4 Cidr."
+              example: "10.10.10.254/24"
+            - type: string
+              description: "dynamic: means it has to be specified during server cluster creation"
+              enum: ["dynamic"]
+              nullable: true
+              example: "dynamic"
+        ipv6Gateway:
+          oneOf:
+            - type: string
+              nullable: true
+              description: "IPv6 gateway address. Must be a valid IPv6 Cidr."
+              example: "2001:db8:85a3::8a2e:370:7334/64"
+            - type: string
+              description: "dynamic: means it has to be specified during server cluster creation"
+              enum: ["dynamic"]
+              nullable: true
+              example: "dynamic"
     clustersrvtmpl.body.id:
+        required:
+          - id
         type: object
         properties:
           id:
             description: Cluster server template unique identifier.
             type: integer
-            example: 123  
+            example: 123
+    clustersrvtmpl.body.vnet.id:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          description: vnet property identifier in cluster server template.
+          type: integer
+          example: 42  
     clustersrvtmpl.body.name:
+      required:
+        - name
       type: object
       properties:
         name:
@@ -230,6 +351,23 @@ components:
         data:
           type: array
           items:
+            $ref: '#/components/schemas/clustersrvtmpl.get.body'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    clustersrvtmpl.response.get.one.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
             $ref: '#/components/schemas/clustersrvtmpl.get.body'
         isSuccess:
           type: boolean
