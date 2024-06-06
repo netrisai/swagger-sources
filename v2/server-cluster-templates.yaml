@@ -1,0 +1,273 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+paths:
+  /api/v2/cluster-server-templates:
+    get:
+      tags:
+        - Cluster Server Templates
+      summary: Request for getting the cluster server templates.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrvtmpl.response.get.ok'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrvtmpl.response.error'
+    post:
+      tags:
+        - Cluster Server Templates
+      summary: Request for adding a cluster server template.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/clustersrvtmpl.post.body'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      staticRouteID:
+                        type: number
+                        example: 23
+                  isSuccess: 
+                    type: boolean
+                    example: true
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrvtmpl.response.error'
+  /api/v2/cluster-server-templates/{id}:
+    put:
+      tags:
+        - Cluster Server Templates
+      summary: Request for editing a cluster server template.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific cluster server template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/clustersrvtmpl.put.body'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                  isSuccess: 
+                    type: boolean
+                    example: true
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrvtmpl.response.error'
+    delete:
+      tags:
+        - Cluster Server Templates
+      summary: Request for deleting a cluster server template.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific cluster server template
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: null
+                  message:
+                    example: Successfully deleted.
+                  isSuccess: 
+                    type: boolean
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion: 
+                        example: 2
+                      statusCode:
+                        example: 200
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrvtmpl.response.error'
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/clustersrvtmpl.response.error'
+                  - type: object
+                    properties:
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+components:
+  schemas:
+    clustersrvtmpl.get.body:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/clustersrvtmpl.body.id'
+        - $ref: '#/components/schemas/clustersrvtmpl.body.name'
+        - type: object
+          properties:
+            vnet:
+              allOf:
+              - type: object
+                properties:
+                  id:
+                    example: 42
+              - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
+    clustersrvtmpl.post.body:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/clustersrvtmpl.body.name'
+        - type: object
+          properties:
+            vnet:
+              allOf:
+              - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
+    clustersrvtmpl.put.body:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/clustersrvtmpl.body.name'
+        - type: object
+          properties:
+            vnet:
+              allOf:
+              - type: object
+                properties:
+                  id:
+                    example: 42
+              - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
+    clustersrvtmpl.body.vnet:
+      type: object
+      properties:
+        postfix:
+          type: string
+          example: "East-West"
+        type:
+          type: string
+          enum: ["l2pvn", "l3vpn", "infiniband"]
+          example: "l3vpn"
+        vlan:
+          type: string
+          enum: ["tagged", "untagged"]
+          example: "untagged"
+        vlanID:
+          type: string
+          enum: ["auto"]
+          example: "auto"
+        ipv4Gateway:
+          type: string
+          nullable: true
+          example: "10.10.10.254/24"
+        serverNics:
+          type: array
+          items:
+            type: string
+          example: ["eth1", "eth2", "eth3", "eth4"]
+    clustersrvtmpl.body.id:
+        type: object
+        properties:
+          id:
+            description: Cluster server template unique identifier.
+            type: integer
+            example: 123  
+    clustersrvtmpl.body.name:
+      type: object
+      properties:
+        name:
+          type: string
+          example: My-Cluster-Template-flavor-1
+    clustersrvtmpl.response.get.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/clustersrvtmpl.get.body'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    clustersrvtmpl.response.error:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: object
+          example: null
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
