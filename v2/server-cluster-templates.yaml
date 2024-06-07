@@ -241,6 +241,16 @@ components:
                 allOf:
                   - $ref: '#/components/schemas/clustersrvtmpl.body.vnet.id'
                   - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
+                  - type: object
+                    properties:
+                      createdDate:
+                        type: number
+                        example: 1617280628000
+                        description: Time in milliseconds
+                      modifiedDate:
+                        type: number
+                        example: 1617365215000
+                        description: Time in milliseconds
     clustersrvtmpl.post.body:
       type: object
       allOf:
