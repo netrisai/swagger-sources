@@ -3,11 +3,11 @@ info:
   title: Netris API
   version: v2
 paths:
-  /api/v2/cluster-server-template:
+  /api/v2/server-cluster-template:
     get:
       tags:
-        - Cluster Server Templates
-      summary: Request for getting the cluster server templates.
+        - Server Cluster Templates
+      summary: Request for getting the server cluster templates.
       responses:
         200:
           description: OK
@@ -23,8 +23,8 @@ paths:
                 $ref: '#/components/schemas/clustersrvtmpl.response.error'
     post:
       tags:
-        - Cluster Server Templates
-      summary: Request for adding a cluster server template.
+        - Server Cluster Templates
+      summary: Request for adding a server cluster template.
       requestBody:
         required: true
         content:
@@ -64,18 +64,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/clustersrvtmpl.response.error'
-  /api/v2/cluster-server-template/{id}:
+  /api/v2/server-cluster-template/{id}:
     get:
       tags:
-        - Cluster Server Templates
-      summary: Request for getting the cluster server templates.
+        - Server Cluster Templates
+      summary: Request for getting the server cluster templates.
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
-          description: The id of a specific cluster server template
+          description: The id of a specific server cluster template
       responses:
         200:
           description: OK
@@ -107,15 +107,15 @@ paths:
                             example: 404
     put:
       tags:
-        - Cluster Server Templates
-      summary: Request for editing a cluster server template.
+        - Server Cluster Templates
+      summary: Request for editing a server cluster template.
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
-          description: The id of a specific cluster server template
+          description: The id of a specific server cluster template
       requestBody:
         required: true
         content:
@@ -171,15 +171,15 @@ paths:
                             example: 404
     delete:
       tags:
-        - Cluster Server Templates
-      summary: Request for deleting a cluster server template.
+        - Server Cluster Templates
+      summary: Request for deleting a server cluster template.
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
-          description: The id of a specific cluster server template
+          description: The id of a specific server cluster template
       responses:
         200:
           description: OK
@@ -337,14 +337,14 @@ components:
         type: object
         properties:
           id:
-            description: Cluster server template unique identifier.
+            description: server cluster template unique identifier.
             type: integer
             example: 123
     clustersrvtmpl.body.vnet.id:
       type: object
       properties:
         id:
-          description: vnet property identifier in cluster server template.
+          description: vnet property identifier in server cluster template.
           type: integer
           example: 42  
     clustersrvtmpl.body.name:
