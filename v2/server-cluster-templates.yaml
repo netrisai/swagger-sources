@@ -341,8 +341,6 @@ components:
             type: integer
             example: 123
     clustersrvtmpl.body.vnet.id:
-      required:
-        - id
       type: object
       properties:
         id:
