@@ -7,7 +7,7 @@ paths:
     get:
       tags:
         - Server Cluster
-      summary: Request for getting the cluster server templates.
+      summary: Request for getting the cluster server.
       responses:
         200:
           description: OK
@@ -24,7 +24,7 @@ paths:
     post:
       tags:
         - Server Cluster
-      summary: Request for adding a cluster server template.
+      summary: Request for adding a cluster server.
       requestBody:
         required: true
         content:
@@ -297,17 +297,28 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/clustersrv.body.id'
+        - $ref: '#/components/schemas/clustersrv.body.name'
         - $ref: '#/components/schemas/clustersrv.body.state'
+        - $ref: '#/components/schemas/clustersrv.body.tenant'
+        - $ref: '#/components/schemas/clustersrv.body.site'
+        - $ref: '#/components/schemas/clustersrv.body.vpc'
+        - $ref: '#/components/schemas/clustersrv.body.template'
         - $ref: '#/components/schemas/clustersrv.body.content'
         - $ref: '#/components/schemas/clustersrv.body.resources'
         - $ref: '#/components/schemas/clustersrv.body.timestamps'
     clustersrv.post.body:
       type: object
       allOf:
+        - $ref: '#/components/schemas/clustersrv.body.name'
+        - $ref: '#/components/schemas/clustersrv.body.tenant'
+        - $ref: '#/components/schemas/clustersrv.body.site'
+        - $ref: '#/components/schemas/clustersrv.body.vpc'
+        - $ref: '#/components/schemas/clustersrv.body.template'
         - $ref: '#/components/schemas/clustersrv.body.content'
     clustersrv.put.body:
       type: object
       allOf:
+        - $ref: '#/components/schemas/clustersrv.body.name'
         - $ref: '#/components/schemas/clustersrv.body.content'
     clustersrv.body.id:
         required:
@@ -318,47 +329,22 @@ components:
             description: Cluster server template unique identifier.
             type: integer
             example: 123
+    clustersrv.body.name:
+      type: object
+      properties:
+         name:
+          type: string
+          example: "My cluster 1"
+          description: "Server Cluster Name"
     clustersrv.body.state:
         type: object
         properties:
           state:
             type: string
             enum: ["active", "disabled", "provisioning"]
-    clustersrv.body.content:
-      required:
-        - name
-        - tenant
-        - site
-        - vpc
-        - srvClusterTemplate
+    clustersrv.body.vpc:
       type: object
       properties:
-        name:
-          type: string
-          example: "My cluster 1"
-          description: "Server Cluster Name"
-        tenant:
-          required:
-            - id
-          type: object
-          properties:
-            id:
-              type: integer
-              example: 22
-            name:
-              type: string
-              example: Admin
-        site:
-          required:
-            - id
-          type: object
-          properties:
-            id:
-              type: integer
-              example: 11
-            name:
-              type: string
-              example: SiteA
         vpc:
           required:
             - id
@@ -370,6 +356,37 @@ components:
             name:
               type: string
               example: VPC-1
+    clustersrv.body.tenant:
+      type: object
+      properties:
+        tenant:
+          required:
+            - id
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 22
+            name:
+              type: string
+              example: Admin
+    clustersrv.body.site:
+      type: object
+      properties:
+        site:
+          required:
+            - id
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 11
+            name:
+              type: string
+              example: SiteA
+    clustersrv.body.template:
+      type: object
+      properties:
         srvClusterTemplate:
           required:
             - id
@@ -381,6 +398,16 @@ components:
             name:
               type: string
               example: GPU Cluster Template 1
+    clustersrv.body.content:
+      required:
+        - name
+        - tenant
+        - site
+        - vpc
+        - srvClusterTemplate
+      type: object
+      properties:
+    
         tags:
           type: array
           items:
