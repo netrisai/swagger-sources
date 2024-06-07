@@ -234,7 +234,7 @@ components:
         - $ref: '#/components/schemas/clustersrvtmpl.body.name'
         - type: object
           properties:
-            vnet:
+            vnets:
               type: array
               items:
                 type: object
@@ -257,20 +257,23 @@ components:
         - $ref: '#/components/schemas/clustersrvtmpl.body.name'
         - type: object
           required:
-            - vnet
+            - vnets
           properties:
-            vnet:
-              allOf:
-              - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
+            vnets:
+              type: array
+              items:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
     clustersrvtmpl.put.body:
       type: object
       allOf:
         - $ref: '#/components/schemas/clustersrvtmpl.body.name'
         - type: object
           required:
-            - vnet
+            - vnets
           properties:
-            vnet:
+            vnets:
               type: array
               items:
                 type: object
