@@ -1,0 +1,475 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+paths:
+  /api/v2/server-cluster:
+    get:
+      tags:
+        - Server Cluster
+      summary: Request for getting the cluster server templates.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrv.response.get.ok'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrv.response.error'
+    post:
+      tags:
+        - Server Cluster
+      summary: Request for adding a cluster server template.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/clustersrv.post.body'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 23
+                  message:
+                    example: "Successfully created."
+                  isSuccess: 
+                    type: boolean
+                    example: true
+                  meta:
+                        type: object
+                        properties:
+                          apiVersion:
+                            example: 2
+                          statusCode:
+                            example: 200
+                          
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrv.response.error'
+  /api/v2/server-cluster/{id}:
+    get:
+      tags:
+        - Server Cluster
+      summary: Request for getting the server cluster.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific server cluster.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrv.response.get.one.ok'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrv.response.error'
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/clustersrv.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+    put:
+      tags:
+        - Server Cluster
+      summary: Request for editing a server cluster.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific server cluster.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/clustersrv.put.body'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        example: 23
+                  message:
+                    example: "Successfully updated."
+                  isSuccess: 
+                    type: boolean
+                    example: true
+                  meta:
+                        type: object
+                        properties:
+                          apiVersion:
+                            example: 2
+                          statusCode:
+                            example: 200
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrv.response.error'
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/clustersrv.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+    delete:
+      tags:
+        - Server Cluster
+      summary: Request for deleting a server cluster.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific server cluster.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: null
+                  message:
+                    example: Successfully deleted.
+                  isSuccess: 
+                    type: boolean
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion: 
+                        example: 2
+                      statusCode:
+                        example: 200
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrv.response.error'
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/clustersrv.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+  /api/v2/server-cluster/{id}/{state}:
+    put:
+      tags:
+        - Server Cluster
+      summary: Request for changing a server cluster state.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific server cluster.
+        - name: state
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: ["active", "disabled", "provisioning"]
+          description: The id of a specific server cluster.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        example: 23
+                  message:
+                    example: "Successfully updated."
+                  isSuccess: 
+                    type: boolean
+                    example: true
+                  meta:
+                        type: object
+                        properties:
+                          apiVersion:
+                            example: 2
+                          statusCode:
+                            example: 200
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrv.response.error'
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/clustersrv.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+components:
+  schemas:
+    clustersrv.get.body:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/clustersrv.body.id'
+        - $ref: '#/components/schemas/clustersrv.body.state'
+        - $ref: '#/components/schemas/clustersrv.body.content'
+        - $ref: '#/components/schemas/clustersrv.body.timestamps'
+    clustersrv.post.body:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/clustersrv.body.content'
+    clustersrv.put.body:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/clustersrv.body.content'
+    clustersrv.body.id:
+        required:
+          - id
+        type: object
+        properties:
+          id:
+            description: Cluster server template unique identifier.
+            type: integer
+            example: 123
+    clustersrv.body.state:
+        type: object
+        properties:
+          state:
+            type: string
+            enum: ["active", "disabled", "provisioning"]
+    clustersrv.body.content:
+      required:
+        - name
+        - tenant
+        - site
+        - vpc
+        - srvClusterTemplate
+      type: object
+      properties:
+        name:
+          type: string
+          example: "My cluster 1"
+          description: "Server Cluster Name"
+        tenant:
+          required:
+            - id
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 22
+            name:
+              type: string
+              example: Admin
+        site:
+          required:
+            - id
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 11
+            name:
+              type: string
+              example: SiteA
+        vpc:
+          required:
+            - id
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: VPC-1
+        srvClusterTemplate:
+          required:
+            - id
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 123
+            name:
+              type: string
+              example: GPU Cluster Template 1
+        tags:
+          type: array
+          items:
+            type: string
+            example : ["tag1", "tag2"]
+        servers:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 123
+              name:
+                type: string
+                example: north-south-server-01
+    clustersrv.body.timestamps:
+      type: object
+      properties:
+        createdDate:
+          type: number
+          example: 1617280628000
+          description: Time in milliseconds
+        modifiedDate:
+          type: number
+          example: 1617365215000
+          description: Time in milliseconds
+    clustersrv.response.get.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/clustersrv.get.body'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    clustersrv.response.get.one.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+            $ref: '#/components/schemas/clustersrv.get.body'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    clustersrv.response.error:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: object
+          example: null
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
+
