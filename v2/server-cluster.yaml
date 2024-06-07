@@ -242,7 +242,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: ["active", "disabled", "provisioning"]
+            enum: ["active", "disabled"]
           description: The id of a specific server cluster.
       responses:
         200:
@@ -299,6 +299,7 @@ components:
         - $ref: '#/components/schemas/clustersrv.body.id'
         - $ref: '#/components/schemas/clustersrv.body.state'
         - $ref: '#/components/schemas/clustersrv.body.content'
+        - $ref: '#/components/schemas/clustersrv.body.resources'
         - $ref: '#/components/schemas/clustersrv.body.timestamps'
     clustersrv.post.body:
       type: object
@@ -384,7 +385,7 @@ components:
           type: array
           items:
             type: string
-            example : ["tag1", "tag2"]
+            example: tag1, tag2
         servers:
           type: array
           items:
@@ -407,6 +408,55 @@ components:
           type: number
           example: 1617365215000
           description: Time in milliseconds
+    clustersrv.body.resources:
+      type: object
+      properties:
+        resources:
+          type: object
+          properties:
+            vnets:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1234
+                  name:
+                    type: string
+                    example: myvnet1
+                  ipv4Gateways:
+                    type: array
+                    items:
+                      type: string
+                      example: "23.242.44.0/24"
+                  ipv6Gateways:
+                    type: array
+                    items:
+                      type: string
+                      example: "2001:db8::/32"
+            allocations:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 55
+                  prefix:
+                    type: string
+                    example: 10.10.10.0/24
+            subnets:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 324
+                  prefix:
+                    type: string
+                    example: 10.10.10.0/26
     clustersrv.response.get.ok:
       type: object
       description: Success response
