@@ -318,7 +318,6 @@ components:
     clustersrv.put.body:
       type: object
       allOf:
-        - $ref: '#/components/schemas/clustersrv.body.name'
         - $ref: '#/components/schemas/clustersrv.body.content'
     clustersrv.body.id:
         required:
