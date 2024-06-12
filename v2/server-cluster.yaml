@@ -299,6 +299,7 @@ components:
         - $ref: '#/components/schemas/clustersrv.body.id'
         - $ref: '#/components/schemas/clustersrv.body.name'
         - $ref: '#/components/schemas/clustersrv.body.state'
+        - $ref: '#/components/schemas/clustersrv.body.status'
         - $ref: '#/components/schemas/clustersrv.body.tenant'
         - $ref: '#/components/schemas/clustersrv.body.site'
         - $ref: '#/components/schemas/clustersrv.body.vpc'
@@ -335,12 +336,20 @@ components:
           type: string
           example: "My cluster 1"
           description: "Server Cluster Name"
+    clustersrv.body.status:
+        type: object
+        properties:
+          status:
+            type: string
+            enum: ["active", "disabled", "provisioning"]
+            example: provisioning
     clustersrv.body.state:
         type: object
         properties:
           state:
             type: string
-            enum: ["active", "disabled", "provisioning"]
+            enum: ["active", "disabled"]
+            example: "disable"
     clustersrv.body.vpc:
       type: object
       properties:
