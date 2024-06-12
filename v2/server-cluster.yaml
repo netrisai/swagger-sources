@@ -358,7 +358,7 @@ components:
     clustersrv.body.tenant:
       type: object
       properties:
-        tenant:
+        admin:
           required:
             - id
           type: object
