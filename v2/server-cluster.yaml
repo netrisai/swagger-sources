@@ -291,6 +291,24 @@ paths:
                         properties:
                           statusCode:
                             example: 404
+  /api/v2/server-cluster/servers:
+    get:
+      tags:
+        - Server Cluster
+      summary: Request for getting the server list.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrv.servers.response.get.ok'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clustersrv.response.error'
 components:
   schemas:
     clustersrv.get.body:
@@ -492,6 +510,38 @@ components:
                   prefix:
                     type: string
                     example: 10.10.10.0/26
+    clustersrv.servers.body:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: server212
+        serverClusterID:
+          nullable: true
+          type: integer
+          example: 32423
+    clustersrv.servers.response.get.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/clustersrv.servers.body'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200        
     clustersrv.response.get.ok:
       type: object
       description: Success response
