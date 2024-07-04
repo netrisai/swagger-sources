@@ -239,7 +239,6 @@ components:
               items:
                 type: object
                 allOf:
-                  - $ref: '#/components/schemas/clustersrvtmpl.body.vnet.id'
                   - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
                   - type: object
                     properties:
@@ -278,7 +277,6 @@ components:
               items:
                 type: object
                 allOf:
-                  - $ref: '#/components/schemas/clustersrvtmpl.body.vnet.id'
                   - $ref: '#/components/schemas/clustersrvtmpl.body.vnet'
     clustersrvtmpl.body.vnet:
       required:
