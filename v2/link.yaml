@@ -205,9 +205,9 @@ components:
       description: Physical connection
       properties:
         id:
-          type: number
+          type: string
           desription: Link ID.
-          example: 323123
+          example: "323123"
         local:
           type: object
           description: Current unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
