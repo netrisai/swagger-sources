@@ -286,12 +286,15 @@ paths:
       tags:
         - NAT
       summary: Request to delete NAT rules in bulk.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/nat.delete.bulk.body'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer 
+          description: The id of a specific NAT rule.
       responses:
         200:
           description: OK
@@ -417,12 +420,6 @@ components:
         allOf:
           - $ref: '#/components/schemas/nat.body.id'
           - $ref: '#/components/schemas/nat.body.state.post'
-    nat.delete.bulk.body:
-      type: array
-      items:
-        type: object
-        allOf:
-          - $ref: '#/components/schemas/nat.body.id'
     nat.body.id:
         required:
           - id
@@ -634,38 +631,6 @@ components:
             name:
               type: string
               example: netris
-    nat.servers.body:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 2
-        name:
-          type: string
-          example: server212
-        serverClusterID:
-          nullable: true
-          type: integer
-          example: 32423
-    nat.servers.response.get.ok:
-      type: object
-      description: Success response
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/nat.servers.body'
-        isSuccess:
-          type: boolean
-        meta:
-          type: object
-          properties:
-            apiVersion:
-              type: string
-              example: 2
-            statusCode:
-              type: integer
-              example: 200        
     nat.response.get.ok:
       type: object
       description: Success response
@@ -731,5 +696,4 @@ components:
             statusCode:
               type: integer
               example: 400
-
 
