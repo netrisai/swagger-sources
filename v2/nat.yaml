@@ -288,12 +288,12 @@ paths:
       summary: Request to delete NAT rules in bulk.
       parameters:
         - name: id
-          in: path
+          in: query
           required: true
           schema:
             type: array
             items:
-              type: integer 
+              type: integer
           description: The id of a specific NAT rule.
       responses:
         200:
