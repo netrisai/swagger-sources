@@ -1,0 +1,735 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+paths:
+  /api/v2/nat:
+    get:
+      tags:
+        - NAT
+      summary: Request to list NAT rules.
+      parameters:
+        - name: filterBySites
+          in: query
+          description: Filter by provided sites.
+          schema:
+            type: array
+            items:
+              type: number
+        - name: filterByVpc
+          in: query
+          description: Filter by provided vpc.
+          schema:
+            type: array
+            items:
+              type: number
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nat.response.get.ok'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nat.response.error'
+    post:
+      tags:
+        - NAT
+      summary: Request to create NAT rule.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nat.post.body'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 23
+                  message:
+                    example: "Successfully created."
+                  isSuccess: 
+                    type: boolean
+                    example: true
+                  meta:
+                        type: object
+                        properties:
+                          apiVersion:
+                            example: 2
+                          statusCode:
+                            example: 200
+                          
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nat.response.error'
+  /api/v2/nat/{id}:
+    get:
+      tags:
+        - NAT
+      summary: Request to list  NAT rule.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific NAT rule.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nat.response.get.one.ok'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nat.response.error'
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/nat.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+    put:
+      tags:
+        - NAT
+      summary: Request to update NAT rule.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific server cluster.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nat.put.body'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        example: 23
+                  message:
+                    example: "Successfully updated."
+                  isSuccess: 
+                    type: boolean
+                    example: true
+                  meta:
+                        type: object
+                        properties:
+                          apiVersion:
+                            example: 2
+                          statusCode:
+                            example: 200
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nat.response.error'
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/nat.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+    delete:
+      tags:
+        - NAT
+      summary: Request to delete NAT rule.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The id of a specific NAT rule.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: null
+                  message:
+                    example: Successfully deleted.
+                  isSuccess: 
+                    type: boolean
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion: 
+                        example: 2
+                      statusCode:
+                        example: 200
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nat.response.error'
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/nat.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+  /api/v2/nat/bulk:
+   put:
+      tags:
+        - NAT
+      summary: Request to update NAT rules in batch.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nat.put.bulk.body'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        example: 23
+                  message:
+                    example: "Successfully updated."
+                  isSuccess: 
+                    type: boolean
+                    example: true
+                  meta:
+                        type: object
+                        properties:
+                          apiVersion:
+                            example: 2
+                          statusCode:
+                            example: 200
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nat.response.error'
+   delete:
+      tags:
+        - NAT
+      summary: Request to delete NAT rules in bulk.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nat.delete.bulk.body'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: null
+                  message:
+                    example: Successfully deleted.
+                  isSuccess: 
+                    type: boolean
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion: 
+                        example: 2
+                      statusCode:
+                        example: 200
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nat.response.error'
+components:
+  schemas:
+    nat.get.body:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/nat.body.id'
+        - $ref: '#/components/schemas/nat.body.name'
+        - $ref: '#/components/schemas/nat.body.site'
+        - $ref: '#/components/schemas/nat.body.vpc'
+        - $ref: '#/components/schemas/nat.body.state'
+        - $ref: '#/components/schemas/nat.body.action'
+        - $ref: '#/components/schemas/nat.body.protocol'
+        - $ref: '#/components/schemas/nat.body.srcAddr'
+        - $ref: '#/components/schemas/nat.body.srcPort'
+        - $ref: '#/components/schemas/nat.body.dstAddr'
+        - $ref: '#/components/schemas/nat.body.dstPort'
+        - $ref: '#/components/schemas/nat.body.dnatToIP'
+        - $ref: '#/components/schemas/nat.body.dnatToPort'
+        - $ref: '#/components/schemas/nat.body.portGroup'
+        - $ref: '#/components/schemas/nat.body.comment'
+        - $ref: '#/components/schemas/nat.body.creator'
+        - $ref: '#/components/schemas/nat.body.editor'
+        - $ref: '#/components/schemas/nat.body.timestamps'
+    nat.post.body:
+      required:
+        - name
+        - site
+        - vpc
+        - state
+        - action
+        - protocol
+        - sourceAddress
+        - sourcePort
+        - destinationAddress
+        - destinationPort
+        - dnatToIP
+        - dnatToPort
+        - pool
+        - portGroup
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/nat.body.name'
+        - $ref: '#/components/schemas/nat.body.site'
+        - $ref: '#/components/schemas/nat.body.vpc'
+        - $ref: '#/components/schemas/nat.body.state.post'
+        - $ref: '#/components/schemas/nat.body.action.post'
+        - $ref: '#/components/schemas/nat.body.protocol.post'
+        - $ref: '#/components/schemas/nat.body.srcAddr'
+        - $ref: '#/components/schemas/nat.body.srcPort'
+        - $ref: '#/components/schemas/nat.body.dstAddr'
+        - $ref: '#/components/schemas/nat.body.dstPort'
+        - $ref: '#/components/schemas/nat.body.dnatToIP'
+        - $ref: '#/components/schemas/nat.body.dnatToPort'
+        - $ref: '#/components/schemas/nat.body.portGroup'
+        - $ref: '#/components/schemas/nat.body.pool'
+        - $ref: '#/components/schemas/nat.body.comment'
+    nat.put.body:
+      required:
+        - name
+        - site
+        - vpc
+        - state
+        - action
+        - protocol
+        - sourceAddress
+        - sourcePort
+        - destinationAddress
+        - destinationPort
+        - dnatToIP
+        - dnatToPort
+        - pool
+        - portGroup
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/nat.body.name'
+        - $ref: '#/components/schemas/nat.body.site'
+        - $ref: '#/components/schemas/nat.body.vpc'
+        - $ref: '#/components/schemas/nat.body.state.post'
+        - $ref: '#/components/schemas/nat.body.action.post'
+        - $ref: '#/components/schemas/nat.body.protocol.post'
+        - $ref: '#/components/schemas/nat.body.srcAddr'
+        - $ref: '#/components/schemas/nat.body.srcPort'
+        - $ref: '#/components/schemas/nat.body.dstAddr'
+        - $ref: '#/components/schemas/nat.body.dstPort'
+        - $ref: '#/components/schemas/nat.body.dnatToIP'
+        - $ref: '#/components/schemas/nat.body.dnatToPort'
+        - $ref: '#/components/schemas/nat.body.portGroup'
+        - $ref: '#/components/schemas/nat.body.pool'
+        - $ref: '#/components/schemas/nat.body.comment'
+    nat.put.bulk.body:
+      type: array
+      items:
+        type: object
+        allOf:
+          - $ref: '#/components/schemas/nat.body.id'
+          - $ref: '#/components/schemas/nat.body.state.post'
+    nat.delete.bulk.body:
+      type: array
+      items:
+        type: object
+        allOf:
+          - $ref: '#/components/schemas/nat.body.id'
+    nat.body.id:
+        required:
+          - id
+        type: object
+        properties:
+          id:
+            description: NAT rule unique identifier.
+            type: integer
+            example: 123
+    nat.body.name:
+      type: object
+      properties:
+         name:
+          type: string
+          example: "RULE_1"
+          description: "NAT rule name"
+    nat.body.state:
+        type: object
+        properties:
+          state:
+            type: object
+            properties:
+              label:
+                type: string
+                example: "Enabled"
+                enum: ["Enabled", "Disabled"]
+              value:
+                type: string
+                example: "enabled"
+                enum: ["enabled", "disabled"]
+              status:
+                type: string
+                example: "success"
+                enum: ["success", "danger"]
+    nat.body.state.post:
+        type: object
+        properties:
+          state:
+            type: string
+            example: "enabled"
+            enum: ["enabled", "disabled"]
+    nat.body.vpc:
+      type: object
+      properties:
+        vpc:
+          required:
+            - id
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: VPC-1
+    nat.body.action:
+      type: object
+      properties:
+        action:
+          type: object
+          properties:
+            label:
+              type: string
+              example: DNAT
+              enum: ["DNAT", "SNAT", "ACCEPT", "MASQUERADE"]
+            value:
+              type: string
+              example: DNAT
+              enum: ["DNAT", "SNAT", "ACCEPT_SNAT", "MASQUERADE"]
+    nat.body.action.post:
+      type: object
+      properties:
+        action:
+          type: string
+          example: DNAT
+          enum: ["DNAT", "SNAT", "ACCEPT_SNAT", "MASQUERADE"]
+    nat.body.protocol:
+        type: object
+        properties:
+          protocol:
+            type: object
+            properties:
+              label:
+                type: string
+                example: ALL
+                enum: ["ALL", "TCP", "UDP", "ICMP"]
+              value:
+                type: string
+                example: All
+                enum: ["all", "tcp", "udp", "icmp"]
+    nat.body.protocol.post:
+        type: object
+        properties:
+          protocol:
+            type: string
+            example: All
+            enum: ["all", "tcp", "udp", "icmp"]
+    nat.body.site:
+      type: object
+      properties:
+        site:
+          required:
+            - id
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 11
+            name:
+              type: string
+              example: SiteA
+    nat.body.portGroup:
+      type: object
+      properties:
+        portGroup:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 11
+            name:
+              type: string
+              example: PortGroup1
+            ports:
+              type: array
+              items:
+                type: string
+              example: ["12", "23-24"]
+    nat.body.srcAddr:
+      type: object
+      properties:
+        sourceAddress:
+          type: string
+          example: 0.0.0.0/0
+    nat.body.dstAddr:
+      type: object
+      properties:
+        destinationAddress:
+          type: string
+          example: 1.2.3.4/32
+    nat.body.srcPort:
+      type: object
+      properties:
+        sourcePort:
+          type: string
+          example: 1-65535
+    nat.body.dstPort:
+      type: object
+      properties:
+        destinationPort:
+          type: string
+          example: 1-65535
+    nat.body.dnatToIP:
+      type: object
+      properties:
+        dnatToIP:
+          type: string
+          example: 192.168.23.23/32
+    nat.body.dnatToPort:
+      type: object
+      properties:
+        dnatToPort:
+          type: integer
+          example: 213
+    nat.body.pool:
+      type: object
+      properties:
+        pool:
+          type: boolean
+          example: false
+    nat.body.comment:
+      type: object
+      properties:
+        comment:
+          type: string
+          example: My comments
+    nat.body.timestamps:
+      type: object
+      properties:
+        createdDate:
+          type: number
+          example: 1617280628000
+          description: Time in milliseconds
+        modifiedDate:
+          type: number
+          example: 1617365215000
+          description: Time in milliseconds
+    nat.body.creator:
+      type: object
+      properties:
+        creator:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: netris
+    nat.body.editor:
+      type: object
+      properties:
+        editor:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: netris
+    nat.servers.body:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: server212
+        serverClusterID:
+          nullable: true
+          type: integer
+          example: 32423
+    nat.servers.response.get.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/nat.servers.body'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200        
+    nat.response.get.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/nat.get.body'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    nat.response.get.one.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+            $ref: '#/components/schemas/nat.get.body'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    nat.response.error:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: object
+          example: null
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
+
+
