@@ -382,7 +382,6 @@ components:
       required:
         - name
         - site
-        - vpc
         - state
         - action
         - protocol
