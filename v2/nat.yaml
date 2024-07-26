@@ -62,7 +62,7 @@ paths:
                         example: 23
                   message:
                     example: "Successfully created."
-                  isSuccess: 
+                  isSuccess:
                     type: boolean
                     example: true
                   meta:
@@ -72,7 +72,6 @@ paths:
                             example: 2
                           statusCode:
                             example: 200
-                          
         400:
           description: Error
           content:
@@ -90,7 +89,7 @@ paths:
           required: true
           schema:
             type: integer
-          description: The id of a specific NAT rule.
+          description: ID of a NAT rule.
       responses:
         200:
           description: OK
@@ -130,7 +129,7 @@ paths:
           required: true
           schema:
             type: integer
-          description: The id of a specific server cluster.
+          description: ID of a NAT rule.
       requestBody:
         required: true
         content:
@@ -152,7 +151,7 @@ paths:
                         example: 23
                   message:
                     example: "Successfully updated."
-                  isSuccess: 
+                  isSuccess:
                     type: boolean
                     example: true
                   meta:
@@ -351,7 +350,6 @@ components:
       required:
         - name
         - site
-        - vpc
         - state
         - action
         - protocol
@@ -475,6 +473,7 @@ components:
             name:
               type: string
               example: VPC-1
+          description: When vpc object is null the rule will be created in Default VPC.
     nat.body.action:
       type: object
       properties:
