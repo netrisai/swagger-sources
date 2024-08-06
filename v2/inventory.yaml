@@ -1296,15 +1296,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
-        sgFlavor:
-          description: Specifies the flavor of the softgate object. If not provided, the default value will be "sg"
-          nullable: true
-          default: sg
-          type: string
-          enum:
-          - sg
-          - sg-pro
-          - sg-hs
     linksBody:
       type: object
       description: Physical connection
