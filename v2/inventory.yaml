@@ -798,6 +798,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
+        sgFlavor:
+          nullable: true
+          type: string
+          enum:
+          - sg
+          - sg-pro
+          - sg-hs
+          example: null
         createdDate:
           type: number
           example: 1617280628000
@@ -1238,6 +1246,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
+        sgFlavor:
+          nullable: true
+          default: sg
+          type: string
+          enum:
+          - sg
+          - sg-pro
+          - sg-hs
     softgateEditBody:
       type: object
       required:
@@ -1278,6 +1294,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
+        sgFlavor:
+          nullable: true
+          default: sg
+          type: string
+          enum:
+          - sg
+          - sg-pro
+          - sg-hs
     linksBody:
       type: object
       description: Physical connection
