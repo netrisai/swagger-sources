@@ -799,6 +799,7 @@ components:
           items:
             $ref: '#/components/schemas/linksBody'
         sgFlavor:
+          description: Specifies the flavor of the softgate object. This field is applicable only to objects of type 'softgate'.
           nullable: true
           type: string
           enum:
@@ -1247,6 +1248,7 @@ components:
           items:
             $ref: '#/components/schemas/linksBody'
         sgFlavor:
+          description: Specifies the flavor of the softgate object. If not provided, the default value will be "sg"
           nullable: true
           default: sg
           type: string
@@ -1295,6 +1297,7 @@ components:
           items:
             $ref: '#/components/schemas/linksBody'
         sgFlavor:
+          description: Specifies the flavor of the softgate object. If not provided, the default value will be "sg"
           nullable: true
           default: sg
           type: string
