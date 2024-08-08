@@ -1264,6 +1264,7 @@ components:
           - sg
           - sg-pro
           - sg-hs
+          example: sg-hs
         sgRole:
           description: Specifies the role of the SoftGate object. This parameter is applicable only for objects of the "softgate" type with the "sg-hs" flavor. If not provided, the default role is set to "general".
           nullable: true
@@ -1320,6 +1321,7 @@ components:
           enum:
           - general
           - snat
+          example: null
     linksBody:
       type: object
       description: Physical connection
