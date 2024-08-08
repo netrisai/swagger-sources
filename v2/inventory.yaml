@@ -807,6 +807,14 @@ components:
           - sg-pro
           - sg-hs
           example: null
+        sgRole:
+          description: Specifies the role of the softgate object. This field is applicable only to objects of type 'softgate' with sgFlavor 'sg-hs'.
+          nullable: true
+          type: string
+          enum:
+          - general
+          - snat
+          example: null
         createdDate:
           type: number
           example: 1617280628000
@@ -1256,6 +1264,14 @@ components:
           - sg
           - sg-pro
           - sg-hs
+        sgRole:
+          description: Specifies the role of the SoftGate object. This parameter is applicable only for objects of the "softgate" type with the "sg-hs" flavor. If not provided, the default role is set to "general".
+          nullable: true
+          default: general
+          type: string
+          enum:
+          - general
+          - snat
     softgateEditBody:
       type: object
       required:
@@ -1296,6 +1312,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
+        sgRole:
+          description: Specifies the role of the SoftGate object. This parameter is applicable only for objects of the "softgate" type with the "sg-hs" flavor. If not provided, the default role is set to "general".
+          nullable: true
+          default: general
+          type: string
+          enum:
+          - general
+          - snat
     linksBody:
       type: object
       description: Physical connection
