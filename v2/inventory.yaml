@@ -1207,12 +1207,12 @@ components:
       properties:
         name:
           type: string
-          example: switch22.netris.io
-          description: Switch hostname. Value must comply to RFC-952.
+          example: softgate22.netris.io
+          description: SoftGate hostname. Value must comply to RFC-952.
         description:
           type: string
           description: Descriptive name
-          example: Santa-Clara Spine Switch
+          example: Santa-Clara SoftGate
         mainAddress:
           type: string
           example: 100.64.77.4
@@ -1281,12 +1281,12 @@ components:
       properties:
         name:
           type: string
-          example: switch22.netris.io
-          description: Switch hostname. Value must comply to RFC-952.
+          example: softgate22.netris.io
+          description: SoftGate hostname. Value must comply to RFC-952.
         description:
           type: string
           description: Descriptive name
-          example: Santa-Clara Spine Switch
+          example: Santa-Clara Softgate
         mainAddress:
           type: string
           example: 100.64.77.4
