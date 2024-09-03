@@ -315,3 +315,9 @@ components:
             unnumberedBgpUnderlay:
               type: boolean
               example: false
+            automaticLinkAggregation:
+              type: boolean
+              example: false
+            mclag:
+              type: boolean
+              example: false
