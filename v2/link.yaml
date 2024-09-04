@@ -90,8 +90,9 @@ paths:
         - name: id
           in: path
           required: true
-          type: number
           description: Link ID.
+          schema:
+            type: number
       responses:
         "200":
           description: Ok
@@ -200,13 +201,27 @@ components:
       in: cookie
       name: Web Service Cookie
   schemas:
+    mclagObject:
+      nullable: true
+      type: object
+      properties:
+        sharedIPv4Addr:
+          type: string
+          description: |
+            Used only for MC-LAG. Not required for EVPN-MH. MC-LAG shared IPv4 address. Shall be part of any IPAM defined subnet with the purpose set to loopback.
+          example: 169.254.22.1
+        anycastMACAddr:
+          type: string
+          description: |
+            Used only for MC-LAG. Not required for EVPN-MH. MC-LAG anycast MAC address. Recommended range 44:38:39:ff:00:00 - 44:38:39:ff:ff:ff
+          example: 44:38:39:ff:ff:00
     linkBody:
       type: object
       description: Physical connection
       properties:
         id:
           type: string
-          desription: Link ID.
+          description: Link ID.
           example: "323123"
         local:
           type: object
@@ -240,6 +255,9 @@ components:
             ipv6:
               type: string
               example: fe80::e29:efff:fece:fb21/64
+        mclag:
+          allOf:
+              - $ref: '#/components/schemas/mclagObject'
     linkResErrorBody:
       type: object
       description: Error response
