@@ -255,7 +255,7 @@ components:
             ipv6:
               type: string
               example: fe80::e29:efff:fece:fb21/64
-        mclag:
+        mclagPeerLink:
           allOf:
               - $ref: '#/components/schemas/mclagObject'
     linkResErrorBody:
