@@ -66,13 +66,13 @@ paths:
     delete:
       tags:
         - Link
-      summary: Request for deleting link.
+      summary: DEPRECATED - Request for deleting link.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/linkBody'
+              $ref: '#/components/schemas/linkBodyDelete'
       responses:
         "200":
           description: OK
@@ -102,7 +102,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/linkBody'
+                     $ref: '#/components/schemas/linkBodyDelete'
                   errors:
                     example: null
                   message:
@@ -215,6 +215,46 @@ components:
           description: |
             Used only for MC-LAG. Not required for EVPN-MH. MC-LAG anycast MAC address. Recommended range 44:38:39:ff:00:00 - 44:38:39:ff:ff:ff
           example: 44:38:39:ff:ff:00
+    linkBodyDelete:
+      type: object
+      description: Physical connection
+      properties:
+        id:
+          type: string
+          description: Link ID.
+          example: "323123"
+        local:
+          type: object
+          description: Current unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          properties:
+            id:
+              type: number
+              example: 21311
+            name:
+              type: string
+              example: swp56@switch22
+            ipv4:
+              type: string
+              example: 169.254.2.1/31
+            ipv6:
+              type: string
+              example: fe80::e29:efff:fece:fb20/64
+        remote:
+          type: object
+          description: Remote unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          properties:
+            id:
+              type: number
+              example: 43534
+            name:
+              type: string
+              example: swp10@switch5
+            ipv4:
+              type: string
+              example: 169.254.2.2/31
+            ipv6:
+              type: string
+              example: fe80::e29:efff:fece:fb21/64
     linkBody:
       type: object
       description: Physical connection
