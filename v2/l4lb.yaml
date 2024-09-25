@@ -13,9 +13,18 @@ paths:
       parameters:
         - name: filterBySites
           in: query
-          description: ''
+          description: Filter by site id
           schema:
-            $ref: '#/components/schemas/filterBySites'
+            type: array
+            items:
+              type: number
+        - name: filterByVpc
+          in: query
+          description: Filter by vpc id.
+          schema:
+            type: array
+            items:
+              type: number
       responses:
         '200':
           description: OK
@@ -77,6 +86,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/resErrorBody'
+                - type: object
+                  properties:
+                    message:
+                      example: Not found.
+                    meta:
+                      properties:
+                        statusCode:
+                          example: 404
     put:
       tags:
         - L4 Load Balancer
@@ -107,6 +131,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/resErrorBody'
+                - type: object
+                  properties:
+                    message:
+                      example: Not found.
+                    meta:
+                      properties:
+                        statusCode:
+                          example: 404
     delete:
       tags:
         - L4 Load Balancer
@@ -131,6 +170,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/resErrorBody'
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/resErrorBody'
+                - type: object
+                  properties:
+                    message:
+                      example: Not found.
+                    meta:
+                      properties:
+                        statusCode: 
+                          example: 404
 components:
   securitySchemes:
     cookieAuth:
@@ -138,12 +192,6 @@ components:
       in: cookie
       name: Web Service Cookie
   schemas:
-    filterBySites:
-      type: array
-      items:
-        $ref: '#/components/schemas/selectedSite'
-    selectedSite:
-      type: integer
     L4LoadBalancerItem:
       type: object
       properties:
@@ -153,24 +201,51 @@ components:
         name:
           type: string
           example: name
-        tenantId:
-          type: integer
-          example: 1
-        siteId:
-          type: integer
-          example: 1
+        vpc:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: Default
+          description: When vpc object is null the rule will be created in Default VPC.
+        site:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 11
+            name:
+              type: string
+              example: Santa-Clara
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 1
+            name:
+              type: string
+              example: Admin
         protocol:
           type: string
           enum:
             - TCP
             - UDP
           example: TCP
+        ipFamily:
+          type: string
+          enum:
+            - IPv4
+            - IPv6
         ip:
           type: string
-          example: 1.1.1.1
+          example: 169.254.254.253
         port:
           type: integer
-          example: 1
+          example: 443
         healthcheck:
           type: object
           properties:
@@ -185,8 +260,8 @@ components:
               type: string
           example:
             HTTP:
-              timeOut: '34'
-              requestPath: ''
+              timeOut: 1000
+              requestPath: '/health'
         status:
           type: string
           enum:
@@ -195,13 +270,19 @@ components:
           example: enable
         internal:
           type: integer
-          example: 1
+          example: 0
+        tenantId:
+          type: integer
+          example: "Deprecated: please use tenant object instead"
         tenantName:
           type: string
-          example: Admin
+          example: "Deprecated: please use tenant object instead"
+        siteId:
+          type: integer
+          example: "Deprecated: please use site object instead"
         siteName:
           type: string
-          example: Santa Clara
+          example: "Deprecated: please use site object instead"
         backendIps:
           type: array
           items:
@@ -213,14 +294,39 @@ components:
           type: string
           example: name
           description: unique name
+        vpc:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+          description: When vpc object is null the rule will be created in Default VPC.
+        site:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 11
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 1
         protocol:
           type: string
           example: TCP
           description: TCP/UDP
         automatic:
           type: boolean
-          example: 'true'
-          description: true/false
+          enum:
+            - true
+            - false
+        ipFamily:
+          type: string
+          enum:
+            - IPv4
+            - IPv6
         ip:
           type: string
           example: 1.1.1.1
@@ -228,12 +334,6 @@ components:
           type: string
           example: enable
           description: enable/disable
-        tenantID:
-          type: number
-          example: 1
-        siteID:
-          type: number
-          example: 1
         healthCheck:
           enum:
             - None
@@ -252,6 +352,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/L4LoadBalancerBackend'
+        tenantID:
+          type: number
+          example: "Deprecated: use tenant object instead"
+        siteID:
+          type: number
+          example: "Deprecated: use site object instead"
     l4lbEditItem:
       type: object
       properties:
@@ -259,6 +365,25 @@ components:
           type: string
           example: name
           description: unique name
+        vpc:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+          description: When vpc object is null the rule will be created in Default VPC.
+        site:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 11
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 1
         protocol:
           type: string
           example: TCP
@@ -274,12 +399,6 @@ components:
           type: string
           example: enable
           description: enable/disable
-        tenantID:
-          type: number
-          example: 1
-        siteID:
-          type: number
-          example: 1
         healthCheck:
           type: string
           example: TCP
@@ -291,6 +410,12 @@ components:
         requestPath:
           type: string
           description: only with TCP protocol
+        tenantID:
+          type: number
+          example: "Deprecated: use tenant object instead"
+        siteID:
+          type: number
+          example: "Deprecated: use site object instead"
         backend:
           type: array
           items:
@@ -423,13 +548,11 @@ components:
       description: Success response
       properties:
         data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                example: 2
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 2
         errors:
           type: object
           example:
@@ -485,9 +608,9 @@ components:
       description: Error response
       properties:
         data:
-          type: array
-          items:
-            type: object
+          type: object
+          nullable: true
+          example: null
         errors:
           type: object
           example:
