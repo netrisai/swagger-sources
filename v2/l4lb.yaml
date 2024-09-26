@@ -474,21 +474,35 @@ components:
         port:
           type: integer
           example: 8080
-        status:
-          type: string
-          enum:
-            - ok
-            - failed
-          example: failed
-        response:
-          type: string
-          example: ''
         maintenance:
           type: boolean
           enum:
             - true
             - false
           example: false
+        stats:
+          type: array
+          items:
+            type: object
+            properties:
+              hardware:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 123
+                  name:
+                    type: string
+                    example: Softgate01
+              status:
+                type: string
+                enum:
+                  - ok
+                  - failed
+                example: failed
+              response:
+                type: string
+                example: connection refused
     resBody:
       type: object
       description: Success response
@@ -579,9 +593,9 @@ components:
       description: Success response
       properties:
         data:
-          type: array
-          items:
-            type: object
+          type: object
+          nullable: true
+          example: null
         errors:
           type: object
           example:
