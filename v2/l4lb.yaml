@@ -201,6 +201,9 @@ components:
         name:
           type: string
           example: name
+        description:
+          type: string
+          example: my description here
         vpc:
           type: object
           properties:
@@ -271,6 +274,17 @@ components:
         internal:
           type: integer
           example: 0
+        backendIps:
+          type: array
+          items:
+            $ref: '#/components/schemas/L4LoadBalancerBackendItemResponse'
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
         tenantId:
           type: integer
           example: "Deprecated: please use tenant object instead"
@@ -283,10 +297,6 @@ components:
         siteName:
           type: string
           example: "Deprecated: please use site object instead"
-        backendIps:
-          type: array
-          items:
-            $ref: '#/components/schemas/L4LoadBalancerBackendItemResponse'
     l4lbAddItem:
       type: object
       properties:
@@ -294,6 +304,9 @@ components:
           type: string
           example: name
           description: unique name
+        description:
+          type: string
+          example: my description here
         vpc:
           type: object
           properties:
@@ -352,6 +365,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/L4LoadBalancerBackend'
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
         tenantID:
           type: number
           example: "Deprecated: use tenant object instead"
@@ -365,6 +385,9 @@ components:
           type: string
           example: name
           description: unique name
+        description:
+          type: string
+          example: my description here
         vpc:
           type: object
           properties:
@@ -410,16 +433,23 @@ components:
         requestPath:
           type: string
           description: only with TCP protocol
+        backend:
+          type: array
+          items:
+            $ref: '#/components/schemas/L4LoadBalancerBackend'
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
         tenantID:
           type: number
           example: "Deprecated: use tenant object instead"
         siteID:
           type: number
           example: "Deprecated: use site object instead"
-        backend:
-          type: array
-          items:
-            $ref: '#/components/schemas/L4LoadBalancerBackend'
     L4LoadBalancerBackend:
       type: array
       items:
