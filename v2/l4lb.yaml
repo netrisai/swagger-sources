@@ -241,8 +241,8 @@ components:
         ipFamily:
           type: string
           enum:
-            - IPv4
-            - IPv6
+            - ipv4
+            - ipv6
         ip:
           type: string
           example: 169.254.254.253
@@ -338,8 +338,8 @@ components:
         ipFamily:
           type: string
           enum:
-            - IPv4
-            - IPv6
+            - ipv4
+            - ipv6
         ip:
           type: string
           example: 1.1.1.1
@@ -415,6 +415,11 @@ components:
           type: boolean
           example: 'true'
           description: true/false
+        ipFamily:
+          type: string
+          enum:
+            - ipv4
+            - ipv6  
         ip:
           type: string
           example: 1.1.1.1
