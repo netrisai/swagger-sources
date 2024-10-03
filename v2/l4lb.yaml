@@ -92,15 +92,15 @@ paths:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/resErrorBody'
-                - type: object
-                  properties:
-                    message:
-                      example: Not found.
-                    meta:
-                      properties:
-                        statusCode:
-                          example: 404
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
     put:
       tags:
         - L4 Load Balancer
@@ -137,15 +137,15 @@ paths:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/resErrorBody'
-                - type: object
-                  properties:
-                    message:
-                      example: Not found.
-                    meta:
-                      properties:
-                        statusCode:
-                          example: 404
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
     delete:
       tags:
         - L4 Load Balancer
@@ -176,15 +176,15 @@ paths:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/resErrorBody'
-                - type: object
-                  properties:
-                    message:
-                      example: Not found.
-                    meta:
-                      properties:
-                        statusCode: 
-                          example: 404
+                  - $ref: '#/components/schemas/resErrorBody'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
 components:
   securitySchemes:
     cookieAuth:
@@ -264,13 +264,22 @@ components:
           example:
             HTTP:
               timeOut: 1000
-              requestPath: '/health'
+              requestPath: /health
         status:
           type: string
           enum:
             - enable
             - disable
           example: enable
+        state:
+          type: object
+          properties:
+            label:
+              type: string
+              example: OK
+            value:
+              type: string
+              example: success
         internal:
           type: integer
           example: 0
@@ -287,16 +296,16 @@ components:
             - tag2
         tenantId:
           type: integer
-          example: "Deprecated: please use tenant object instead"
+          example: 'Deprecated: please use tenant object instead'
         tenantName:
           type: string
-          example: "Deprecated: please use tenant object instead"
+          example: 'Deprecated: please use tenant object instead'
         siteId:
           type: integer
-          example: "Deprecated: please use site object instead"
+          example: 'Deprecated: please use site object instead'
         siteName:
           type: string
-          example: "Deprecated: please use site object instead"
+          example: 'Deprecated: please use site object instead'
     l4lbAddItem:
       type: object
       properties:
@@ -374,10 +383,10 @@ components:
             - tag2
         tenantID:
           type: number
-          example: "Deprecated: use tenant object instead"
+          example: 'Deprecated: use tenant object instead'
         siteID:
           type: number
-          example: "Deprecated: use site object instead"
+          example: 'Deprecated: use site object instead'
     l4lbEditItem:
       type: object
       properties:
@@ -419,7 +428,7 @@ components:
           type: string
           enum:
             - ipv4
-            - ipv6  
+            - ipv6
         ip:
           type: string
           example: 1.1.1.1
@@ -451,10 +460,10 @@ components:
             - tag2
         tenantID:
           type: number
-          example: "Deprecated: use tenant object instead"
+          example: 'Deprecated: use tenant object instead'
         siteID:
           type: number
-          example: "Deprecated: use site object instead"
+          example: 'Deprecated: use site object instead'
     L4LoadBalancerBackend:
       type: array
       items:
@@ -530,11 +539,14 @@ components:
                     type: string
                     example: Softgate01
               status:
-                type: string
-                enum:
-                  - ok
-                  - failed
-                example: failed
+                type: object
+                properties:
+                  label:
+                    type: string
+                    example: Active
+                  value:
+                    type: string
+                    example: success
               response:
                 type: string
                 example: connection refused
