@@ -743,6 +743,14 @@ components:
             name:
               type: string
               example: Cumulus linux
+            tag:
+              type: string
+              example: cumulus_linux
+              enum:
+                - arista_eos
+                - cumulus_linux
+                - cumulus_nvue
+                - sonic
           description: ""
         mainAddress:
           type: string
@@ -855,7 +863,12 @@ components:
             tag:
               type: string
               example: sonic
-          description: Network operating system of the unit.<br> Allowed values:<br> - cumulus_linux<br> - sonic<br> - ubuntu_switch_dev<br>
+              enum:
+                - arista_eos
+                - cumulus_linux
+                - cumulus_nvue
+                - sonic
+          description: Network operating system name.
         mainAddress:
           type: string
           example: 100.64.77.4
@@ -956,7 +969,12 @@ components:
             tag:
               type: string
               example: sonic
-          description: Network operating system of the unit.<br> Allowed values:<br> - cumulus_linux<br> - sonic<br> - ubuntu_switch_dev<br>
+              enum:
+                - arista_eos
+                - cumulus_linux
+                - cumulus_nvue
+                - sonic
+          description: Network operating system of the unit.
         mainAddress:
           type: string
           example: 100.64.77.4
