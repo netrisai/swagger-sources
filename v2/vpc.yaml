@@ -287,18 +287,6 @@ components:
               description: The system reserves VXLAN ID upon creating a VPC object.
               type: integer
               example: 2131
-            vlans:
-              description: VLAN ids reserved by VPC for each 'netris' managed switch fabric.
-              type: array
-              items:
-                type: object
-                properties:
-                  siteId:
-                    type: integer
-                    example: 1
-                  vlan:
-                    type: integer
-                    example: 343
     VPCResource:
       type: object
       properties:
