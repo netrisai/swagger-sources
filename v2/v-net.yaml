@@ -23,13 +23,13 @@ paths:
           schema:
             $ref: '#/components/schemas/filterByVpc'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/vnetResListBody'
-        "400":
+        '400':
           description: Error
           content:
             application/json:
@@ -46,13 +46,13 @@ paths:
             schema:
               $ref: '#/components/schemas/vnetAddBody'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/vnetResAddBody'
-        "400":
+        '400':
           description: Error
           content:
             application/json:
@@ -71,13 +71,13 @@ paths:
             type: integer
           description: The id of a specific V-Net
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/vnetResListByIdBody'
-        "400":
+        '400':
           description: Error
           content:
             application/json:
@@ -101,13 +101,13 @@ paths:
             schema:
               $ref: '#/components/schemas/vnetEditBody'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/vnetResAddBody'
-        "400":
+        '400':
           description: Error
           content:
             application/json:
@@ -125,13 +125,13 @@ paths:
           required: true
           description: Numeric ID of the V-Net.
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/vnetResDeleteBody'
-        "400":
+        '400':
           description: Error
           content:
             application/json:
@@ -180,7 +180,7 @@ components:
             name:
               type: string
               example: Unix
-          description: ""
+          description: ''
         sites:
           type: array
           description: Ports from these sites will be allowed to participate to the V-Net. Multi-site circuits are possible for sites connected through a backbone port.
@@ -193,7 +193,7 @@ components:
               name:
                 type: string
                 example: Santa-Clara
-            description: ""
+            description: ''
         vlan:
           description: Required only when selected site is not Netris managed
           oneOf:
@@ -201,6 +201,13 @@ components:
               enum:
                 - auto
             - type: integer
+        vxlanID:
+          description: VXLAN unique identifier. Value 0 for auto-assignment
+          type: integer
+          example: 0
+          nullable: true
+          minimum: 2
+          maximum: 16777215
         guestTenants:
           type: array
           description: List of tenants allowed to add/edit/remove ports to the V-Net but not allowed to manage other parameters of the circuit.
@@ -213,7 +220,7 @@ components:
               name:
                 type: string
                 example: Guest tenant
-            description: ""
+            description: ''
         state:
           type: string
           enum:
@@ -311,7 +318,7 @@ components:
               name:
                 type: string
                 example: Santa-Clara
-            description: ""
+            description: ''
         vlan:
           description: Required only when selected site is not Netris managed
           oneOf:
@@ -319,6 +326,13 @@ components:
               enum:
                 - auto
             - type: integer
+        vxlanID:
+          description: VXLAN identifier. Value 0 for auto-assignment
+          type: integer
+          example: 5587
+          nullable: true
+          minimum: 2
+          maximum: 16777215
         guestTenants:
           type: array
           description: List of tenants allowed to add/edit/remove ports to the V-Net but not allowed to manage other parameters of the circuit.
@@ -331,7 +345,7 @@ components:
               name:
                 type: string
                 example: Guest tenant
-            description: ""
+            description: ''
         state:
           type: string
           enum:
@@ -431,7 +445,7 @@ components:
             name:
               type: string
               example: Unix
-          description: ""
+          description: ''
         sites:
           type: array
           description: Ports from these sites will be allowed to participate to the V-Net. Multi-site circuits are possible for sites connected through a backbone port.
@@ -444,7 +458,7 @@ components:
               name:
                 type: string
                 example: Santa-Clara
-            description: ""
+            description: ''
         vpc:
           type: object
           nullable: true
@@ -465,6 +479,12 @@ components:
           description: Required only when selected site is not Netris managed
           type: integer
           example: 567
+        vxlanID:
+          description: VXLAN unique identifier
+          type: integer
+          example: 23234
+          maximum: 16777215
+          minimum: 2
         guestTenants:
           type: array
           description: List of tenants allowed to add/edit/remove ports to the V-Net but not allowed to manage other parameters of the circuit.
@@ -477,7 +497,7 @@ components:
               name:
                 type: string
                 example: Guest tenant
-            description: ""
+            description: ''
         state:
           type: string
           enum:
@@ -573,7 +593,7 @@ components:
                 example: active
               vlan:
                 type: string
-                example: "16"
+                example: '16'
               accessMode:
                 type: boolean
                 example: false
@@ -600,7 +620,7 @@ components:
           example: active
         vlan:
           type: string
-          example: "16"
+          example: '16'
         accessMode:
           type: boolean
           example: false
@@ -687,7 +707,7 @@ components:
               type: string
         message:
           type: string
-          example: ""
+          example: ''
         isSuccess:
           type: boolean
         meta:
@@ -716,7 +736,7 @@ components:
               type: string
         message:
           type: string
-          example: ""
+          example: ''
         isSuccess:
           type: boolean
         meta:
