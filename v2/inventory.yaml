@@ -835,7 +835,7 @@ components:
           nullable: true
           type: string
           enum:
-          - general
+          - generic
           - hyperv_cs
           example: null
         createdDate:
@@ -1199,7 +1199,7 @@ components:
           nullable: true
           type: string
           enum:
-          - general
+          - generic
           - hyperv_cs
         links:
           type: array
@@ -1240,7 +1240,7 @@ components:
           nullable: true
           type: string
           enum:
-          - general
+          - generic
           - hyperv_cs
         links:
           type: array
