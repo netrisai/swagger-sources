@@ -838,6 +838,13 @@ components:
           - generic
           - hyperv_cs
           example: null
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
         createdDate:
           type: number
           example: 1617280628000
@@ -955,6 +962,13 @@ components:
             - 2x400
           example: "off"
           description: Initial break out applies to all switch ports of this switch. Individual breakouts are available under the Network->Interfaces section.
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
     switchEditBody:
       type: object
       required:
@@ -1025,6 +1039,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/linksBody'
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
     equinixMetalServerAddBody:
       type: object
       required:
@@ -1064,6 +1085,13 @@ components:
         uuid:
           type: string
           example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
     equinixMetalServerEditBody:
       type: object
       required:
@@ -1078,6 +1106,13 @@ components:
           type: string
           description: Descriptive name
           example: hyper1 server
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
     phoenixNapBmcServerAddBody:
       type: object
       required:
@@ -1117,6 +1152,13 @@ components:
         uuid:
           type: string
           example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
     phoenixNapBmcServerEditBody:
       type: object
       required:
@@ -1135,6 +1177,13 @@ components:
         uuid:
           type: string
           example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
     serverAddBody:
       type: object
       required:
@@ -1201,6 +1250,13 @@ components:
           enum:
           - generic
           - hyperv_cs
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
         links:
           type: array
           items:
@@ -1242,6 +1298,13 @@ components:
           enum:
           - generic
           - hyperv_cs
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
         links:
           type: array
           items:
@@ -1322,6 +1385,13 @@ components:
           enum:
           - general
           - snat
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
     softgateEditBody:
       type: object
       required:
@@ -1371,6 +1441,13 @@ components:
           - general
           - snat
           example: null
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - tag1
+            - tag2
     linksBody:
       type: object
       description: Physical connection
