@@ -293,6 +293,18 @@ components:
           example:
             - tag1
             - tag2
+        portTags:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: zone1
+              accessMode:
+                type: boolean
+                default: false
+                example: true
     vnetEditBody:
       type: object
       properties:
@@ -408,6 +420,18 @@ components:
           example:
             - tag1
             - tag2
+        portTags:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: zone1
+              accessMode:
+                type: boolean
+                default: false
+                example: true
     vnetBody:
       allOf:
         - $ref: '#/components/schemas/vnetsBody'
@@ -557,6 +581,18 @@ components:
           example:
             - tag1
             - tag2
+        portTags:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: zone1
+              accessMode:
+                type: boolean
+                default: false
+                example: true
     vnetPortBody:
       type: object
       properties:
