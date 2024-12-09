@@ -315,6 +315,10 @@ components:
             unnumberedBgpUnderlay:
               type: boolean
               example: false
+            optimizeBgpOverlayHypervisor:
+              type: boolean
+              default: false
+              example: false
             automaticLinkAggregation:
               type: boolean
               example: false
