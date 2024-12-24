@@ -139,6 +139,55 @@ paths:
                         properties:
                           statusCode:
                             example: 404
+    put:
+      tags:
+        - Link
+      summary: Request for editing link by ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Link ID.
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/linkBodyPut'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Successfully edited.
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/linkResErrorBody'
+        "404":
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/linkResErrorBody'
+                  - type: object
+                    properties:
+                      errors:
+                        example:
+                          propertyName: Not Found
+                      message:
+                        example: Not found
+                      meta:
+                        properties:
+                          statusCode:
+                            example: 404
     delete:
       tags:
         - Link
@@ -261,6 +310,31 @@ components:
             ipv6:
               type: string
               example: fe80::e29:efff:fece:fb21/64
+    linkBodyPut:
+      type: object
+      description: Physical connection
+      properties:
+        local:
+          type: object
+          properties:
+            ipv4:
+              type: string
+              example: 169.254.2.1/31
+            ipv6:
+              type: string
+              example: fe80::e29:efff:fece:fb20/64
+        remote:
+          type: object
+          properties:
+            ipv4:
+              type: string
+              example: 169.254.2.2/31
+            ipv6:
+              type: string
+              example: fe80::e29:efff:fece:fb21/64
+        underlay:
+          allOf:
+            - $ref: '#/components/schemas/underlayObject'
     linkBodyPost:
       type: object
       description: Physical connection
