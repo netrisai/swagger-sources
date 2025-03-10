@@ -1,0 +1,365 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+security:
+  - cookieAuth: []
+paths:
+  /vpc-peering:
+    get:
+      tags:
+        - VPC Peering
+      summary: Get all VPC Peerings
+      responses:
+        '200':
+          description: List of VPC Peerings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringListResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponseError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponseError'
+    post:
+      tags:
+        - VPC Peering
+      summary: Add new VPC Peering
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VPCPeeringRequest'
+      responses:
+        '201':
+          description: VPC Peering created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponse'
+        '400':
+          description: Bad request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponseError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponseError'
+  '/vpc-peering/{id}':
+    get:
+      tags:
+        - VPC Peering
+      summary: Get VPC Peering by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: VPC Peering details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponseError'
+        '404':
+          description: VPC Peering not found
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VPCPeeringResponseError'
+                  - type: object
+                    properties:
+                      message:
+                        example: VPC is not found.
+                      meta:
+                        example:
+                          apiVersion: '2'
+                          statusCode: 404
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponseError'
+    put:
+      tags:
+        - VPC Peering
+      summary: Update VPC Peering
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VPCPeeringRequest'
+      responses:
+        '200':
+          description: VPC Peering updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VPCPeeringListResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponseError'
+        '404':
+          description: VPC Peering not found
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VPCPeeringResponseError'
+                  - type: object
+                    properties:
+                      message:
+                        example: VPC is not found.
+                      meta:
+                        example:
+                          apiVersion: '2'
+                          statusCode: 404
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponseError'
+    delete:
+      tags:
+        - VPC Peering
+      summary: Delete VPC Peering
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: VPC Peering deleted successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VPCPeeringListResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponseError'
+        '404':
+          description: VPC Peering not found
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/VPCPeeringResponseError'
+                  - type: object
+                    properties:
+                      message:
+                        example: VPC is not found.
+                      meta:
+                        example:
+                          apiVersion: '2'
+                          statusCode: 404
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPCPeeringResponseError'
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    VPCPeeringRequest:
+      type: object
+      required:
+        - vpcA
+        - vpcB
+      properties:
+        name:
+          type: string
+        vpcA:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+            prefixListInbound:
+              type: string
+              description: Prefix list for inbound traffic
+        vpcB:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+            prefixListInbound:
+              type: string
+              description: Prefix list for inbound traffic
+    VPCPeering:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        vpcA:
+          type: object
+          properties:
+            id:
+              type: integer
+            prefixListInbound:
+              type: string
+        vpcB:
+          type: object
+          properties:
+            id:
+              type: integer
+            prefixListInbound:
+              type: string
+        createdDate:
+          type: string
+          format: date-time
+          description: Date and time when the VPC Peering was created
+        modifiedDate:
+          type: string
+          format: date-time
+          description: Date and time when the VPC Peering was last modified
+    VPCPeeringListResponse:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/VPCPeering'
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    VPCPeeringResponse:
+      type: object
+      description: Success response
+      properties:
+        data:
+          $ref: '#/components/schemas/VPCPeering'
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    VPCPeeringResponseError:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          example:
+            propertyName: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
