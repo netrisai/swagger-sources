@@ -315,6 +315,12 @@ paths:
         - Server Cluster
       summary: Request for getting the server list.
       parameters:
+        - name: filterByAction
+          in: query
+          description: Filter by action
+          schema:
+            type: string
+            enum: [delete, create, modify]
         - name: page
           in: query
           description: Page number (if not specified list all items)
