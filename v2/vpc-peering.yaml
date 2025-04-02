@@ -3,12 +3,12 @@ info:
   title: Netris API
   version: v2
 security:
-  - cookieAuth: []
+- cookieAuth: []
 paths:
-  /vpc-peering:
+  "/vpc-peering":
     get:
       tags:
-        - VPC Peering
+      - VPC Peering
       summary: Get all VPC Peerings
       responses:
         '200':
@@ -16,109 +16,109 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringListResponse'
+                "$ref": "#/components/schemas/VPCPeeringListResponse"
         '400':
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponseError'
+                "$ref": "#/components/schemas/VPCPeeringResponseError"
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponseError'
+                "$ref": "#/components/schemas/VPCPeeringResponseError"
     post:
       tags:
-        - VPC Peering
+      - VPC Peering
       summary: Add new VPC Peering
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VPCPeeringRequest'
+              "$ref": "#/components/schemas/VPCPeeringRequest"
       responses:
         '201':
           description: VPC Peering created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponse'
+                "$ref": "#/components/schemas/VPCPeeringResponse"
         '400':
           description: Bad request - Invalid input
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponseError'
+                "$ref": "#/components/schemas/VPCPeeringResponseError"
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponseError'
-  '/vpc-peering/{id}':
+                "$ref": "#/components/schemas/VPCPeeringResponseError"
+  "/vpc-peering/{id}":
     get:
       tags:
-        - VPC Peering
+      - VPC Peering
       summary: Get VPC Peering by ID
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
       responses:
         '200':
           description: VPC Peering details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponse'
+                "$ref": "#/components/schemas/VPCPeeringResponse"
         '400':
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponseError'
+                "$ref": "#/components/schemas/VPCPeeringResponseError"
         '404':
           description: VPC Peering not found
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/VPCPeeringResponseError'
-                  - type: object
-                    properties:
-                      message:
-                        example: VPC is not found.
-                      meta:
-                        example:
-                          apiVersion: '2'
-                          statusCode: 404
+                - "$ref": "#/components/schemas/VPCPeeringResponseError"
+                - type: object
+                  properties:
+                    message:
+                      example: VPC is not found.
+                    meta:
+                      example:
+                        apiVersion: '2'
+                        statusCode: 404
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponseError'
+                "$ref": "#/components/schemas/VPCPeeringResponseError"
     put:
       tags:
-        - VPC Peering
+      - VPC Peering
       summary: Update VPC Peering
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VPCPeeringRequest'
+              "$ref": "#/components/schemas/VPCPeeringRequest"
       responses:
         '200':
           description: VPC Peering updated successfully
@@ -126,51 +126,51 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/VPCPeeringListResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
+                - "$ref": "#/components/schemas/VPCPeeringListResponse"
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
         '400':
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponseError'
+                "$ref": "#/components/schemas/VPCPeeringResponseError"
         '404':
           description: VPC Peering not found
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/VPCPeeringResponseError'
-                  - type: object
-                    properties:
-                      message:
-                        example: VPC is not found.
-                      meta:
-                        example:
-                          apiVersion: '2'
-                          statusCode: 404
+                - "$ref": "#/components/schemas/VPCPeeringResponseError"
+                - type: object
+                  properties:
+                    message:
+                      example: VPC is not found.
+                    meta:
+                      example:
+                        apiVersion: '2'
+                        statusCode: 404
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponseError'
+                "$ref": "#/components/schemas/VPCPeeringResponseError"
     delete:
       tags:
-        - VPC Peering
+      - VPC Peering
       summary: Delete VPC Peering
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
       responses:
         '200':
           description: VPC Peering deleted successfully
@@ -178,41 +178,41 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/VPCPeeringListResponse'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
+                - "$ref": "#/components/schemas/VPCPeeringListResponse"
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
         '400':
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponseError'
+                "$ref": "#/components/schemas/VPCPeeringResponseError"
         '404':
           description: VPC Peering not found
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/VPCPeeringResponseError'
-                  - type: object
-                    properties:
-                      message:
-                        example: VPC is not found.
-                      meta:
-                        example:
-                          apiVersion: '2'
-                          statusCode: 404
+                - "$ref": "#/components/schemas/VPCPeeringResponseError"
+                - type: object
+                  properties:
+                    message:
+                      example: VPC is not found.
+                    meta:
+                      example:
+                        apiVersion: '2'
+                        statusCode: 404
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VPCPeeringResponseError'
+                "$ref": "#/components/schemas/VPCPeeringResponseError"
 components:
   securitySchemes:
     cookieAuth:
@@ -223,29 +223,35 @@ components:
     VPCPeeringRequest:
       type: object
       required:
-        - vpcA
-        - vpcB
+      - vpcA
+      - vpcB
       properties:
         name:
           type: string
         vpcA:
           type: object
           required:
-            - id
+          - id
           properties:
             id:
               type: integer
-            prefixListInbound:
+            prefixListInboundIPv4:
+              type: string
+              description: Prefix list for inbound traffic
+            prefixListInboundIPv6:
               type: string
               description: Prefix list for inbound traffic
         vpcB:
           type: object
           required:
-            - id
+          - id
           properties:
             id:
               type: integer
-            prefixListInbound:
+            prefixListInboundIPv4:
+              type: string
+              description: Prefix list for inbound traffic
+            prefixListInboundIPv6:
               type: string
               description: Prefix list for inbound traffic
     VPCPeering:
@@ -260,15 +266,23 @@ components:
           properties:
             id:
               type: integer
-            prefixListInbound:
+            prefixListInboundIPv4:
               type: string
+              description: Prefix list for inbound traffic
+            prefixListInboundIPv6:
+              type: string
+              description: Prefix list for inbound traffic
         vpcB:
           type: object
           properties:
             id:
               type: integer
-            prefixListInbound:
+            prefixListInboundIPv4:
               type: string
+              description: Prefix list for inbound traffic
+            prefixListInboundIPv6:
+              type: string
+              description: Prefix list for inbound traffic
         createdDate:
           type: string
           format: date-time
@@ -284,7 +298,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/VPCPeering'
+            "$ref": "#/components/schemas/VPCPeering"
         errors:
           type: object
           example:
@@ -311,7 +325,7 @@ components:
       description: Success response
       properties:
         data:
-          $ref: '#/components/schemas/VPCPeering'
+          "$ref": "#/components/schemas/VPCPeering"
         errors:
           type: object
           example:
