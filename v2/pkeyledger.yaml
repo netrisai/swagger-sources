@@ -1,0 +1,371 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+paths:
+  /api/v2/pkeyledger/:
+    get:
+      tags:
+        - Pkey Ledger
+      summary: List all pkey ledger records
+      parameters:
+        - in: query
+          name: ufmID
+          schema:
+            type: string
+        - in: query
+          name: pkeyID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pkeyledger.response.get.ok'
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pkeyledger.response.error'
+        "404":
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/pkeyledger.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+    post:
+      tags:
+        - Pkey Ledger
+      summary: Request for creating a record in pkey ledger.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pkeyledger.post.record'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      pkeyID:
+                        type: string
+                        example: pkey89
+                      ufmID:
+                        type: string
+                        example: ufm89
+                  message:
+                    example: Successfully created.
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        example: 2
+                      statusCode:
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pkeyledger.response.error'
+  /api/v2/pkeyledger/{ufmID}/{pkeyID}:
+    put:
+      tags:
+        - Pkey Ledger
+      summary: Request for creating a record in pkey ledger.
+      parameters:
+        - name: ufmID
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: pkeyID
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pkeyledger.put.record'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      pkeyID:
+                        type: string
+                        example: pkey89
+                      ufmID:
+                        type: string
+                        example: ufm89
+                  message:
+                    example: Successfully updated.
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        example: 2
+                      statusCode:
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pkeyledger.response.error'
+        "404":
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/pkeyledger.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+    delete:
+      tags:
+        - Pkey Ledger
+      summary: Request for deleting a record from pkey ledger.
+      parameters:
+        - name: ufmID
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: pkeyID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example:
+                      pkeyID: 12
+                      ufmID: 1
+                  message:
+                    example: Successfully deleted.
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        example: 2
+                      statusCode:
+                        example: 200
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/pkeyledger.response.error'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example:
+                          pkeyID: 12
+                          ufmID: 1
+                      message:
+                        example: Error mesage
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 400
+        404:
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/pkeyledger.response.error'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example:
+                          pkeyID: 12
+                          ufmID: 1
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+components:
+  schemas:
+    pkeyledger.response.get.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/pkeyledger.record'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    pkeyledger.response.error:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: object
+          example: null
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
+    pkeyledger.record:
+      type: object
+      properties:
+        srvCluster:
+          $ref: '#/components/schemas/pkeyledger.record.srvcluster'
+        ufmID:
+          type: string
+        pkeyID:
+          type: string
+        serversGuids:
+          type: array
+          items:
+            type: string
+        servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/pkeyledger.record.server'
+        custom:
+          type: object
+        created_date:
+          type: string
+          format: date-time
+        modified_date:
+          type: string
+          format: date-time
+    pkeyledger.post.record:
+      type: object
+      required:
+        - srvClusterID
+        - ufmID
+        - pkeyID
+      properties:
+        ufmID:
+          type: string
+        pkeyID:
+          type: string
+        srvClusterID:
+          type: integer
+          example: 12
+        serversGuids:
+          type: array
+          items:
+            type: string
+        custom:
+          type: object
+    pkeyledger.put.record:
+      type: object
+      required:
+        - ufmID
+        - pkeyID
+      properties:
+        serversGuids:
+          type: array
+          items:
+            type: string
+        custom:
+          type: object
+    pkeyledger.record.srvcluster:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    pkeyledger.record.server:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
