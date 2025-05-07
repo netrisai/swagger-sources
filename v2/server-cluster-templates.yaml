@@ -32,7 +32,7 @@ paths:
             schema:
               $ref: '#/components/schemas/clustersrvtmpl.post.body'
       responses:
-        200:
+        '200':
           description: OK
           content:
             application/json:
@@ -289,10 +289,11 @@ components:
       properties:
         postfix:
           type: string
-          example: "East-West"
+          example: East-West
+          description: The postfix field is used to provide a unique identifier that will be appended to the cluster name when instantiating the object defined by the server cluster template. This ensures that each instantiated object has a unique name within the context of that template.
         type:
           type: string
-          enum: ["l2pvn", "l3vpn", "infiniband"]
+          enum: ["l2pvn", "l3vpn", "ufm"]
           example: "l3vpn"
         vlan:
           type: string
@@ -311,24 +312,54 @@ components:
           oneOf:
             - type: string
               nullable: true
-              description: "IPv4 gateway address. Must be a valid IPv4 Cidr."
-              example: "10.10.10.254/24"
+              description: IPv4 gateway address. Must be a valid IPv4 Cidr.
+              example: 10.10.10.254/24
             - type: string
-              description: "dynamic: means it has to be specified during server cluster creation"
-              enum: ["dynamic"]
+              description: 'specify: means it has to be specified during server cluster creation'
+              enum: [specify]
               nullable: true
-              example: "dynamic"
+              example: specify
+            - type: object
+              properties:
+                assignType: 
+                  type: string
+                  enum: [auto]
+                allocation: 
+                  type: string
+                  example: "10.0.0.0/16"
+                childSubnetPrefixLength:
+                  type: integer
+                  example: 24
+                hostnum:
+                  type: integer
+                  example: 254
+                  default: 1
         ipv6Gateway:
           oneOf:
             - type: string
               nullable: true
-              description: "IPv6 gateway address. Must be a valid IPv6 Cidr."
-              example: "2001:db8:85a3::8a2e:370:7334/64"
+              description: IPv6 gateway address. Must be a valid IPv6 Cidr.
+              example: 2001:db8:85a3::8a2e:370:7334/64
             - type: string
-              description: "dynamic: means it has to be specified during server cluster creation"
-              enum: ["dynamic"]
+              description: 'specify: means it has to be specified during server cluster creation'
+              enum: [specify]
               nullable: true
-              example: "dynamic"
+              example: dynamic
+            - type: object
+              properties:
+                assignType: 
+                  type: string
+                  enum: [auto]
+                allocation: 
+                  type: string
+                  example: "2001:db8:1234::/52"
+                childSubnetPrefixLength:
+                  type: integer
+                  example: 64
+                hostnum:
+                  type: integer
+                  example: 254
+                  default: 1
     clustersrvtmpl.body.id:
         required:
           - id
