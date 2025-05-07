@@ -459,6 +459,36 @@ components:
             name:
               type: string
               example: GPU Cluster Template 1
+            ipv4Gateways:
+              type: array
+              items:
+                type: object
+                oneOf:
+                  - $ref: '#/components/schemas/clustersrv.body.template.assignCustomIPv4'
+            ipv6Gateways:
+              type: array
+              items:
+                type: object
+                oneOf:
+                  - $ref: '#/components/schemas/clustersrv.body.template.assignCustomIPv6'
+    clustersrv.body.template.assignCustomIPv4:
+      type: object
+      properties:
+        address:
+          type: string
+          example: 10.10.10.1/24
+        postfix:
+          type: string
+          example: East-West
+    clustersrv.body.template.assignCustomIPv6:
+      type: object
+      properties:
+        address:
+          type: string
+          example: 2001:db8:1234:0::1/64
+        postfix:
+          type: string
+          example: North-South
     clustersrv.body.content:
       required:
         - name
