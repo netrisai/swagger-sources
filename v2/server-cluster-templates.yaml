@@ -334,6 +334,11 @@ components:
                   type: integer
                   example: 254
                   default: 1
+        ipv4DhcpEnabled:
+          type: boolean
+          description: 'Enables the DHCP service for the V-NET with a defined IPv4 gateway'
+          default: false
+          nullable: true
         ipv6Gateway:
           oneOf:
             - type: string
