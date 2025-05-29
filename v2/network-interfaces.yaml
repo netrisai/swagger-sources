@@ -1,0 +1,1256 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+paths:
+  /api/v2/ports:
+    get:
+      tags:
+        - Network Interfaces
+      summary: Returns a list of network interfaces.
+      parameters:
+        - name: filterSwitchName
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by switch name
+        - name: filterPort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by port
+        - name: filterInUse
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - all
+              - free
+              - used
+              - none
+          description: Filter by in use
+        - name: filterDescription
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by description
+        - name: filterTenant
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by tenant
+        - name: filterStatus
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - all
+                - up
+                - down
+                - admin-down
+                - unknown
+                - none
+          description: Filter by status
+        - name: filterSpeed
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by speed
+        - name: filterTransceiver
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by transceiver
+        - name: filterMtu
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by mtu
+        - name: filterSite
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by site
+        - name: filterBreakout
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by breakout
+        - name: filterBySites
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+          description: Filter by sites
+        - name: switchID
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter by switch id
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Sort by property
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+          description: Order asc or desc
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Count of ports
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The current page
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.get.ok'
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+    put:
+      tags:
+        - Network Interfaces
+      summary: Edit network interfaces.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ports.put.body'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: null
+                  isSuccess:
+                    type: boolean
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+    delete:
+      tags:
+        - Network Interfaces
+      summary: Delete network interfaces.
+      parameters:
+        - name: ids
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: number
+          example:
+            - 1
+          description: Pass ids
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: null
+                  isSuccess:
+                    type: boolean
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+  /api/v2/ports/{id}:
+    get:
+      tags:
+        - Network Interfaces
+      summary: Returns a network interface by id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of a specific port
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.get.one.ok'
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+    put:
+      tags:
+        - Network Interfaces
+      summary: Edit a network interface.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of a specific port
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ports.put.body'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: null
+                  isSuccess:
+                    type: boolean
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+    delete:
+      tags:
+        - Network Interfaces
+      summary: Delete a network interfaces.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the port.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: null
+                  isSuccess:
+                    type: boolean
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+  /api/v2/ports/affectedresources:
+    get:
+      tags:
+        - Network Interfaces
+      summary: Returns a list of affected resources.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example:
+                      port_id:
+                        roh:
+                          - id: 1
+                            name: Instance-1
+                        vnet:
+                          - id: 1
+                            name: V-Net-1
+                        bgp:
+                          - id: 1
+                            name: BGP-1
+                        link:
+                          - id: 1
+                            name: Link-1
+                    properties:
+                      port_id:
+                        type: object
+                        properties:
+                          resource:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                name:
+                                  type: string
+                  isSuccess:
+                    type: boolean
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+  /api/v2/ports/aggregatedports:
+    get:
+      tags:
+        - Network Interfaces
+      summary: Returns a list of aggregated network interfaces.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        lagMembers:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              port:
+                                type: string
+                        tenant:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                        lacp:
+                          type: integer
+                  isSuccess:
+                    type: boolean
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+  /api/v2/ports/{type}/free:
+    get:
+      tags:
+        - Network Interfaces
+      summary: Returns a list of free network interfaces.
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The type of a section
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.get.ok'
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+  /api/v2/ports/{type}/used:
+    get:
+      tags:
+        - Network Interfaces
+      summary: Returns a list of used network interfaces.
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The type of a section
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.get.ok'
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+  /api/v2/ports/extensions:
+    get:
+      tags:
+        - Network Interfaces
+      summary: Returns a list of extensions.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        vlanFrom:
+                          type: integer
+                        vlanTo:
+                          type: integer
+                        fullName:
+                          type: string
+                  isSuccess:
+                    type: boolean
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+  /api/v2/ports/slim:
+    get:
+      tags:
+        - Network Interfaces
+      summary: Returns a list of network interfaces.
+      parameters:
+        - name: filterSwitchName
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by switch name
+        - name: filterPort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by port
+        - name: filterInUse
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - all
+              - free
+              - used
+              - none
+          description: Filter by in use
+        - name: filterDescription
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by description
+        - name: filterTenant
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by tenant
+        - name: filterStatus
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - all
+                - up
+                - down
+                - admin-down
+                - unknown
+                - none
+          description: Filter by status
+        - name: filterSpeed
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by speed
+        - name: filterTransceiver
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by transceiver
+        - name: filterMtu
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by mtu
+        - name: filterSite
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by site
+        - name: filterBreakout
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by breakout
+        - name: filterBySites
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+          description: Filter by sites
+        - name: switchID
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter by switch id
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Sort by property
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+          description: Order asc or desc
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Count of ports
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The current page
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Success response
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        inUse:
+                          type: boolean
+                  isSuccess:
+                    type: boolean
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+  /api/v2/ports/extensions/{id}:
+    delete:
+      tags:
+        - Network Interfaces
+      summary: Delete extension.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the extension.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: null
+                  isSuccess:
+                    type: boolean
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+  /api/v2/ports/lag:
+    post:
+      tags:
+        - Network Interfaces
+      summary: Add network interfaces to a LAG.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ports.lag.body'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                  isSuccess:
+                    type: boolean
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+  /api/v2/ports/freeup:
+    put:
+      tags:
+        - Network Interfaces
+      summary: Free up network interfaces.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ports.freeUp.body'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: null
+                  isSuccess:
+                    type: boolean
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ports.response.error'
+components:
+  schemas:
+    ports.get.body:
+      type: object
+      properties:
+        id:
+          type: integer
+        ifName:
+          type: string
+        description:
+          type: string
+        present:
+          type: integer
+        switchName:
+          type: string
+        status:
+          type: object
+          properties:
+            value:
+              type: string
+              example: unknown
+            label:
+              type: string
+              example: Unknown
+        speed:
+          type: string
+        desiredSpeed:
+          type: string
+        transceiver:
+          type: string
+        mtu:
+          type: integer
+        lacp:
+          type: string
+        mclagId:
+          type: integer
+        adminDown:
+          type: string
+        autoNeg:
+          type: string
+        duplex:
+          type: string
+        siteVlanRange:
+          type: string
+        _port:
+          type: string
+        portIndex:
+          type: integer
+        port:
+          type: string
+        extension:
+          type: integer
+        parentPort:
+          type: integer
+        breakout:
+          type: string
+          enum:
+            - "off"
+            - disabled
+            - 4x10
+            - 4x25
+            - 2x50
+            - 4x50
+            - 2x100
+            - 4x100
+            - 2x200
+            - 4x200
+            - 2x400
+          example: "off"
+        breakIndex:
+          type: integer
+        linkTraining:
+          default: auto
+          nullable: true
+          type: string
+          enum:
+            - "auto"
+            - "off"
+            - "on"
+        switchPlatform:
+          type: string
+        switchAddr:
+          type: string
+        agg_slaves_label:
+          type: string
+        in_agg_label:
+          type: string
+        portReservationCount:
+          type: integer
+        name:
+          type: string
+        shortName:
+          type: string
+        info:
+          type: object
+          properties:
+            port:
+              type: string
+            ifName:
+              type: string
+        tenant:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        site:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            vlanRange:
+              type: string
+            vlanRangeStart:
+              type: integer
+            vlanRangeEnd:
+              type: integer
+        switch:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            type:
+              type: string
+            platform:
+              type: string
+            mainAddress:
+              type: string
+        inUse:
+          type: boolean
+        slavePorts:
+          type: array
+          items:
+            type: object
+            example: {}
+        stateInHierarchy:
+          type: object
+          properties:
+            extensionsParent:
+              type: integer
+            extended:
+              type: integer
+            breakout:
+              type: boolean
+            breakoutChild:
+              type: boolean
+            lagMember:
+              type: boolean
+            aggregated:
+              type: boolean
+        bgp:
+          type: object
+          properties:
+            state:
+              type: string
+            prefix:
+              type: string
+            time:
+              type: string
+        sortIndexAsc:
+          type: string
+        sortIndexDesc:
+          type: string
+        createdDate:
+          type: integer
+        modifiedDate:
+          type: integer
+    ports.put.body:
+      type: object
+      required:
+        - tenant
+        - mtu
+        - autoNeg
+        - speed
+        - duplex
+      properties:
+        id:
+          type: number
+          example: 100
+          description: ""
+        description:
+          type: string
+          example: swp1
+          description: ""
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 23
+            name:
+              type: string
+              example: Unix
+          description: ""
+        breakout:
+          type: string
+          enum:
+            - "off"
+            - disabled
+            - 4x10
+            - 4x25
+            - 2x50
+            - 4x50
+            - 2x100
+            - 4x100
+            - 2x200
+            - 4x200
+            - 2x400
+          example: "off"
+        mtu:
+          type: number
+          example: 9216
+          description: ""
+        autoNeg:
+          type: string
+          enum:
+            - "on"
+            - "off"
+          example: "off"
+          description: ""
+        speed:
+          type: string
+          enum:
+            - "1000"
+            - "10000"
+            - "25000"
+            - "40000"
+            - "50000"
+            - "100000"
+            - "200000"
+            - "400000"
+            - auto
+          example: auto
+          description: ""
+        duplex:
+          type: string
+          enum:
+            - full
+            - half
+            - none
+          example: none
+          description: ""
+        adminDown:
+          type: string
+          enum:
+            - "yes"
+            - "no"
+          example: "no"
+          description: ""
+        linkTraining:
+          default: auto
+          nullable: true
+          type: string
+          enum:
+            - "auto"
+            - "off"
+            - "on"
+        extension:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 23
+            name:
+              type: string
+              example: Unix
+            vlanFrom:
+              type: number
+              example: 23
+            vlanTo:
+              type: number
+              example: 27
+          description: ""
+    ports.lag.body:
+      type: object
+      required:
+        - aggregatedPort
+        - tenant
+        - mtu
+        - extension
+      properties:
+        aggregatedPort:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 1
+            name:
+              type: string
+              example: agg1
+        description:
+          type: string
+          example: swp1
+          description: ""
+        tenant:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 23
+            name:
+              type: string
+              example: Unix
+          description: ""
+        mtu:
+          type: number
+          example: 9216
+          description: ""
+        mclagId:
+          type: integer
+          example: 1
+          description: ""
+        extension:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 23
+            name:
+              type: string
+              example: Unix
+            vlanFrom:
+              type: number
+              example: 23
+            vlanTo:
+              type: number
+              example: 27
+          description: ""
+        ports:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 1
+              name:
+                type: string
+                example: swp1
+      description: ""
+    ports.freeUp.body:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 100
+          description: ""
+        name:
+          type: string
+          example: swp1
+          description: ""
+    ports.response.get.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ports.get.body'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: v2
+            statusCode:
+              type: integer
+              example: 200
+    ports.response.get.one.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+          $ref: '#/components/schemas/ports.get.body'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: v2
+            statusCode:
+              type: integer
+              example: 200
+    ports.response.error:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: object
+          example: null
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: v2
+            statusCode:
+              type: integer
+              example: 400
