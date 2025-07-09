@@ -1,0 +1,50 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+security:
+  - cookieAuth: []
+paths:
+  /api/v2/ztp/provision:
+    get:
+      tags:
+        - ZTP 
+      summary: Request for getting ztp configuration for the device
+      parameters:
+        - name: mac
+          in: query
+          required: true
+          description: mac address of the device
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            plain/text:
+              schema:
+                $ref: '#/components/schemas/ztp.body'
+        "403":
+          description: Forbidden - When the requestor's IP address does not belong to any of the management networks defined in the IPAM
+          content:    
+            plain/text:
+              example: FORBIDDEN
+        "404":
+          description: Not Found - When switch with mac address is not found 
+          content:    
+            plain/text:
+              example: NOT FOUND
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    ztp.body:
+      type: string
+      example: |
+                #!/bin/bash
+                echo "Provisioning started..."
+                # script logic here
