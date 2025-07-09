@@ -153,6 +153,8 @@ components:
           $ref: '#/components/schemas/fabricProps'
         gpuClusterProps:
           $ref: '#/components/schemas/gpuClusterProps'
+        ztpProps:
+          $ref: '#/components/schemas/ztpProps'
         createdDate:
           type: integer
           example: 1716575234000
@@ -210,6 +212,8 @@ components:
           $ref: '#/components/schemas/fabricProps'
         gpuClusterProps:
           $ref: '#/components/schemas/gpuClusterProps'
+        ztpProps:
+          $ref: '#/components/schemas/ztpProps'
     inventoryProfilesEditItem:
       type: object
       required:
@@ -265,6 +269,8 @@ components:
           $ref: '#/components/schemas/fabricProps'
         gpuClusterProps:
           $ref: '#/components/schemas/gpuClusterProps'
+        ztpProps:
+          $ref: '#/components/schemas/ztpProps'
     ruleAddItem:
       type: object
       properties:
@@ -285,43 +291,59 @@ components:
             - tcp
             - udp
             - any
+    ztpProps:
+      type: object
+      description: ZTP properties
+      properties:
+        nosImage:
+          type: string
+          nullable: true
+          example: cumulus_linux_5.11.iso
+        defaultUser:
+          type: string
+          nullable: true
+          example: "admin"
+        defaultPass:
+          type: string
+          nullable: true
+          example: "secret"
     gpuClusterProps:
-          type: object
-          description: GPU cluster specific settings
-          properties:
-            roce:
-              type: boolean
-              example: true
-            roceAdaptiveRouting:
-              type: boolean
-              example: false
-            congestionControl:
-              type: boolean
-              example: false
-            asicMonitoring:
-              type: boolean
-              example: false
-            aggregateL3VpnPrefix:
-              type: boolean
-              example: true
+      type: object
+      description: GPU cluster specific settings
+      properties:
+        roce:
+          type: boolean
+          example: true
+        roceAdaptiveRouting:
+          type: boolean
+          example: false
+        congestionControl:
+          type: boolean
+          example: false
+        asicMonitoring:
+          type: boolean
+          example: false
+        aggregateL3VpnPrefix:
+          type: boolean
+          example: true
     fabricProps:
-          type: object
-          description: Fabric specific settings
-          properties:
-            optimiseBgpOverlay:
-              type: boolean
-              example: true
-              default: true
-            optimiseBgpOverlayHypervisor:
-              type: boolean
-              default: false
-              example: false
-            unnumberedBgpUnderlay:
-              type: boolean
-              example: false
-            automaticLinkAggregation:
-              type: boolean
-              example: false
-            mclag:
-              type: boolean
-              example: false
+      type: object
+      description: Fabric specific settings
+      properties:
+        optimiseBgpOverlay:
+          type: boolean
+          example: true
+          default: true
+        optimiseBgpOverlayHypervisor:
+          type: boolean
+          default: false
+          example: false
+        unnumberedBgpUnderlay:
+          type: boolean
+          example: false
+        automaticLinkAggregation:
+          type: boolean
+          example: false
+        mclag:
+          type: boolean
+          example: false
