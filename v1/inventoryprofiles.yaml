@@ -154,7 +154,7 @@ components:
         gpuClusterProps:
           $ref: '#/components/schemas/gpuClusterProps'
         ztpProps:
-          $ref: '#/components/schemas/ztpProps'
+          $ref: '#/components/schemas/ztpPropsList'
         createdDate:
           type: integer
           example: 1716575234000
@@ -213,7 +213,7 @@ components:
         gpuClusterProps:
           $ref: '#/components/schemas/gpuClusterProps'
         ztpProps:
-          $ref: '#/components/schemas/ztpProps'
+          $ref: '#/components/schemas/ztpPropsModify'
     inventoryProfilesEditItem:
       type: object
       required:
@@ -270,7 +270,7 @@ components:
         gpuClusterProps:
           $ref: '#/components/schemas/gpuClusterProps'
         ztpProps:
-          $ref: '#/components/schemas/ztpProps'
+          $ref: '#/components/schemas/ztpPropsModify'
     ruleAddItem:
       type: object
       properties:
@@ -291,7 +291,7 @@ components:
             - tcp
             - udp
             - any
-    ztpProps:
+    ztpPropsList:
       type: object
       description: ZTP properties
       properties:
@@ -299,11 +299,15 @@ components:
           type: string
           nullable: true
           example: cumulus_linux_5.11.iso
-        defaultUser:
+    ztpPropsModify:
+      type: object
+      description: ZTP properties
+      properties:
+        nosImage:
           type: string
           nullable: true
-          example: "admin"
-        defaultPass:
+          example: cumulus_linux_5.11.iso
+        password:
           type: string
           nullable: true
           example: "secret"
