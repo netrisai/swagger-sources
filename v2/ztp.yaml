@@ -10,13 +10,7 @@ paths:
       tags:
         - ZTP 
       summary: Request for getting ztp configuration for the device
-      parameters:
-        - name: mac
-          in: query
-          required: true
-          description: mac address of the device
-          schema:
-            type: string
+      description: The ZTP template for the hardware will be returned if the request header contains a MAC address that matches a known switch.
       responses:
         "200":
           description: OK
@@ -48,3 +42,4 @@ components:
                 #!/bin/bash
                 echo "Provisioning started..."
                 # script logic here
+
