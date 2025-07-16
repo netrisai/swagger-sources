@@ -8,7 +8,7 @@ paths:
   /api/v2/ztp/provision:
     get:
       tags:
-        - ZTP 
+        - ZTP
       summary: Request for getting ztp configuration for the device
       description: The ZTP template for the hardware will be returned if the request header contains a MAC address that matches a known switch.
       responses:
@@ -18,14 +18,19 @@ paths:
             plain/text:
               schema:
                 $ref: '#/components/schemas/ztp.body'
+        "400":
+          description: Error
+          content:
+            plain/text:
+              example: Error message
         "403":
           description: Forbidden - When the requestor's IP address does not belong to any of the management networks defined in the IPAM
-          content:    
+          content:
             plain/text:
               example: FORBIDDEN
         "404":
-          description: Not Found - When switch with mac address is not found 
-          content:    
+          description: Not Found - When switch with mac address is not found
+          content:
             plain/text:
               example: NOT FOUND
 
