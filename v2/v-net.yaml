@@ -152,6 +152,30 @@ components:
       type: array
       items:
         type: integer
+    vnetDhcpRelay:
+      description: Enabling DHCP Relay will disable DHCP configuration under Gateways
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        vpc:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 22
+            name:
+              type: string
+              example: vpc22
+        primaryAddr:
+          type: string
+          description: Primary dhcp relay address
+          example: 10.2.2.1
+        secondaryAddr:
+          type: string
+          description: Primary dhcp relay address
+          example: 10.3.3.1
     vnetAddBody:
       type: object
       required:
@@ -247,6 +271,8 @@ components:
           type: string
           example: 1,3,4
           description: Required for only vlan-aware v-nets (vlanAware == true).
+        dhcpRelay:
+            $ref: '#/components/schemas/vnetDhcpRelay'
         gateways:
           type: array
           items:
@@ -374,6 +400,8 @@ components:
           type: string
           example: 1,3,4
           description: Required for only vlan-aware v-nets (vlanAware == true).
+        dhcpRelay:
+            $ref: '#/components/schemas/vnetDhcpRelay'
         gateways:
           type: array
           items:
@@ -536,6 +564,8 @@ components:
           type: string
           example: 1,3,4
           description: Required for only vlan-aware v-nets (vlanAware == true)
+        dhcpRelay:
+          $ref: '#/components/schemas/vnetDhcpRelay'
         gateways:
           type: array
           items:
