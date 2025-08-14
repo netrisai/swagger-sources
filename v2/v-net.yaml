@@ -155,6 +155,10 @@ components:
     vnetDhcpRelay:
       description: Enabling DHCP Relay will disable DHCP configuration under Gateways
       type: object
+      required:
+        - enabled
+        - vpc
+        - primaryAddr
       properties:
         enabled:
           type: boolean
@@ -170,11 +174,11 @@ components:
               example: vpc22
         primaryAddr:
           type: string
-          description: Primary dhcp relay address
+          description: Primary DHCP Relay address
           example: 10.2.2.1
         secondaryAddr:
           type: string
-          description: Primary dhcp relay address
+          description: Secondary DHCP Relay address
           example: 10.3.3.1
     vnetAddBody:
       type: object
