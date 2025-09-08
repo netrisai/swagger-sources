@@ -1495,6 +1495,15 @@ components:
           nullable: true
           type: object
           properties:
+            id:
+              type: number
+              example: 2
+            addr:
+              type: string
+              example: 10.10.10.2
+            type:
+              type: string
+              enum: [main]
             subnetID:
               type: number
               example: 252 
@@ -1507,6 +1516,15 @@ components:
           description: Details about management IP address. The field is not being used during PUT/POST requests.
           type: object
           properties:
+            id:
+              type: number
+              example: 2
+            addr:
+              type: string
+              example: 100.100.10.2
+            type:
+              type: string
+              enum: [mgmt]
             subnetID:
               type: number
               example: 222 
