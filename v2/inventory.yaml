@@ -845,6 +845,10 @@ components:
           example:
             - tag1
             - tag2
+        dpus:
+          type: array
+          items:
+            $ref: '#/components/schemas/dpuBody'
         createdDate:
           type: number
           example: 1617280628000
@@ -1257,6 +1261,10 @@ components:
           example:
             - tag1
             - tag2
+        dpus:
+          type: array
+          items:
+            $ref: '#/components/schemas/dpuAddBody'
         links:
           type: array
           items:
@@ -1305,6 +1313,10 @@ components:
           example:
             - tag1
             - tag2
+        dpus:
+          type: array
+          items:
+            $ref: '#/components/schemas/dpuEditBody'
         links:
           type: array
           items:
@@ -1448,6 +1460,257 @@ components:
           example:
             - tag1
             - tag2
+    dpuBody:
+      type: object
+      nullable: true
+      description: DPU configuration
+      required:
+        - index
+        - asn
+        - mainAddress
+        - mgmtAddress
+        - vfCount
+        - portmap
+      properties:
+        index:
+          type: number
+          example: 1
+        asnNumber:
+          nullable: true
+          type: object
+          required:
+            - asn
+          properties:
+            id:
+              type: number
+              example: 2
+            asn:
+              oneOf:
+                - $ref: '#/components/schemas/asnString'
+                - $ref: '#/components/schemas/asnNumber'
+        mainAddress:
+          type: string
+          example: '100.64.77.4'
+        mainAddressDetails:
+          nullable: true
+          type: object
+          properties:
+            subnetID:
+              type: number
+              example: 252 
+        mgmtAddress:
+          description: Details about main IP address. The field is not being used during PUT/POST requests.
+          type: string
+          example: '10.64.2.4'
+        mgmtAddressDetails:
+          nullable: true
+          description: Details about management IP address. The field is not being used during PUT/POST requests.
+          type: object
+          properties:
+            subnetID:
+              type: number
+              example: 222 
+        macAddress:
+          nullable: true
+          type: string
+          example: 23:00:2F:BE:54:87
+          description: ""
+        vfCount:
+          type: number
+          example: 16
+          default: 16
+          min: 1
+          max: 32
+        portmap:
+          type: array
+          items: 
+            type: object
+            required:
+              - dpuPortNumber
+              - type
+              - srvPort
+            properties:
+              "dpuPortNumber":
+                type: integer
+                example: 1
+              "type":
+                  type: string
+                  enum: [general, mgmt]
+              "srvPort":
+                type: string
+                example: "eth1"
+        profile:
+          nullable: true
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: number
+              example: 1
+            name:
+              type: string
+              example: my_profile
+          description: "Inventory profile"
+    dpuAddBody:
+      type: object
+      nullable: true
+      description: DPU configuration
+      required:
+        - index
+        - asn
+        - mainAddress
+        - mgmtAddress
+        - vfCount
+        - portmap
+      properties:
+        index:
+          type: number
+          example: 1
+        asnNumber:
+          nullable: true
+          type: object
+          required:
+            - asn
+          properties:
+            id:
+              type: number
+              example: 2
+            asn:
+              oneOf:
+                - $ref: '#/components/schemas/asnString'
+                - $ref: '#/components/schemas/asnNumber'
+        mainAddress:
+          type: string
+          example: '100.64.77.4'
+        mainAddressDetails:
+          nullable: true
+          type: object
+          properties:
+            subnetID:
+              type: number
+              example: 252 
+        mgmtAddress:
+          description: Details about main IP address. The field is not being used during PUT/POST requests.
+          type: string
+          example: '10.64.2.4'
+        mgmtAddressDetails:
+          nullable: true
+          description: Details about management IP address. The field is not being used during PUT/POST requests.
+          type: object
+          properties:
+            subnetID:
+              type: number
+              example: 222 
+        macAddress:
+          nullable: true
+          type: string
+          example: 23:00:2F:BE:54:87
+          description: ""
+        vfCount:
+          type: number
+          example: 16
+          default: 16
+          min: 1
+          max: 32
+        portmap:
+          type: array
+          items: 
+            type: object
+            required:
+              - dpuPortNumber
+              - type
+              - srvPort
+            properties:
+              "dpuPortNumber":
+                type: integer
+                example: 1
+              "type":
+                  type: string
+                  enum: [general, mgmt]
+              "srvPort":
+                type: string
+                example: "eth1"
+        profile:
+          nullable: true
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: number
+              example: 1
+            name:
+              type: string
+              example: my_profile
+          description: "Inventory profile"
+    dpuEditBody:
+      type: object
+      nullable: true
+      description: DPU configuration
+      required:
+        - index
+        - asn
+        - mainAddress
+        - mgmtAddress
+        - portmap
+      properties:
+        index:
+          type: number
+          example: 1
+        asnNumber:
+          nullable: true
+          type: object
+          required:
+            - asn
+          properties:
+            id:
+              type: number
+              example: 2
+            asn:
+              oneOf:
+                - $ref: '#/components/schemas/asnString'
+                - $ref: '#/components/schemas/asnNumber'
+        mainAddress:
+          type: string
+          example: '100.64.77.4'
+        mainAddressDetails:
+          nullable: true
+          type: object
+          properties:
+            subnetID:
+              type: number
+              example: 252 
+        mgmtAddress:
+          description: Details about main IP address. The field is not being used during PUT/POST requests.
+          type: string
+          example: '10.64.2.4'
+        mgmtAddressDetails:
+          nullable: true
+          description: Details about management IP address. The field is not being used during PUT/POST requests.
+          type: object
+          properties:
+            subnetID:
+              type: number
+              example: 222 
+        macAddress:
+          nullable: true
+          type: string
+          example: 23:00:2F:BE:54:87
+          description: ""
+        profile:
+          description: "Inventory profile"
+          nullable: true
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: number
+              example: 1
+            name:
+              type: string
+              example: my_profile
     linksBody:
       type: object
       description: Physical connection
@@ -1526,3 +1789,4 @@ components:
             statusCode:
               type: integer
               example: 400
+
