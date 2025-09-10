@@ -1,0 +1,257 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v1
+security:
+  - cookieAuth: []
+paths:
+  /api/loginwhitelist:
+    get:
+      tags:
+        - Login White List
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loginwhitelistList'
+  
+    post:
+      tags:
+        - Login White List
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginwhitelistBodyCreate'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/LoginWhitelistRespOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
+        "400":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/LoginWhitelistRespError'
+    put:
+      tags:
+        - Login White List
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginwhitelistBodyUpdate'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/LoginWhitelistRespOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
+        "400":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/LoginWhitelistRespError'
+    delete:
+      tags:
+        - Login White List
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginwhitelistBodyDelete'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/LoginWhitelistRespOK'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1231
+                      message:
+                        example: Successfully created
+        "400":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/LoginWhitelistRespError'
+components:
+  schemas:
+    loginwhitelistList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+              $ref: '#/components/schemas/loginwhitelistBody'
+        errors:
+          type: object
+          example: {}
+          description: ""
+        message:
+          type: string
+          example: ""
+          description: ""
+        isSuccess:
+          type: boolean
+          example: true
+          description: ""
+        meta:
+          type: object
+          example:
+            apiVersion: v1
+            statusCode: 200
+          description: ""
+    loginwhitelistBody:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 2
+        prefix:
+          type: string
+          example: 10.10.10.0
+        length:
+          type: number
+          example: 24
+        description:
+          type: string
+          example: "Internal Subnet"
+    loginwhitelistBodyCreate:
+      type: object
+      required:
+        - ip
+      properties:
+        ip:
+          type: string
+          example: 10.10.10.0/24
+        description:
+          type: string
+          example: "Internal Subnet"
+    loginwhitelistBodyUpdate:
+      type: object
+      required:
+        - id
+        - ip
+      properties:
+        id:
+          type: number
+          example: 11
+        ip:
+          type: string
+          example: 10.10.10.0/24
+        description:
+          type: string
+          example: "Internal Subnet"
+    loginwhitelistBodyDelete:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: number
+          example: 11
+    LoginWhitelistRespOK:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    LoginWhitelistRespError:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        errors:
+          type: object
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+
