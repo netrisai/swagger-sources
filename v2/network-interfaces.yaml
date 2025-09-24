@@ -968,6 +968,26 @@ components:
               type: string
         inUse:
           type: boolean
+        connectedTo:
+          type: object
+          nullable: true
+          description: Present only for servers with a generic role that are linked to a switch.
+          properties:
+            switchName:
+              type: string
+            info:
+              type: object
+              properties:
+                port:
+                  type: string
+                ifName:
+                  type: string
+            status:
+              type: string
+            speed:
+              type: string
+            displayName:
+              type: string
         slavePorts:
           type: array
           items:
