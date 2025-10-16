@@ -17,7 +17,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -34,7 +34,7 @@ paths:
             schema:
               $ref: '#/components/schemas/inventoryProfilesAddItem'
       responses:
-        "200":
+        '200':
           description: OK
     put:
       tags:
@@ -47,7 +47,7 @@ paths:
             schema:
               $ref: '#/components/schemas/inventoryProfilesEditItem'
       responses:
-        "200":
+        '200':
           description: OK
     delete:
       tags:
@@ -64,7 +64,7 @@ paths:
                   type: integer
                   example: 11
       responses:
-        "200":
+        '200':
           description: OK
   /api/inventoryProfiles/inventoryListOfProfiles:
     get:
@@ -74,12 +74,12 @@ paths:
       parameters:
         - name: id
           in: query
-          description: ""
+          description: ''
           required: true
           schema:
             type: number
       responses:
-        "200":
+        '200':
           description: OK
 components:
   securitySchemes:
@@ -101,10 +101,10 @@ components:
           example: 10.0.0.0
         srcPort:
           type: string
-          example: "54"
+          example: '54'
         dstPort:
           type: string
-          example: ""
+          example: ''
         protocol:
           type: string
           enum:
@@ -135,7 +135,7 @@ components:
           example: 0.0.0.0/0,10.254.128.0/24
         ipv6_ssh:
           type: string
-          example: ::/0
+          example: '::/0'
         timezone:
           type: string
           example: '{"offset":"-05:00","label":"(GMT-05:00) Eastern Time","tzCode":"America/New_York"}'
@@ -155,6 +155,8 @@ components:
           $ref: '#/components/schemas/gpuClusterProps'
         ztpProps:
           $ref: '#/components/schemas/ztpPropsList'
+        snmpv2Props:
+          $ref: '#/components/schemas/snmpv2Props'
         createdDate:
           type: integer
           example: 1716575234000
@@ -180,14 +182,14 @@ components:
           description: SSH access will be restricted to be sourced from the listed IPv4 addresses for devices using this inventory profile.
         ipv6_list:
           type: string
-          example: ""
+          example: ''
           description: SSH access will be restricted to be sourced from the listed IPv6 addresses for devices using this inventory profile.
         timezone:
           type: object
           properties:
             offset:
               type: string
-              example: -05:00
+              example: '-05:00'
             label:
               type: string
               example: (GMT-05:00) Eastern Time
@@ -201,7 +203,7 @@ components:
           description: List of domain names or IP addresses of NTP servers
         dns_servers:
           type: string
-          example: ""
+          example: ''
           description: List of IP addresses of DNS servers
         customRules:
           type: array
@@ -214,6 +216,8 @@ components:
           $ref: '#/components/schemas/gpuClusterProps'
         ztpProps:
           $ref: '#/components/schemas/ztpPropsModify'
+        snmpv2Props:
+          $ref: '#/components/schemas/snmpv2Props'
     inventoryProfilesEditItem:
       type: object
       required:
@@ -237,14 +241,14 @@ components:
           description: SSH access will be restricted to be sourced from the listed IPv4 addresses for devices using this inventory profile.
         ipv6_list:
           type: string
-          example: ""
+          example: ''
           description: SSH access will be restricted to be sourced from the listed IPv6 addresses for devices using this inventory profile.
         timezone:
           type: object
           properties:
             offset:
               type: string
-              example: -05:00
+              example: '-05:00'
             label:
               type: string
               example: (GMT-05:00) Eastern Time
@@ -258,7 +262,7 @@ components:
           description: List of domain names or IP addresses of NTP servers
         dns_servers:
           type: string
-          example: ""
+          example: ''
           description: List of IP addresses of DNS servers
         customRules:
           type: array
@@ -271,6 +275,8 @@ components:
           $ref: '#/components/schemas/gpuClusterProps'
         ztpProps:
           $ref: '#/components/schemas/ztpPropsModify'
+        snmpv2Props:
+          $ref: '#/components/schemas/snmpv2Props'
     ruleAddItem:
       type: object
       properties:
@@ -281,10 +287,10 @@ components:
           example: 10.0.0.0
         srcPort:
           type: string
-          example: "54"
+          example: '54'
         dstPort:
           type: string
-          example: ""
+          example: ''
         protocol:
           type: string
           enum:
@@ -310,7 +316,7 @@ components:
         password:
           type: string
           nullable: true
-          example: "secret"
+          example: secret
     gpuClusterProps:
       type: object
       description: GPU cluster specific settings
@@ -351,3 +357,42 @@ components:
         mclag:
           type: boolean
           example: false
+    snmpv2Props:
+      type: object
+      nullable: true
+      description: SNMPv2 configuration properties. Set to null to disable SNMPv2 and remove all associated configurations.
+      required:
+        - community
+        - ipv4_list
+      properties:
+        enabled:
+          type: boolean
+          example: true
+          description: Enable or disable SNMPv2. If it's not provided, SNMPv2 will be enabled by default.
+        community:
+          type: string
+          example: public
+          description: Read-only community string for SNMPv2 access
+        ipv4_list:
+          type: array
+          items:
+            type: string
+          example:
+            - 0.0.0.0/0
+            - 10.254.128.0/24
+          description: Array of IPv4 addresses/subnets allowed to access SNMPv2
+        ipv6_list:
+          type: array
+          items:
+            type: string
+          example:
+            - '::/0'
+          description: Array of IPv6 addresses/subnets allowed to access SNMPv2
+        contact:
+          type: string
+          example: admin@example.com
+          description: SNMP contact information
+        location:
+          type: string
+          example: Data Center 1, Rack A5
+          description: SNMP location information
