@@ -381,13 +381,6 @@ components:
             - 0.0.0.0/0
             - 10.254.128.0/24
           description: Array of IPv4 addresses/subnets allowed to access SNMPv2
-        ipv6_list:
-          type: array
-          items:
-            type: string
-          example:
-            - '::/0'
-          description: Array of IPv6 addresses/subnets allowed to access SNMPv2
         contact:
           type: string
           example: admin@example.com
