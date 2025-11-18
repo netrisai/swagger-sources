@@ -32,7 +32,7 @@ paths:
             schema:
               $ref: '#/components/schemas/clustersrvtmpl.post.body'
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -46,18 +46,17 @@ paths:
                         type: number
                         example: 23
                   message:
-                    example: "Successfully created."
-                  isSuccess: 
+                    example: Successfully created.
+                  isSuccess:
                     type: boolean
                     example: true
                   meta:
-                        type: object
-                        properties:
-                          apiVersion:
-                            example: 2
-                          statusCode:
-                            example: 200
-                          
+                    type: object
+                    properties:
+                      apiVersion:
+                        example: 2
+                      statusCode:
+                        example: 200
         400:
           description: Error
           content:
@@ -136,17 +135,17 @@ paths:
                       id:
                         example: 23
                   message:
-                    example: "Successfully updated."
-                  isSuccess: 
+                    example: Successfully updated.
+                  isSuccess:
                     type: boolean
                     example: true
                   meta:
-                        type: object
-                        properties:
-                          apiVersion:
-                            example: 2
-                          statusCode:
-                            example: 200
+                    type: object
+                    properties:
+                      apiVersion:
+                        example: 2
+                      statusCode:
+                        example: 200
         400:
           description: Error
           content:
@@ -193,13 +192,13 @@ paths:
                     example: null
                   message:
                     example: Successfully deleted.
-                  isSuccess: 
+                  isSuccess:
                     type: boolean
                     example: true
                   meta:
                     type: object
                     properties:
-                      apiVersion: 
+                      apiVersion:
                         example: 2
                       statusCode:
                         example: 200
@@ -282,32 +281,50 @@ components:
       required:
         - postfix
         - type
+        - partition
         - vlan
         - vlanID
         - serverNics
       type: object
       properties:
+        partition:
+          type: string
+          enum:
+            - auto
+          example: auto
         postfix:
           type: string
           example: East-West
           description: The postfix field is used to provide a unique identifier that will be appended to the cluster name when instantiating the object defined by the server cluster template. This ensures that each instantiated object has a unique name within the context of that template.
         type:
           type: string
-          enum: ["l2pvn", "l3vpn", "ufm"]
-          example: "l3vpn"
+          enum:
+            - l2pvn
+            - l3vpn
+            - netris-ufm
+            - netris-nvlink
+          example: l3vpn
         vlan:
           type: string
-          enum: ["tagged", "untagged"]
-          example: "untagged"
+          enum:
+            - tagged
+            - untagged
+          example: untagged
         vlanID:
           type: string
-          enum: ["auto", "dynamic"]
-          example: "auto"
+          enum:
+            - auto
+            - dynamic
+          example: auto
         serverNics:
           type: array
           items:
             type: string
-          example: ["eth1", "eth2", "eth3", "eth4"]
+          example:
+            - eth1
+            - eth2
+            - eth3
+            - eth4
         ipv4Gateway:
           oneOf:
             - type: string
@@ -316,17 +333,19 @@ components:
               example: 10.10.10.254/24
             - type: string
               description: 'specify: means it has to be specified during server cluster creation'
-              enum: [specify]
+              enum:
+                - specify
               nullable: true
               example: specify
             - type: object
               properties:
-                assignType: 
+                assignType:
                   type: string
-                  enum: [auto]
-                allocation: 
+                  enum:
+                    - auto
+                allocation:
                   type: string
-                  example: "10.0.0.0/16"
+                  example: 10.0.0.0/16
                 childSubnetPrefixLength:
                   type: integer
                   example: 24
@@ -336,7 +355,7 @@ components:
                   default: 1
         ipv4DhcpEnabled:
           type: boolean
-          description: 'Enables the DHCP service for the V-NET with a defined IPv4 gateway'
+          description: Enables the DHCP service for the V-NET with a defined IPv4 gateway
           default: false
           nullable: true
         ipv6Gateway:
@@ -347,17 +366,19 @@ components:
               example: 2001:db8:85a3::8a2e:370:7334/64
             - type: string
               description: 'specify: means it has to be specified during server cluster creation'
-              enum: [specify]
+              enum:
+                - specify
               nullable: true
               example: dynamic
             - type: object
               properties:
-                assignType: 
+                assignType:
                   type: string
-                  enum: [auto]
-                allocation: 
+                  enum:
+                    - auto
+                allocation:
                   type: string
-                  example: "2001:db8:1234::/52"
+                  example: 2001:db8:1234::/52
                 childSubnetPrefixLength:
                   type: integer
                   example: 64
@@ -366,21 +387,21 @@ components:
                   example: 254
                   default: 1
     clustersrvtmpl.body.id:
-        required:
-          - id
-        type: object
-        properties:
-          id:
-            description: server cluster template unique identifier.
-            type: integer
-            example: 123
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          description: server cluster template unique identifier.
+          type: integer
+          example: 123
     clustersrvtmpl.body.vnet.id:
       type: object
       properties:
         id:
           description: vnet property identifier in server cluster template.
           type: integer
-          example: 42  
+          example: 42
     clustersrvtmpl.body.name:
       required:
         - name
@@ -413,7 +434,7 @@ components:
       description: Success response
       properties:
         data:
-            $ref: '#/components/schemas/clustersrvtmpl.get.body'
+          $ref: '#/components/schemas/clustersrvtmpl.get.body'
         isSuccess:
           type: boolean
         meta:
