@@ -1,0 +1,398 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+paths:
+  /api/v2/nvlinkledger/:
+    get:
+      tags:
+        - NVLink Ledger
+      summary: List all NVLink ledger records
+      parameters:
+        - in: query
+          name: nmxcID
+          schema:
+            type: string
+        - in: query
+          name: partitionID
+          schema:
+            type: number
+        - in: query
+          name: srvClusterID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nvlinkledger.response.get.ok'
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nvlinkledger.response.error'
+        "404":
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/nvlinkledger.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+    post:
+      tags:
+        - NVLink Ledger
+      summary: Request for creating a record in NVLink ledger.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nvlinkledger.post.record'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      partitionID:
+                        type: number
+                        example: 123123
+                      nmxcID:
+                        type: string
+                        example: nmxc-123
+                  message:
+                    example: Successfully created.
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        example: 2
+                      statusCode:
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nvlinkledger.response.error'
+  /api/v2/nvlinkledger/{nmxcID}/{partitionID}:
+    put:
+      tags:
+        - NVLink Ledger
+      summary: Request for creating a record in NVLink ledger.
+      parameters:
+        - name: nmxcID
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: partitionID
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nvlinkledger.put.record'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      partitionID:
+                        type: string
+                        example: pkey89
+                      nmxcID:
+                        type: string
+                        example: ufm89
+                  message:
+                    example: Successfully updated.
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        example: 2
+                      statusCode:
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nvlinkledger.response.error'
+        "404":
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/nvlinkledger.response.error'
+                  - type: object
+                    properties:
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+    delete:
+      tags:
+        - NVLink Ledger
+      summary: Request for deleting a record from NVLink ledger.
+      parameters:
+        - name: nmxcID
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: partitionID
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example:
+                      partitionID: 12
+                      nmxcID: 1
+                  message:
+                    example: Successfully deleted.
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        example: 2
+                      statusCode:
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/nvlinkledger.response.error'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example:
+                          partitionID: 12
+                          nmxcID: 1
+                      message:
+                        example: Error mesage
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 400
+        "404":
+          description: Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/nvlinkledger.response.error'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        example:
+                          partitionID: 12
+                          nmxcID: 1
+                      message:
+                        example: Not found.
+                      meta:
+                        type: object
+                        properties:
+                          statusCode:
+                            example: 404
+components:
+  schemas:
+    nvlinkledger.response.get.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/nvlinkledger.record'
+        isSuccess:
+          type: boolean
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 200
+    nvlinkledger.response.error:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: object
+          example: null
+        errors:
+          type: object
+          example:
+            property_name: Error message
+          properties:
+            key:
+              type: string
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: string
+              example: 2
+            statusCode:
+              type: integer
+              example: 400
+    nvlinkledger.record:
+      type: object
+      properties:
+        srvCluster:
+          $ref: '#/components/schemas/nvlinkledger.record.srvcluster'
+        nmxcID:
+          type: string
+          example: nmxc-123
+        partitionID:
+          type: number
+          example: 213
+        gpuUids:
+          type: array
+          items:
+            type: string
+          example:
+            - "789408880144694965"
+            - "915637608355999313"
+            - "860919029102366332"
+            - "898963791196690530"
+        servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/nvlinkledger.record.server'
+        custom:
+          type: object
+        createdDate:
+          type: string
+          format: date-time
+        modifiedDate:
+          type: string
+          format: date-time
+    nvlinkledger.post.record:
+      type: object
+      required:
+        - srvClusterID
+        - nmxcID
+        - partitionID
+      properties:
+        nmxcID:
+          type: string
+          example: nmxc-123
+        partitionID:
+          type: number
+          example: 2122
+        srvClusterID:
+          type: integer
+          example: 12
+        gpuUids:
+          type: array
+          items:
+            type: string
+          example:
+            - "789408880144694965"
+            - "915637608355999313"
+            - "860919029102366332"
+            - "898963791196690530"
+        custom:
+          type: object
+    nvlinkledger.put.record:
+      type: object
+      required:
+        - nmxcID
+        - partitionID
+      properties:
+        gpuUids:
+          type: array
+          items:
+            type: string
+          example:
+            - "789408880144694965"
+            - "915637608355999313"
+            - "860919029102366332"
+            - "898963791196690530"
+        custom:
+          type: object
+    nvlinkledger.record.srvcluster:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          example: 4
+        name:
+          type: string
+          example: my-server-cluster-1
+    nvlinkledger.record.server:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 44
+        name:
+          type: string
+          example: server1
