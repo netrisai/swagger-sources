@@ -335,7 +335,29 @@ components:
           example: false
         aggregateL3VpnPrefix:
           type: boolean
-          example: true
+          example: false
+          description: |
+            For backward compatibility, this property is set to true only when spxDeploymentType is one of the following values: h100_h200_b200_spx_2_tier, h100_h200_b200_spx_3_tier
+        spxDeploymentType:
+          type: string
+          enum:
+            - none
+            - h100_h200_b200_spx_2_tier
+            - h100_h200_b200_spx_3_tier
+            - gb200_spx_2_tier
+            - gb200_spx_3_tier
+            - b300_spx_2_tier_single_plane
+            - b300_spx_3_tier_single_plane
+            - b300_spx_2_tier_dual_plane
+            - b300_spx_3_tier_dual_plane
+            - b300_spx_2_tier_quad_plane
+            - b300_spx_3_tier_quad_plane
+            - gb300_spx_2_tier_single_plane
+            - gb300_spx_3_tier_single_plane
+            - gb300_spx_2_tier_dual_plane
+            - gb300_spx_3_tier_dual_plane
+            - gb300_spx_2_tier_quad_plane
+            - gb300_spx_3_tier_quad_plane
     fabricProps:
       type: object
       description: Fabric specific settings
