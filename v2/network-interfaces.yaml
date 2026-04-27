@@ -136,13 +136,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.get.ok'
+                $ref: "#/components/schemas/ports.response.get.ok"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
     put:
       tags:
         - Network Interfaces
@@ -154,7 +154,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/ports.put.body'
+                $ref: "#/components/schemas/ports.put.body"
       responses:
         "200":
           description: ""
@@ -182,7 +182,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
     delete:
       tags:
         - Network Interfaces
@@ -225,7 +225,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
   /api/v2/ports/{id}:
     get:
       tags:
@@ -244,13 +244,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.get.one.ok'
+                $ref: "#/components/schemas/ports.response.get.one.ok"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
     put:
       tags:
         - Network Interfaces
@@ -267,7 +267,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ports.put.body'
+              $ref: "#/components/schemas/ports.put.body"
       responses:
         "200":
           description: ""
@@ -295,7 +295,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
     delete:
       tags:
         - Network Interfaces
@@ -334,7 +334,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
   /api/v2/ports/affectedresources:
     get:
       tags:
@@ -393,7 +393,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
   /api/v2/ports/aggregatedports:
     get:
       tags:
@@ -450,7 +450,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
   /api/v2/ports/{type}/free:
     get:
       tags:
@@ -463,19 +463,55 @@ paths:
           schema:
             type: string
           description: The type of a section
+        - name: site
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The site of the network interface
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The tenant of the network interface
+        - name: switchID
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter by switch id
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search by port name or description
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Count of ports
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Number of ports to skip
       responses:
         "200":
           description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.get.ok'
+                $ref: "#/components/schemas/ports.response.get.ok"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
   /api/v2/ports/{type}/used:
     get:
       tags:
@@ -494,13 +530,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.get.ok'
+                $ref: "#/components/schemas/ports.response.get.ok"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
   /api/v2/ports/extensions:
     get:
       tags:
@@ -545,7 +581,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
   /api/v2/ports/slim:
     get:
       tags:
@@ -709,7 +745,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
   /api/v2/ports/extensions/{id}:
     delete:
       tags:
@@ -749,7 +785,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
   /api/v2/ports/lag:
     post:
       tags:
@@ -760,7 +796,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ports.lag.body'
+              $ref: "#/components/schemas/ports.lag.body"
       responses:
         "200":
           description: ""
@@ -791,7 +827,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
   /api/v2/ports/freeup:
     put:
       tags:
@@ -804,7 +840,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/ports.freeUp.body'
+                $ref: "#/components/schemas/ports.freeUp.body"
       responses:
         "200":
           description: ""
@@ -832,7 +868,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports.response.error'
+                $ref: "#/components/schemas/ports.response.error"
 components:
   schemas:
     ports.get.body:
@@ -890,7 +926,7 @@ components:
         breakout:
           type: string
           enum:
-            - "off"
+            - off
             - disabled
             - 4x10
             - 4x25
@@ -901,7 +937,7 @@ components:
             - 2x200
             - 4x200
             - 2x400
-          example: "off"
+          example: off
         breakIndex:
           type: integer
         linkTraining:
@@ -909,9 +945,9 @@ components:
           nullable: true
           type: string
           enum:
-            - "auto"
-            - "off"
-            - "on"
+            - auto
+            - off
+            - on
         switchPlatform:
           type: string
         switchAddr:
@@ -971,8 +1007,11 @@ components:
         connectedTo:
           type: object
           nullable: true
-          description: Present only for servers with a generic role that are linked to a switch.
+          description: Present only for servers with a generic role that are linked to a
+            switch.
           properties:
+            portId:
+              type: number
             switchName:
               type: string
             info:
@@ -1055,7 +1094,7 @@ components:
         breakout:
           type: string
           enum:
-            - "off"
+            - off
             - disabled
             - 4x10
             - 4x25
@@ -1066,7 +1105,7 @@ components:
             - 2x200
             - 4x200
             - 2x400
-          example: "off"
+          example: off
         mtu:
           type: number
           example: 9216
@@ -1074,9 +1113,9 @@ components:
         autoNeg:
           type: string
           enum:
-            - "on"
-            - "off"
-          example: "off"
+            - on
+            - off
+          example: off
           description: ""
         speed:
           type: string
@@ -1103,18 +1142,18 @@ components:
         adminDown:
           type: string
           enum:
-            - "yes"
-            - "no"
-          example: "no"
+            - yes
+            - no
+          example: no
           description: ""
         linkTraining:
           default: auto
           nullable: true
           type: string
           enum:
-            - "auto"
-            - "off"
-            - "on"
+            - auto
+            - off
+            - on
         extension:
           type: object
           properties:
@@ -1216,7 +1255,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ports.get.body'
+            $ref: "#/components/schemas/ports.get.body"
         isSuccess:
           type: boolean
         meta:
@@ -1233,7 +1272,7 @@ components:
       description: Success response
       properties:
         data:
-          $ref: '#/components/schemas/ports.get.body'
+          $ref: "#/components/schemas/ports.get.body"
         isSuccess:
           type: boolean
         meta:
