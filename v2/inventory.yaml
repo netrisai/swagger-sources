@@ -8,13 +8,251 @@ paths:
       tags:
         - Inventory
       summary: Request for getting hardware list.
+      parameters:
+        - name: showLinks
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Include hardware Links information in the response.
+          example: false
+        - name: showHealth
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Include health status information in the response.
+          example: false
+        - name: showCustom
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Include custom data in the response.
+          example: false
+        - name: filterBySites
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+          description: Filter hardware by site IDs. Can be a single site ID or
+            comma-separated list of site IDs.
+          example: 1,2,3
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - switch
+              - controller
+              - softgate
+              - server
+              - equinix-metal-server
+              - phoenixnap-bmc-server
+          description: Filter hardware by type.
+        - name: filterId
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: integer
+              - type: array
+                items:
+                  type: integer
+          description: Filter by hardware ID(s).
+        - name: filterName
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by hardware name. Use quotes for exact match (e.g.,
+            "switch1").
+        - name: filterDescription
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by description. Use quotes for exact match.
+        - name: filterTenant
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by tenant name. Use quotes for exact match.
+        - name: filterSite
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by site name. Use quotes for exact match.
+        - name: filterType
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+          description: Filter by hardware type(s). Use quotes for exact match.
+        - name: filterIpaddress
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by any IP address (main or management). Use quotes for exact
+            match.
+        - name: filterMainAddress
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by main IP address. Use quotes for exact match.
+        - name: filterMgmtAddress
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by management IP address. Use quotes for exact match.
+        - name: filterMacAddress
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by MAC address. Use quotes for exact match.
+        - name: filterAsn
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by BGP ASN. Use quotes for exact match.
+        - name: filterNos
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by Network Operating System name. Use quotes for exact match.
+        - name: filterPortCount
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by port count. Use quotes for exact match.
+        - name: filterProfile
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by inventory profile name. Use quotes for exact match.
+        - name: filterStatus
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+          description: Filter by health status (ok, warning, critical, unknown).
+        - name: filterTags
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by tags. Use quotes for exact match.
+        - name: filterDetails
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by hardware details (platform, conductor version, uptime,
+            timezone, proxmox version, NOS name). Use quotes for exact match.
+        - name: filterUsage
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by resource usage (routes, MACs, ingress ACLs, rangecut).
+            Use quotes for exact match.
+        - name: filterCreatedDate
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Filter by creation date (format: YYYY-MM-DD HH:mm:ss). Use quotes
+            for exact match."
+        - name: filterModifiedDate
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Filter by modification date (format: YYYY-MM-DD HH:mm:ss). Use
+            quotes for exact match."
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - name
+              - description
+              - tenant
+              - site
+              - type
+              - ipaddress
+              - mainAddress
+              - mgmtAddress
+              - macAddress
+              - asn
+              - nos
+              - portCount
+              - profile
+              - createdDate
+              - modifiedDate
+              - status
+              - usage
+              - details
+          description: Field to sort by (must be used with order parameter).
+          example: name
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+          description: Sort order - ascending or descending (must be used with sortBy
+            parameter).
+          example: asc
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: Number of items per page (must be used with page parameter).
+          example: 10
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: Page number for pagination (must be used with limit parameter).
+          example: 1
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/hwList'
+                $ref: "#/components/schemas/hwList"
   /api/v2/hw/{id}:
     get:
       tags:
@@ -25,7 +263,7 @@ paths:
           required: true
           schema:
             type: integer
-          description: The id of a specific site.
+          description: The id of a specific hardware.
       summary: Request for getting hardware by id.
       responses:
         "200":
@@ -33,7 +271,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/hwList'
+                $ref: "#/components/schemas/hwList"
+        "404":
+          description: Hardware not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
   /api/v2/hw/switch:
     post:
       tags:
@@ -44,7 +288,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/switchAddBody'
+              $ref: "#/components/schemas/switchAddBody"
       responses:
         "200":
           description: OK
@@ -52,7 +296,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
@@ -63,6 +307,12 @@ paths:
                             example: 1231
                       message:
                         example: Successfully created
+        "400":
+          description: Bad Request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
   /api/v2/hw/switch/{id}:
     put:
       tags:
@@ -73,14 +323,14 @@ paths:
           required: true
           schema:
             type: integer
-          description: The id of a specific site.
+          description: The id of a specific hardware.
       summary: Request for updating hardware type switch.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/switchEditBody'
+              $ref: "#/components/schemas/switchEditBody"
       responses:
         "200":
           description: OK
@@ -88,7 +338,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
@@ -98,7 +348,19 @@ paths:
                             type: integer
                             example: 1231
                       message:
-                        example: Successfully created
+                        example: Successfully updated
+        "400":
+          description: Bad Request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "404":
+          description: Hardware not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
   /api/v2/hw/equinix-metal-server:
     post:
       tags:
@@ -109,7 +371,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/equinixMetalServerAddBody'
+              $ref: "#/components/schemas/equinixMetalServerAddBody"
       responses:
         "200":
           description: OK
@@ -117,7 +379,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
@@ -128,6 +390,12 @@ paths:
                             example: 1231
                       message:
                         example: Successfully created
+        "400":
+          description: Bad Request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
   /api/v2/hw/equinix-metal-server/{id}:
     put:
       tags:
@@ -138,14 +406,14 @@ paths:
           required: true
           schema:
             type: integer
-          description: The id of a specific site.
+          description: The id of a specific hardware.
       summary: Request for updating hardware type equinix-metal-server.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/equinixMetalServerEditBody'
+              $ref: "#/components/schemas/equinixMetalServerEditBody"
       responses:
         "200":
           description: OK
@@ -153,7 +421,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
@@ -163,7 +431,19 @@ paths:
                             type: integer
                             example: 1231
                       message:
-                        example: Successfully created
+                        example: Successfully updated
+        "400":
+          description: Bad Request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "404":
+          description: Hardware not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
   /api/v2/hw/phoenixnap-bmc-server:
     post:
       tags:
@@ -174,7 +454,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/phoenixNapBmcServerAddBody'
+              $ref: "#/components/schemas/phoenixNapBmcServerAddBody"
       responses:
         "200":
           description: OK
@@ -182,7 +462,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
@@ -199,7 +479,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseError'
+                  - $ref: "#/components/schemas/ResponseError"
                   - type: object
                     properties:
                       message:
@@ -210,7 +490,7 @@ paths:
         - Inventory
       parameters:
         - name: id
-          description: The id of a specific site.
+          description: The id of a specific hardware.
           in: path
           required: true
           schema:
@@ -222,7 +502,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/phoenixNapBmcServerEditBody'
+                - $ref: "#/components/schemas/phoenixNapBmcServerEditBody"
                 - type: object
                   properties:
                     name:
@@ -236,7 +516,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
@@ -253,7 +533,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseError'
+                  - $ref: "#/components/schemas/ResponseError"
                   - type: object
                     properties:
                       message:
@@ -264,7 +544,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseError'
+                  - $ref: "#/components/schemas/ResponseError"
                   - type: object
                     properties:
                       message:
@@ -284,7 +564,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/serverAddBody'
+              $ref: "#/components/schemas/serverAddBody"
       responses:
         "200":
           description: OK
@@ -292,7 +572,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
@@ -303,6 +583,12 @@ paths:
                             example: 1231
                       message:
                         example: Successfully created
+        "400":
+          description: Bad Request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
   /api/v2/hw/server/{id}:
     put:
       tags:
@@ -313,14 +599,14 @@ paths:
           required: true
           schema:
             type: integer
-          description: The id of a specific site.
+          description: The id of a specific hardware.
       summary: Request for updating hardware type server.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/serverEditBody'
+              $ref: "#/components/schemas/serverEditBody"
       responses:
         "200":
           description: OK
@@ -328,7 +614,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
@@ -338,7 +624,19 @@ paths:
                             type: integer
                             example: 1231
                       message:
-                        example: Successfully created
+                        example: Successfully updated
+        "400":
+          description: Bad Request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "404":
+          description: Hardware not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
   /api/v2/hw/softgate:
     post:
       tags:
@@ -349,7 +647,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/softgateAddBody'
+              $ref: "#/components/schemas/softgateAddBody"
       responses:
         "200":
           description: OK
@@ -357,7 +655,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
@@ -368,6 +666,12 @@ paths:
                             example: 1231
                       message:
                         example: Successfully created
+        "400":
+          description: Bad Request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
   /api/v2/hw/softgate/{id}:
     put:
       tags:
@@ -378,14 +682,14 @@ paths:
           required: true
           schema:
             type: integer
-          description: The id of a specific site.
+          description: The id of a specific hardware.
       summary: Request for updating hardware type softgate.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/softgateEditBody'
+              $ref: "#/components/schemas/softgateEditBody"
       responses:
         "200":
           description: OK
@@ -393,7 +697,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
@@ -403,7 +707,19 @@ paths:
                             type: integer
                             example: 1231
                       message:
-                        example: Successfully created
+                        example: Successfully updated
+        "400":
+          description: Bad Request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "404":
+          description: Hardware not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
   /api/v2/hw/{type}/{id}:
     delete:
       tags:
@@ -417,6 +733,9 @@ paths:
               - switch
               - controller
               - softgate
+              - server
+              - equinix-metal-server
+              - phoenixnap-bmc-server
           required: true
           description: Type of the hardware.
         - in: path
@@ -433,7 +752,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
@@ -442,7 +761,13 @@ paths:
                           data:
                             type: object
                       message:
-                        example: Successfully created
+                        example: Successfully deleted
+        "404":
+          description: Hardware not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
   /api/v2/hw/{type}/{name}:
     delete:
       tags:
@@ -456,6 +781,9 @@ paths:
               - switch
               - controller
               - softgate
+              - server
+              - equinix-metal-server
+              - phoenixnap-bmc-server
           required: true
           description: Type of the hardware.
         - in: path
@@ -472,16 +800,24 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseOK'
+                  - $ref: "#/components/schemas/ResponseOK"
                   - type: object
                     properties:
                       data:
                         type: object
+                      message:
+                        example: Successfully deleted
+        "404":
+          description: Hardware not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
   /api/v2/hw/usedips:
     get:
       tags:
         - Inventory
-      summary: ""
+      summary: Get list of used IP addresses in hardware inventory.
       parameters: []
       responses:
         "200":
@@ -527,7 +863,7 @@ paths:
     get:
       tags:
         - Inventory
-      summary: ""
+      summary: Get list of inventory profiles.
       parameters: []
       responses:
         "200":
@@ -573,14 +909,14 @@ paths:
     get:
       tags:
         - Inventory
-      summary: ""
+      summary: Get list of available subnets for a specific site.
       parameters:
         - name: siteID
           in: query
           required: true
           schema:
             type: integer
-          description: ""
+          description: The ID of the site to get subnets for.
       responses:
         "200":
           description: OK
@@ -625,7 +961,7 @@ paths:
     get:
       tags:
         - Inventory
-      summary: ""
+      summary: Get list of available Network Operating Systems (NOS).
       parameters: []
       responses:
         "200":
@@ -673,6 +1009,134 @@ paths:
                       apiVersion: v2
                       statusCode: 200
                     description: ""
+  /api/v2/hw/{id}/curl:
+    get:
+      tags:
+        - Inventory
+      summary: Get curl installation command for a hardware unit.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Hardware unit ID
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                  - errors
+                  - message
+                  - isSuccess
+                  - meta
+                properties:
+                  data:
+                    type: string
+                    example: curl -fksSL https://get.netris.io | sh -s -- --lo 100.64.77.4
+                      --controller 10.0.0.1 --ctl-version 4.0.0 --hostname
+                      switch1.netris.io --auth abc123 --node-type switch
+                      --hw-nos cumulus_nvue
+                    description: Curl command to install and configure the Netris agent on the
+                      hardware unit
+                  errors:
+                    type: object
+                    example: {}
+                    description: ""
+                  message:
+                    type: string
+                    example: ""
+                    description: ""
+                  isSuccess:
+                    type: boolean
+                    example: true
+                    description: ""
+                  meta:
+                    type: object
+                    example:
+                      apiVersion: v2
+                      statusCode: 200
+                    description: ""
+        "400":
+          description: Bad Request - Invalid hardware ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+  /api/v2/hw/ports:
+    get:
+      tags:
+        - Inventory
+      summary: Returns a list of network interfaces for Hardware.
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum:
+              - used
+              - free
+          description: Filter by port type. Use 'used' to get used ports or 'free' to get
+            free ports.
+        - name: site
+          in: query
+          schema:
+            type: integer
+          description: Filter by site ID.
+        - name: tenant
+          in: query
+          schema:
+            type: integer
+          description: Filter by tenant ID.
+        - name: switchID
+          in: query
+          schema:
+            type: integer
+          description: Filter by switch ID.
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search term.
+        - name: ids
+          in: query
+          schema:
+            oneOf:
+              - type: array
+                items:
+                  type: integer
+              - type: string
+                description: Comma-separated list of IDs.
+          description: Filter by specific IDs. Accepts an array or a comma-separated
+            string of integers.
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Maximum number of results to return.
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Number of results to skip for pagination. Defaults to 0.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseOK"
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
 components:
   schemas:
     asnString:
@@ -697,7 +1161,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/hwItem'
+            $ref: "#/components/schemas/hwItem"
         errors:
           type: object
           example: {}
@@ -723,23 +1187,35 @@ components:
         id:
           type: number
           example: 1
-          description: ""
+          description: Unique identifier for the hardware
         name:
           type: string
           example: switch1.netris.io
-          description: ""
+          description: Hostname of the hardware unit
         description:
           type: string
           example: Santa-Clara Spine Switch
-          description: ""
+          description: Human-readable description of the hardware
         type:
           type: string
+          enum:
+            - switch
+            - controller
+            - softgate
+            - server
+            - equinix-metal-server
+            - phoenixnap-bmc-server
           example: switch
-          description: ""
+          description: Type of the hardware device
         status:
           type: string
+          enum:
+            - ok
+            - offline
+            - error
+            - maintenance
           example: ok
-          description: ""
+          description: Current operational status of the hardware
         nos:
           type: object
           properties:
@@ -757,27 +1233,27 @@ components:
                 - cumulus_nvue
                 - dell_sonic
                 - ec_sonic
-          description: ""
+          description: Network Operating System information (applicable to switches)
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: ""
+          description: Primary IP address (loopback) of the hardware unit
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: ""
+          description: Out-of-band management IP address
         macAddress:
           type: string
           example: 23:00:2F:BE:54:87
-          description: ""
+          description: MAC address used for zero-touch provisioning
         portCount:
           type: number
           example: 16
-          description: ""
+          description: Number of physical ports on the device
         asn:
           type: string
           example: auto
-          description: ""
+          description: BGP Autonomous System Number
         tenant:
           type: object
           properties:
@@ -787,7 +1263,7 @@ components:
             name:
               type: string
               example: UNIX
-          description: ""
+          description: Tenant that owns this hardware unit
         site:
           type: object
           properties:
@@ -797,9 +1273,10 @@ components:
             name:
               type: string
               example: Santa-Clara
-          description: ""
+          description: Physical site location of the hardware
         profile:
           type: object
+          nullable: true
           properties:
             id:
               type: number
@@ -807,37 +1284,43 @@ components:
             name:
               type: string
               example: my_profile
-          description: ""
+          description: Inventory profile containing global configuration (NTP, DNS,
+            timezone, etc.)
         links:
           type: array
           items:
-            $ref: '#/components/schemas/linksBody'
+            $ref: "#/components/schemas/linksBody"
+          description: Physical connections between hardware units
         sgFlavor:
-          description: Specifies the flavor of the softgate object. This field is applicable only to objects of type 'softgate'.
+          description: Specifies the flavor of the softgate object. This field is
+            applicable only to objects of type 'softgate'.
           nullable: true
           type: string
           enum:
-          - sg
-          - sg-pro
-          - sg-hs
+            - sg-pro
+            - sg-hs
           example: null
         sgRole:
-          description: Specifies the role of the softgate object. This field is applicable only to objects of type 'softgate' with sgFlavor 'sg-hs'.
+          description: Specifies the role of the softgate object. This field is applicable
+            only to objects of type 'softgate' with sgFlavor 'sg-hs'.
           nullable: true
           type: string
           enum:
-          - general
-          - snat
+            - general
+            - snat
           example: null
         srvRole:
-          description: |
-            Use the 'generic' role if no Netris agent is running on the server. If the Netris integration agent is required on the server, select the appropriate platform type as the role.
+          description: >
+            Use the 'generic' role if no Netris agent is running on the server.
+            If the Netris integration agent is required on the server, select
+            the appropriate platform type as the role.
           nullable: true
           type: string
           enum:
-          - generic
-          - hyperv_cs
-          example: null
+            - generic
+            - hyperv_cs
+            - evpn_vtep
+          example: generic
         tags:
           type: array
           items:
@@ -845,10 +1328,12 @@ components:
           example:
             - tag1
             - tag2
+          description: User-defined tags for categorization and filtering
         dpus:
           type: array
           items:
-            $ref: '#/components/schemas/dpuBody'
+            $ref: "#/components/schemas/dpuBody"
+          description: DPU (Data Processing Unit) configurations attached to this server
         createdDate:
           type: number
           example: 1617280628000
@@ -898,24 +1383,33 @@ components:
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address which will be used as a loopback address of
+            this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: A unique IP address to be used on out of band management interface. Choose DHCP if you want to let IP address assignment to your out of band management network DHCP server.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address to be used on out of band management interface.
+            Choose DHCP if you want to let IP address assignment to your out of
+            band management network DHCP server.<br> Allowed values:<br> - \<ip
+            address\><br> - "auto"<br>
         macAddress:
           type: string
           example: 23:00:2F:BE:54:87
-          description: The MAC address is used for unit identification during zero touch provisioning of the operating system.
+          description: The MAC address is used for unit identification during zero touch
+            provisioning of the operating system.
         portCount:
           type: number
           example: 16
-          description: Preliminary port count is used for definition of topology. When hardware unit registers itself with Netris, the port count will sync up with the real count.
+          description: Preliminary port count is used for definition of topology. When
+            hardware unit registers itself with Netris, the port count will sync
+            up with the real count.
         asn:
           oneOf:
-            - $ref: '#/components/schemas/asnString'
-            - $ref: '#/components/schemas/asnNumber'
-          description: BGP ASN number of the unit.<br> We recommend assigning unique AS numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> - "auto"
+            - $ref: "#/components/schemas/asnString"
+            - $ref: "#/components/schemas/asnNumber"
+          description: BGP ASN number of the unit.<br> We recommend assigning unique AS
+            numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> -
+            "auto"
         tenant:
           type: object
           properties:
@@ -925,7 +1419,10 @@ components:
             name:
               type: string
               example: UNIX
-          description: Users of this tenant will be permitted to edit this unit.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Users of this tenant will be permitted to edit this unit.<br>
+            Allowed values:<br> Can be specified either <b>id</b> or
+            <b>name</b>. When both the <b>id</b> and <b>name</b> are specified,
+            <b>id</b> is used
         site:
           type: object
           properties:
@@ -935,7 +1432,9 @@ components:
             name:
               type: string
               example: Santa-Clara
-          description: Select the site where this device belongs.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Select the site where this device belongs.<br> Allowed values:<br>
+            Can be specified either <b>id</b> or <b>name</b>. When both the
+            <b>id</b> and <b>name</b> are specified, <b>id</b> is used
         profile:
           type: object
           properties:
@@ -945,15 +1444,18 @@ components:
             name:
               type: string
               example: my_profile
-          description: Select an inventory profile to define global configuration (NTP, DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Select an inventory profile to define global configuration (NTP,
+            DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either
+            <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b>
+            are specified, <b>id</b> is used
         links:
           type: array
           items:
-            $ref: '#/components/schemas/linksBody'
+            $ref: "#/components/schemas/linksBody"
         breakout:
           type: string
           enum:
-            - "off"
+            - off
             - disabled
             - 4x10
             - 4x25
@@ -964,8 +1466,10 @@ components:
             - 2x200
             - 4x200
             - 2x400
-          example: "off"
-          description: Initial break out applies to all switch ports of this switch. Individual breakouts are available under the Network->Interfaces section.
+          example: off
+          description: Initial break out applies to all switch ports of this switch.
+            Individual breakouts are available under the Network->Interfaces
+            section.
         tags:
           type: array
           items:
@@ -1011,20 +1515,27 @@ components:
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address which will be used as a loopback address of
+            this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: A unique IP address to be used on out of band management interface. Choose DHCP if you want to let IP address assignment to your out of band management network DHCP server.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address to be used on out of band management interface.
+            Choose DHCP if you want to let IP address assignment to your out of
+            band management network DHCP server.<br> Allowed values:<br> - \<ip
+            address\><br> - "auto"<br>
         macAddress:
           type: string
           example: 23:00:2F:BE:54:87
-          description: The MAC address is used for unit identification during zero touch provisioning of the operating system.
+          description: The MAC address is used for unit identification during zero touch
+            provisioning of the operating system.
         asn:
           enum:
             - auto
             - manual
-          description: BGP ASN number of the unit.<br> We recommend assigning unique AS numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> - "auto"
+          description: BGP ASN number of the unit.<br> We recommend assigning unique AS
+            numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> -
+            "auto"
         profile:
           type: object
           properties:
@@ -1034,7 +1545,10 @@ components:
             name:
               type: string
               example: my_profile
-          description: Select an inventory profile to define global configuration (NTP, DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Select an inventory profile to define global configuration (NTP,
+            DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either
+            <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b>
+            are specified, <b>id</b> is used
         maintenanceMode:
           type: boolean
           description: ""
@@ -1042,7 +1556,7 @@ components:
         links:
           type: array
           items:
-            $ref: '#/components/schemas/linksBody'
+            $ref: "#/components/schemas/linksBody"
         tags:
           type: array
           items:
@@ -1075,7 +1589,10 @@ components:
             name:
               type: string
               example: UNIX
-          description: Users of this tenant will be permitted to edit this unit.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Users of this tenant will be permitted to edit this unit.<br>
+            Allowed values:<br> Can be specified either <b>id</b> or
+            <b>name</b>. When both the <b>id</b> and <b>name</b> are specified,
+            <b>id</b> is used
         site:
           type: object
           properties:
@@ -1085,7 +1602,9 @@ components:
             name:
               type: string
               example: Santa-Clara
-          description: Select the site where this device belongs.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Select the site where this device belongs.<br> Allowed values:<br>
+            Can be specified either <b>id</b> or <b>name</b>. When both the
+            <b>id</b> and <b>name</b> are specified, <b>id</b> is used
         uuid:
           type: string
           example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
@@ -1142,7 +1661,10 @@ components:
             name:
               type: string
               example: UNIX
-          description: Users of this tenant will be permitted to edit this unit.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Users of this tenant will be permitted to edit this unit.<br>
+            Allowed values:<br> Can be specified either <b>id</b> or
+            <b>name</b>. When both the <b>id</b> and <b>name</b> are specified,
+            <b>id</b> is used
         site:
           type: object
           properties:
@@ -1152,7 +1674,9 @@ components:
             name:
               type: string
               example: Santa-Clara
-          description: Select the site where this device belongs.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Select the site where this device belongs.<br> Allowed values:<br>
+            Can be specified either <b>id</b> or <b>name</b>. When both the
+            <b>id</b> and <b>name</b> are specified, <b>id</b> is used
         uuid:
           type: string
           example: 685abcdf-43e1-421e-b7b5-d05dfb3ee98e
@@ -1209,7 +1733,10 @@ components:
             name:
               type: string
               example: UNIX
-          description: Users of this tenant will be permitted to edit this unit.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Users of this tenant will be permitted to edit this unit.<br>
+            Allowed values:<br> Can be specified either <b>id</b> or
+            <b>name</b>. When both the <b>id</b> and <b>name</b> are specified,
+            <b>id</b> is used
         site:
           type: object
           properties:
@@ -1219,7 +1746,9 @@ components:
             name:
               type: string
               example: Santa-Clara
-          description: Select the site where this device belongs.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Select the site where this device belongs.<br> Allowed values:<br>
+            Can be specified either <b>id</b> or <b>name</b>. When both the
+            <b>id</b> and <b>name</b> are specified, <b>id</b> is used
         portCount:
           type: number
           example: 2
@@ -1232,28 +1761,38 @@ components:
           example: Santa-Clara Edge Server
         asn:
           oneOf:
-            - $ref: '#/components/schemas/asnString'
-            - $ref: '#/components/schemas/asnNumber'
-          description: BGP ASN number of the unit.<br> We recommend assigning unique AS numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> - "auto"
+            - $ref: "#/components/schemas/asnString"
+            - $ref: "#/components/schemas/asnNumber"
+          description: BGP ASN number of the unit.<br> We recommend assigning unique AS
+            numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> -
+            "auto"
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address which will be used as a loopback address of
+            this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: A unique IP address to be used on out of band management interface. Choose DHCP if you want to let IP address assignment to your out of band management network DHCP server.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address to be used on out of band management interface.
+            Choose DHCP if you want to let IP address assignment to your out of
+            band management network DHCP server.<br> Allowed values:<br> - \<ip
+            address\><br> - "auto"<br>
         customData:
           type: string
           description: Any custom data that can be assosiated with the object.
         srvRole:
-          description: |
-            Use the 'generic' role if no Netris agent is running on the server. If the Netris integration agent is required on the server, select the appropriate platform type as the role.
+          description: >
+            Use the 'generic' role if no Netris agent is running on the server.
+            If the Netris integration agent is required on the server, select
+            the appropriate platform type as the role.
           nullable: true
           type: string
           enum:
-          - generic
-          - hyperv_cs
+            - generic
+            - hyperv_cs
+            - evpn_vtep
+          example: generic
         tags:
           type: array
           items:
@@ -1263,12 +1802,13 @@ components:
             - tag2
         dpus:
           type: array
+          nullable: true
           items:
-            $ref: '#/components/schemas/dpuAddBody'
+            $ref: "#/components/schemas/dpuAddBody"
         links:
           type: array
           items:
-            $ref: '#/components/schemas/linksBody'
+            $ref: "#/components/schemas/linksBody"
     serverEditBody:
       type: object
       required:
@@ -1284,28 +1824,38 @@ components:
           example: Santa Clara Edge Server
         asn:
           oneOf:
-            - $ref: '#/components/schemas/asnString'
-            - $ref: '#/components/schemas/asnNumber'
-          description: BGP ASN number of the unit.<br> We recommend assigning unique AS numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> - "auto"
+            - $ref: "#/components/schemas/asnString"
+            - $ref: "#/components/schemas/asnNumber"
+          description: BGP ASN number of the unit.<br> We recommend assigning unique AS
+            numbers automatically.<br> Allowed values:<br> - \<AS Number\><br> -
+            "auto"
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address which will be used as a loopback address of
+            this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: A unique IP address to be used on out of band management interface. Choose DHCP if you want to let IP address assignment to your out of band management network DHCP server.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address to be used on out of band management interface.
+            Choose DHCP if you want to let IP address assignment to your out of
+            band management network DHCP server.<br> Allowed values:<br> - \<ip
+            address\><br> - "auto"<br>
         customData:
           type: string
           description: Any custom data that can be assosiated with the object.
         srvRole:
-          description: |
-            Use the 'generic' role if no Netris agent is running on the server. If the Netris integration agent is required on the server, select the appropriate platform type as the role.
+          description: >
+            Use the 'generic' role if no Netris agent is running on the server.
+            If the Netris integration agent is required on the server, select
+            the appropriate platform type as the role.
           nullable: true
           type: string
           enum:
-          - generic
-          - hyperv_cs
+            - generic
+            - hyperv_cs
+            - evpn_vtep
+          example: null
         tags:
           type: array
           items:
@@ -1315,12 +1865,13 @@ components:
             - tag2
         dpus:
           type: array
+          nullable: true
           items:
-            $ref: '#/components/schemas/dpuEditBody'
+            $ref: "#/components/schemas/dpuEditBody"
         links:
           type: array
           items:
-            $ref: '#/components/schemas/linksBody'
+            $ref: "#/components/schemas/linksBody"
     softgateAddBody:
       type: object
       required:
@@ -1340,11 +1891,15 @@ components:
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address which will be used as a loopback address of
+            this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: A unique IP address to be used on out of band management interface. Choose DHCP if you want to let IP address assignment to your out of band management network DHCP server.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address to be used on out of band management interface.
+            Choose DHCP if you want to let IP address assignment to your out of
+            band management network DHCP server.<br> Allowed values:<br> - \<ip
+            address\><br> - "auto"<br>
         tenant:
           type: object
           properties:
@@ -1354,7 +1909,10 @@ components:
             name:
               type: string
               example: UNIX
-          description: Users of this tenant will be permitted to edit this unit.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Users of this tenant will be permitted to edit this unit.<br>
+            Allowed values:<br> Can be specified either <b>id</b> or
+            <b>name</b>. When both the <b>id</b> and <b>name</b> are specified,
+            <b>id</b> is used
         site:
           type: object
           properties:
@@ -1364,7 +1922,9 @@ components:
             name:
               type: string
               example: Santa-Clara
-          description: Select the site where this device belongs.<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Select the site where this device belongs.<br> Allowed values:<br>
+            Can be specified either <b>id</b> or <b>name</b>. When both the
+            <b>id</b> and <b>name</b> are specified, <b>id</b> is used
         profile:
           type: object
           properties:
@@ -1374,29 +1934,34 @@ components:
             name:
               type: string
               example: my_profile
-          description: Select an inventory profile to define global configuration (NTP, DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Select an inventory profile to define global configuration (NTP,
+            DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either
+            <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b>
+            are specified, <b>id</b> is used
         links:
           type: array
           items:
-            $ref: '#/components/schemas/linksBody'
+            $ref: "#/components/schemas/linksBody"
         sgFlavor:
-          description: Specifies the flavor of the softgate object. If not provided, the default value will be "sg"
+          description: Specifies the flavor of the softgate object. If not provided, the
+            default value will be "sg"
           nullable: true
-          default: sg
+          default: sg-pro
           type: string
           enum:
-          - sg
-          - sg-pro
-          - sg-hs
+            - sg-pro
+            - sg-hs
           example: sg-hs
         sgRole:
-          description: Specifies the role of the SoftGate object. This parameter is applicable only for objects of the "softgate" type with the "sg-hs" flavor. If not provided, the default role is set to "general".
+          description: Specifies the role of the SoftGate object. This parameter is
+            applicable only for objects of the "softgate" type with the "sg-hs"
+            flavor. If not provided, the default role is set to "general".
           nullable: true
           default: general
           type: string
           enum:
-          - general
-          - snat
+            - general
+            - snat
         tags:
           type: array
           items:
@@ -1421,11 +1986,15 @@ components:
         mainAddress:
           type: string
           example: 100.64.77.4
-          description: A unique IP address which will be used as a loopback address of this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address which will be used as a loopback address of
+            this unit.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
         mgmtAddress:
           type: string
           example: 10.10.20.4
-          description: A unique IP address to be used on out of band management interface. Choose DHCP if you want to let IP address assignment to your out of band management network DHCP server.<br> Allowed values:<br> - \<ip address\><br> - "auto"<br>
+          description: A unique IP address to be used on out of band management interface.
+            Choose DHCP if you want to let IP address assignment to your out of
+            band management network DHCP server.<br> Allowed values:<br> - \<ip
+            address\><br> - "auto"<br>
         profile:
           type: object
           properties:
@@ -1435,7 +2004,10 @@ components:
             name:
               type: string
               example: my_profile
-          description: Select an inventory profile to define global configuration (NTP, DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Select an inventory profile to define global configuration (NTP,
+            DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either
+            <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b>
+            are specified, <b>id</b> is used
         maintenanceMode:
           type: boolean
           description: ""
@@ -1443,15 +2015,17 @@ components:
         links:
           type: array
           items:
-            $ref: '#/components/schemas/linksBody'
+            $ref: "#/components/schemas/linksBody"
         sgRole:
-          description: Specifies the role of the SoftGate object. This parameter is applicable only for objects of the "softgate" type with the "sg-hs" flavor. If not provided, the default role is set to "general".
+          description: Specifies the role of the SoftGate object. This parameter is
+            applicable only for objects of the "softgate" type with the "sg-hs"
+            flavor. If not provided, the default role is set to "general".
           nullable: true
           default: general
           type: string
           enum:
-          - general
-          - snat
+            - general
+            - snat
           example: null
         tags:
           type: array
@@ -1486,11 +2060,11 @@ components:
               example: 2
             asn:
               oneOf:
-                - $ref: '#/components/schemas/asnString'
-                - $ref: '#/components/schemas/asnNumber'
+                - $ref: "#/components/schemas/asnString"
+                - $ref: "#/components/schemas/asnNumber"
         mainAddress:
           type: string
-          example: '100.64.77.4'
+          example: 100.64.77.4
         mainAddressDetails:
           nullable: true
           type: object
@@ -1503,17 +2077,20 @@ components:
               example: 10.10.10.2
             type:
               type: string
-              enum: [main]
+              enum:
+                - main
             subnetID:
               type: number
-              example: 252 
+              example: 252
         mgmtAddress:
-          description: Details about main IP address. The field is not being used during PUT/POST requests.
+          description: Details about main IP address. The field is not being used during
+            PUT/POST requests.
           type: string
-          example: '10.64.2.4'
+          example: 10.64.2.4
         mgmtAddressDetails:
           nullable: true
-          description: Details about management IP address. The field is not being used during PUT/POST requests.
+          description: Details about management IP address. The field is not being used
+            during PUT/POST requests.
           type: object
           properties:
             id:
@@ -1524,11 +2101,12 @@ components:
               example: 100.100.10.2
             type:
               type: string
-              enum: [mgmt]
+              enum:
+                - mgmt
             subnetID:
               type: number
-              example: 222 
-        macAddress:
+              example: 222
+        serialNumber:
           nullable: true
           type: string
           example: 23:00:2F:BE:54:87
@@ -1537,26 +2115,28 @@ components:
           type: number
           example: 16
           default: 16
-          min: 1
-          max: 32
+          minimum: 1
+          maximum: 32
         portmap:
           type: array
-          items: 
+          items:
             type: object
             required:
               - dpuPortNumber
               - type
               - srvPort
             properties:
-              "dpuPortNumber":
+              dpuPortNumber:
                 type: integer
                 example: 1
-              "type":
-                  type: string
-                  enum: [general, mgmt]
-              "srvPort":
+              type:
                 type: string
-                example: "eth1"
+                enum:
+                  - general
+                  - mgmt
+              srvPort:
+                type: string
+                example: eth1
         profile:
           nullable: true
           type: object
@@ -1569,7 +2149,7 @@ components:
             name:
               type: string
               example: my_profile
-          description: "Inventory profile"
+          description: Inventory profile
     dpuAddBody:
       type: object
       nullable: true
@@ -1596,31 +2176,17 @@ components:
               example: 2
             asn:
               oneOf:
-                - $ref: '#/components/schemas/asnString'
-                - $ref: '#/components/schemas/asnNumber'
+                - $ref: "#/components/schemas/asnString"
+                - $ref: "#/components/schemas/asnNumber"
         mainAddress:
           type: string
-          example: '100.64.77.4'
-        mainAddressDetails:
-          nullable: true
-          type: object
-          properties:
-            subnetID:
-              type: number
-              example: 252 
+          example: 100.64.77.4
         mgmtAddress:
-          description: Details about main IP address. The field is not being used during PUT/POST requests.
+          description: Details about main IP address. The field is not being used during
+            PUT/POST requests.
           type: string
-          example: '10.64.2.4'
-        mgmtAddressDetails:
-          nullable: true
-          description: Details about management IP address. The field is not being used during PUT/POST requests.
-          type: object
-          properties:
-            subnetID:
-              type: number
-              example: 222 
-        macAddress:
+          example: 10.64.2.4
+        serialNumber:
           nullable: true
           type: string
           example: 23:00:2F:BE:54:87
@@ -1629,26 +2195,28 @@ components:
           type: number
           example: 16
           default: 16
-          min: 1
-          max: 32
+          minimum: 1
+          maximum: 32
         portmap:
           type: array
-          items: 
+          items:
             type: object
             required:
               - dpuPortNumber
               - type
               - srvPort
             properties:
-              "dpuPortNumber":
+              dpuPortNumber:
                 type: integer
                 example: 1
-              "type":
-                  type: string
-                  enum: [general, mgmt]
-              "srvPort":
+              type:
                 type: string
-                example: "eth1"
+                enum:
+                  - general
+                  - mgmt
+              srvPort:
+                type: string
+                example: eth1
         profile:
           nullable: true
           type: object
@@ -1661,7 +2229,7 @@ components:
             name:
               type: string
               example: my_profile
-          description: "Inventory profile"
+          description: Inventory profile
     dpuEditBody:
       type: object
       nullable: true
@@ -1687,37 +2255,43 @@ components:
               example: 2
             asn:
               oneOf:
-                - $ref: '#/components/schemas/asnString'
-                - $ref: '#/components/schemas/asnNumber'
+                - $ref: "#/components/schemas/asnString"
+                - $ref: "#/components/schemas/asnNumber"
         mainAddress:
           type: string
-          example: '100.64.77.4'
-        mainAddressDetails:
-          nullable: true
-          type: object
-          properties:
-            subnetID:
-              type: number
-              example: 252 
+          example: 100.64.77.4
         mgmtAddress:
-          description: Details about main IP address. The field is not being used during PUT/POST requests.
+          description: Details about main IP address. The field is not being used during
+            PUT/POST requests.
           type: string
-          example: '10.64.2.4'
-        mgmtAddressDetails:
-          nullable: true
-          description: Details about management IP address. The field is not being used during PUT/POST requests.
-          type: object
-          properties:
-            subnetID:
-              type: number
-              example: 222 
-        macAddress:
+          example: 10.64.2.4
+        serialNumber:
           nullable: true
           type: string
           example: 23:00:2F:BE:54:87
           description: ""
+        portmap:
+          type: array
+          items:
+            type: object
+            required:
+              - dpuPortNumber
+              - type
+              - srvPort
+            properties:
+              dpuPortNumber:
+                type: integer
+                example: 1
+              type:
+                type: string
+                enum:
+                  - general
+                  - mgmt
+              srvPort:
+                type: string
+                example: eth1
         profile:
-          description: "Inventory profile"
+          description: Inventory profile
           nullable: true
           type: object
           required:
@@ -1735,7 +2309,9 @@ components:
       properties:
         local:
           type: object
-          description: Current unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Current unit physical port<br> Allowed values:<br> Can be specified
+            either <b>id</b> or <b>name</b>. When both the <b>id</b> and
+            <b>name</b> are specified, <b>id</b> is used
           properties:
             id:
               type: number
@@ -1745,7 +2321,9 @@ components:
               example: swp56@switch22.netris.io
         remote:
           type: object
-          description: Remote unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Remote unit physical port<br> Allowed values:<br> Can be specified
+            either <b>id</b> or <b>name</b>. When both the <b>id</b> and
+            <b>name</b> are specified, <b>id</b> is used
           properties:
             id:
               type: number
@@ -1784,9 +2362,9 @@ components:
       description: Error response
       properties:
         data:
-          type: array
-          items:
-            type: object
+          type: object
+          nullable: true
+          example: null
         errors:
           type: object
           properties:
@@ -1807,4 +2385,3 @@ components:
             statusCode:
               type: integer
               example: 400
-

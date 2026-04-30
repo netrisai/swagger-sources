@@ -15,26 +15,27 @@ paths:
           in: query
           description: Filter result by Site id.
           schema:
-            $ref: '#/components/schemas/filterBySites'
+            $ref: "#/components/schemas/filterBySites"
         - name: filterByVpc
           in: query
-          description: |
-            Filter result by VPC id. If no VPC ID is specified, the results will be filtered based on the default VPC.
+          description: >
+            Filter result by VPC id. If no VPC ID is specified, the results will
+            be filtered based on the default VPC.
           schema:
-            $ref: '#/components/schemas/filterByVpc'
+            $ref: "#/components/schemas/filterByVpc"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/vnetResListBody'
+                $ref: "#/components/schemas/vnetResListBody"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/vnetResErrorBody'
+                $ref: "#/components/schemas/vnetResErrorBody"
     post:
       tags:
         - V-Net
@@ -44,20 +45,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/vnetAddBody'
+              $ref: "#/components/schemas/vnetAddBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/vnetResAddBody'
+                $ref: "#/components/schemas/vnetResAddBody"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/vnetResErrorBody'
+                $ref: "#/components/schemas/vnetResErrorBody"
   /api/v2/vnet/{id}:
     get:
       tags:
@@ -76,13 +77,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/vnetResListByIdBody'
+                $ref: "#/components/schemas/vnetResListByIdBody"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/vnetResErrorBody'
+                $ref: "#/components/schemas/vnetResErrorBody"
     put:
       tags:
         - V-Net
@@ -99,20 +100,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/vnetEditBody'
+              $ref: "#/components/schemas/vnetEditBody"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/vnetResAddBody'
+                $ref: "#/components/schemas/vnetResAddBody"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/vnetResErrorBody'
+                $ref: "#/components/schemas/vnetResErrorBody"
     delete:
       tags:
         - V-Net
@@ -130,13 +131,61 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/vnetResDeleteBody'
+                $ref: "#/components/schemas/vnetResDeleteBody"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/vnetResErrorBody'
+                $ref: "#/components/schemas/vnetResErrorBody"
+  /api/v2/vnet/ports:
+    get:
+      tags:
+        - V-Net
+      summary: Returns a list of network interfaces for V-Net.
+      parameters:
+        - name: site
+          in: query
+          schema:
+            type: array
+            items:
+              type: integer
+          description: Filter by site IDs.
+        - name: tenant
+          in: query
+          schema:
+            type: array
+            items:
+              type: integer
+          description: Filter by tenant IDs.
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search term.
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Limit the number of results returned.
+        - name: offset
+          in: query
+          schema:
+            type: integer
+          description: Offset the list of returned results.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/vnetResListBody"
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/vnetResErrorBody"
 components:
   securitySchemes:
     cookieAuth:
@@ -211,7 +260,9 @@ components:
           description: ""
         sites:
           type: array
-          description: Ports from these sites will be allowed to participate to the V-Net. Multi-site circuits are possible for sites connected through a backbone port.
+          description: Ports from these sites will be allowed to participate to the V-Net.
+            Multi-site circuits are possible for sites connected through a
+            backbone port.
           items:
             type: object
             properties:
@@ -231,7 +282,8 @@ components:
             - type: integer
         guestTenants:
           type: array
-          description: List of tenants allowed to add/edit/remove ports to the V-Net but not allowed to manage other parameters of the circuit.
+          description: List of tenants allowed to add/edit/remove ports to the V-Net but
+            not allowed to manage other parameters of the circuit.
           items:
             type: object
             properties:
@@ -276,7 +328,7 @@ components:
           example: 1,3,4
           description: Required for only vlan-aware v-nets (vlanAware == true).
         dhcpRelay:
-            $ref: '#/components/schemas/vnetDhcpRelay'
+          $ref: "#/components/schemas/vnetDhcpRelay"
         gateways:
           type: array
           items:
@@ -295,7 +347,8 @@ components:
                 example: true
               dhcp:
                 type: object
-                description: It is optional to specify the object, as the backend will automatically fill it on behalf of you
+                description: It is optional to specify the object, as the backend will
+                  automatically fill it on behalf of you
                 properties:
                   start:
                     type: string
@@ -315,7 +368,7 @@ components:
         ports:
           type: array
           items:
-            $ref: '#/components/schemas/vnetPortEditBody'
+            $ref: "#/components/schemas/vnetPortEditBody"
         tags:
           type: array
           items:
@@ -343,7 +396,9 @@ components:
           example: uniqueName
         sites:
           type: array
-          description: Ports from these sites will be allowed to participate to the V-Net. Multi-site circuits are possible for sites connected through a backbone port.
+          description: Ports from these sites will be allowed to participate to the V-Net.
+            Multi-site circuits are possible for sites connected through a
+            backbone port.
           items:
             type: object
             properties:
@@ -363,7 +418,8 @@ components:
             - type: integer
         guestTenants:
           type: array
-          description: List of tenants allowed to add/edit/remove ports to the V-Net but not allowed to manage other parameters of the circuit.
+          description: List of tenants allowed to add/edit/remove ports to the V-Net but
+            not allowed to manage other parameters of the circuit.
           items:
             type: object
             properties:
@@ -405,7 +461,7 @@ components:
           example: 1,3,4
           description: Required for only vlan-aware v-nets (vlanAware == true).
         dhcpRelay:
-            $ref: '#/components/schemas/vnetDhcpRelay'
+          $ref: "#/components/schemas/vnetDhcpRelay"
         gateways:
           type: array
           items:
@@ -423,7 +479,8 @@ components:
                 description: Is DHCP service enabled for the V-Net
                 example: true
               dhcp:
-                description: It's optional to specify the object, as the backend will automatically fill it on behalf of you
+                description: It's optional to specify the object, as the backend will
+                  automatically fill it on behalf of you
                 type: object
                 properties:
                   start:
@@ -444,7 +501,7 @@ components:
         ports:
           type: array
           items:
-            $ref: '#/components/schemas/vnetPortEditBody'
+            $ref: "#/components/schemas/vnetPortEditBody"
         tags:
           type: array
           items:
@@ -466,8 +523,8 @@ components:
                 example: true
     vnetBody:
       allOf:
-        - $ref: '#/components/schemas/vnetsBody'
-        - $ref: '#/components/schemas/vnetPortBody'
+        - $ref: "#/components/schemas/vnetsBody"
+        - $ref: "#/components/schemas/vnetPortBody"
     vnetsBody:
       type: object
       required:
@@ -490,7 +547,9 @@ components:
           description: ""
         sites:
           type: array
-          description: Ports from these sites will be allowed to participate to the V-Net. Multi-site circuits are possible for sites connected through a backbone port.
+          description: Ports from these sites will be allowed to participate to the V-Net.
+            Multi-site circuits are possible for sites connected through a
+            backbone port.
           items:
             type: object
             properties:
@@ -523,7 +582,8 @@ components:
           example: 567
         guestTenants:
           type: array
-          description: List of tenants allowed to add/edit/remove ports to the V-Net but not allowed to manage other parameters of the circuit.
+          description: List of tenants allowed to add/edit/remove ports to the V-Net but
+            not allowed to manage other parameters of the circuit.
           items:
             type: object
             properties:
@@ -569,7 +629,7 @@ components:
           example: 1,3,4
           description: Required for only vlan-aware v-nets (vlanAware == true)
         dhcpRelay:
-          $ref: '#/components/schemas/vnetDhcpRelay'
+          $ref: "#/components/schemas/vnetDhcpRelay"
         gateways:
           type: array
           items:
@@ -687,7 +747,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/vnetsBody'
+            $ref: "#/components/schemas/vnetsBody"
         errors:
           type: object
           example:
@@ -715,7 +775,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/vnetBody'
+            $ref: "#/components/schemas/vnetBody"
         errors:
           type: object
           example:

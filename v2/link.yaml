@@ -11,15 +11,156 @@ paths:
         - Link
       summary: Request for getting links.
       parameters:
-        - name: filterBySites
+        - name: page
           in: query
-          description: Filter by provided sites.
+          description: Page number for pagination.
+          schema:
+            type: integer
+            minimum: 1
+        - name: limit
+          in: query
+          description: Number of items per page.
+          schema:
+            type: integer
+            minimum: 1
+        - name: sites
+          in: query
+          description: Filter by site IDs.
           schema:
             type: array
             items:
-              oneOf:
-                - type: number
-                - type: string
+              type: integer
+        - name: nodes
+          in: query
+          description: Filter by node IDs.
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: ports
+          in: query
+          description: Filter by port IDs.
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: speeds
+          in: query
+          description: Filter by port speeds.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: statuses
+          in: query
+          description: Filter by link statuses.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - up
+                - down
+                - unknown
+        - name: underlay
+          in: query
+          description: Filter by underlay status.
+          schema:
+            type: string
+            enum:
+              - enabled
+              - disabled
+        - name: local
+          in: query
+          description: Local port ID.
+          schema:
+            type: integer
+        - name: remote
+          in: query
+          description: Remote port ID.
+          schema:
+            type: integer
+        - name: nodeA
+          in: query
+          description: Filter by Node A (local node).
+          schema:
+            type: string
+        - name: interfaceA
+          in: query
+          description: Filter by Interface A (local interface).
+          schema:
+            type: string
+        - name: speedA
+          in: query
+          description: Filter by Speed A (local port speed).
+          schema:
+            type: string
+        - name: statusA
+          in: query
+          description: Filter by Status A (local port status).
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - up
+                - down
+                - unknown
+        - name: nodeB
+          in: query
+          description: Filter by Node B (remote node).
+          schema:
+            type: string
+        - name: interfaceB
+          in: query
+          description: Filter by Interface B (remote interface).
+          schema:
+            type: string
+        - name: speedB
+          in: query
+          description: Filter by Speed B (remote port speed).
+          schema:
+            type: string
+        - name: statusB
+          in: query
+          description: Filter by Status B (remote port status).
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - up
+                - down
+                - unknown
+        - name: utilization
+          in: query
+          description: Filter by link utilization.
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          description: "Sort by field. Available values: nodeA, interfaceA, speedA,
+            statusA, nodeB, interfaceB, speedB, statusB."
+          schema:
+            type: string
+            enum:
+              - nodeA
+              - interfaceA
+              - speedA
+              - statusA
+              - nodeB
+              - interfaceB
+              - speedB
+              - statusB
+        - name: order
+          in: query
+          description: Sort order. Defaults to 'asc'.
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
       responses:
         "200":
           description: Ok
@@ -32,7 +173,7 @@ paths:
                     type: array
                     items:
                       type: object
-                      $ref: '#/components/schemas/linkBody'
+                      $ref: "#/components/schemas/linkBodyExtended"
                   errors:
                     example: null
                   message:
@@ -40,47 +181,214 @@ paths:
                   isSuccess:
                     example: true
                   meta:
+                    type: object
                     properties:
                       apiVersion:
-                        example: "2"
+                        type: string
+                        example: v2
                       statusCode:
+                        type: integer
                         example: 200
+                      totalDocs:
+                        type: integer
+                        description: Total number of documents
+                        example: 100
+                      page:
+                        type: integer
+                        description: Current page number
+                        example: 1
+                      limit:
+                        type: integer
+                        description: Items per page
+                        example: 10
     post:
       tags:
         - Link
       summary: Request for adding link.
+      description: "Creates a new network link between two ports. Validates port
+        existence, prevents self-links, and ensures MC-LAG peer link
+        constraints. For MC-LAG peer links: the shared IPv4 must belong to a
+        loopback subnet, both sharedIPv4Addr and anycastMACAddr must be unique
+        unless adding another link for the same MC-LAG pair (in which case they
+        must match existing values). MC-LAG is limited to two switches per
+        pair."
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/linkBodyPost'
+              $ref: "#/components/schemas/linkBodyPost"
       responses:
         "200":
-          description: OK
+          description: Link successfully created
           content:
             application/json:
               schema:
-                type: string
-                example: Successfully added.
+                type: object
+                properties:
+                  data:
+                    type: string
+                    description: Success message or result
+                    nullable: true
+                  errors:
+                    nullable: true
+                    example: null
+                  message:
+                    type: string
+                    example: ""
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: "Validation error or bad request. Possible errors: invalid port
+            IDs, self-link attempt, invalid IP addresses, MC-LAG configuration
+            errors, underlay value errors."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/linkResErrorBody"
     delete:
       tags:
         - Link
       summary: DEPRECATED - Request for deleting link.
+      description: This endpoint is deprecated. Use DELETE /api/v2/link/{id} instead.
+      deprecated: true
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/linkBodyDelete'
+              $ref: "#/components/schemas/linkBodyDelete"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                type: string
-                example: Successfully deleted.
+                type: object
+                properties:
+                  data:
+                    type: string
+                    description: Success message or result
+                  errors:
+                    example: null
+                  message:
+                    example: ""
+                  isSuccess:
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/linkResErrorBody"
+  /api/v2/link/filter-values:
+    get:
+      tags:
+        - Link
+      summary: Request for getting link filter values.
+      description: Returns available filter values for nodes, interfaces, speeds,
+        statuses, and underlays.
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/linkFilterValues"
+                  errors:
+                    example: null
+                  message:
+                    example: ""
+                  isSuccess:
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/linkResErrorBody"
+  /api/v2/link/details:
+    get:
+      tags:
+        - Link
+      summary: Request for getting link details.
+      description: Returns detailed information about a specific link including
+        hardware health.
+      parameters:
+        - name: local
+          in: query
+          required: true
+          description: Local port ID.
+          schema:
+            type: integer
+        - name: remote
+          in: query
+          required: true
+          description: Remote port ID.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/linkDetailsBody"
+                  errors:
+                    example: null
+                  message:
+                    example: ""
+                  isSuccess:
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/linkResErrorBody"
   /api/v2/link/{id}:
     get:
       tags:
@@ -102,7 +410,7 @@ paths:
                 type: object
                 properties:
                   data:
-                     $ref: '#/components/schemas/linkBody'
+                    $ref: "#/components/schemas/linkBodyExtended"
                   errors:
                     example: null
                   message:
@@ -110,39 +418,47 @@ paths:
                   isSuccess:
                     example: true
                   meta:
+                    type: object
                     properties:
                       apiVersion:
-                        example: "2"
+                        type: string
+                        example: v2
                       statusCode:
+                        type: integer
                         example: 200
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/linkResErrorBody'
+                $ref: "#/components/schemas/linkResErrorBody"
         "404":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/linkResErrorBody'
+                  - $ref: "#/components/schemas/linkResErrorBody"
                   - type: object
                     properties:
                       errors:
                         example:
-                          propertyName: Not Found
+                          error: Not found.
                       message:
                         example: Not found
                       meta:
+                        type: object
                         properties:
                           statusCode:
+                            type: integer
                             example: 404
     put:
       tags:
         - Link
       summary: Request for editing link by ID.
+      description: Updates an existing network link. Only IP addresses (IPv4/IPv6) and
+        underlay status can be modified. MC-LAG peer link configuration cannot
+        be changed through this endpoint.
       parameters:
         - name: id
           in: path
@@ -155,43 +471,65 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/linkBodyPut'
+              $ref: "#/components/schemas/linkBodyPut"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                type: string
-                example: Successfully edited.
+                type: object
+                properties:
+                  data:
+                    type: string
+                    description: Success message or result
+                  errors:
+                    example: null
+                  message:
+                    example: ""
+                  isSuccess:
+                    example: true
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 200
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/linkResErrorBody'
+                $ref: "#/components/schemas/linkResErrorBody"
         "404":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/linkResErrorBody'
+                  - $ref: "#/components/schemas/linkResErrorBody"
                   - type: object
                     properties:
                       errors:
                         example:
-                          propertyName: Not Found
+                          error: Not Found.
                       message:
                         example: Not found
                       meta:
+                        type: object
                         properties:
                           statusCode:
+                            type: integer
                             example: 404
     delete:
       tags:
         - Link
       summary: Request for deleting link by ID.
+      description: Deletes a network link by its ID. The link ID is decoded to extract
+        local and remote port IDs using the Cantor pairing function.
       parameters:
         - name: id
           in: path
@@ -207,42 +545,108 @@ paths:
               schema:
                 type: object
                 properties:
+                  data:
+                    type: string
+                    description: Success message
+                    nullable: true
                   errors:
                     example: null
                   message:
-                    example: Successfully deleted.
+                    example: ""
                   isSuccess:
                     example: true
                   meta:
+                    type: object
                     properties:
                       apiVersion:
-                        example: "2"
+                        type: string
+                        example: v2
                       statusCode:
+                        type: integer
                         example: 200
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/linkResErrorBody'
+                $ref: "#/components/schemas/linkResErrorBody"
         "404":
+          description: Link not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    nullable: true
+                    example: null
+                  errors:
+                    type: object
+                    example:
+                      error: Link not found.
+                  message:
+                    type: string
+                    example: Link not found.
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  meta:
+                    type: object
+                    properties:
+                      apiVersion:
+                        type: string
+                        example: v2
+                      statusCode:
+                        type: integer
+                        example: 404
+  /api/v2/link/ports:
+    get:
+      tags:
+        - Link
+      summary: Returns a list of network interfaces for Link.
+      parameters:
+        - name: site
+          in: query
+          schema:
+            type: array
+            items:
+              type: integer
+          description: Filter by site IDs.
+        - name: tenant
+          in: query
+          schema:
+            type: array
+            items:
+              type: integer
+          description: Filter by tenant IDs.
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search term.
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Limit the number of results returned.
+        - name: offset
+          in: query
+          schema:
+            type: integer
+          description: Offset the list of returned results.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/linkResListBody"
+        "400":
           description: Error
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/linkResErrorBody'
-                  - type: object
-                    properties:
-                      errors:
-                        example:
-                          propertyName: Not Found
-                      message:
-                        example: Not found
-                      meta:
-                        properties:
-                          statusCode:
-                            example: 404
+                $ref: "#/components/schemas/linkResErrorBody"
 components:
   securitySchemes:
     cookieAuth:
@@ -255,128 +659,158 @@ components:
       enum:
         - enabled
         - disabled
-      example: 'enabled'
+      example: enabled
     mclagObject:
       nullable: true
       type: object
+      description: MC-LAG peer link configuration
+      required:
+        - sharedIPv4Addr
+        - anycastMACAddr
       properties:
         sharedIPv4Addr:
           type: string
-          description: |
-            Used only for MC-LAG. Not required for EVPN-MH. MC-LAG shared IPv4 address. Shall be part of any IPAM defined subnet with the purpose set to loopback.
+          description: Used only for MC-LAG. Not required for EVPN-MH. MC-LAG shared IPv4
+            address. Shall be part of any IPAM defined subnet with the purpose
+            set to loopback. Must be unique and not already in use.
           example: 169.254.22.1
         anycastMACAddr:
           type: string
-          description: |
-            Used only for MC-LAG. Not required for EVPN-MH. MC-LAG anycast MAC address. Recommended range 44:38:39:ff:00:00 - 44:38:39:ff:ff:ff
+          description: Used only for MC-LAG. Not required for EVPN-MH. MC-LAG anycast MAC
+            address. Recommended range 44:38:39:ff:00:00 - 44:38:39:ff:ff:ff.
+            Must be unique for each MC-LAG pair.
           example: 44:38:39:ff:ff:00
     linkBodyDelete:
       type: object
-      description: Physical connection
+      description: Physical connection to delete (DEPRECATED - use DELETE
+        /api/v2/link/{id} instead)
+      required:
+        - local
+        - remote
       properties:
-        id:
-          type: string
-          description: Link ID.
-          example: "323123"
         local:
           type: object
-          description: Current unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Current unit physical port<br> Allowed values:<br> Can be specified
+            either <b>id</b> or <b>name</b>. When both the <b>id</b> and
+            <b>name</b> are specified, <b>id</b> is used
           properties:
             id:
               type: number
+              description: Port ID (required if name is not provided)
               example: 21311
             name:
               type: string
+              description: Port name in format 'port@switch' (required if id is not provided)
               example: swp56@switch22
-            ipv4:
-              type: string
-              example: 169.254.2.1/31
-            ipv6:
-              type: string
-              example: fe80::e29:efff:fece:fb20/64
         remote:
           type: object
-          description: Remote unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Remote unit physical port<br> Allowed values:<br> Can be specified
+            either <b>id</b> or <b>name</b>. When both the <b>id</b> and
+            <b>name</b> are specified, <b>id</b> is used
           properties:
             id:
               type: number
+              description: Port ID (required if name is not provided)
               example: 43534
             name:
               type: string
+              description: Port name in format 'port@switch' (required if id is not provided)
               example: swp10@switch5
-            ipv4:
-              type: string
-              example: 169.254.2.2/31
-            ipv6:
-              type: string
-              example: fe80::e29:efff:fece:fb21/64
     linkBodyPut:
       type: object
-      description: Physical connection
+      description: "Physical connection update. Note: mclagPeerLink cannot be edited
+        through this endpoint."
       properties:
         local:
           type: object
+          description: Local port IP addresses (optional)
           properties:
             ipv4:
               type: string
+              description: IPv4 address with CIDR notation
               example: 169.254.2.1/31
             ipv6:
               type: string
+              description: IPv6 address with CIDR notation
               example: fe80::e29:efff:fece:fb20/64
         remote:
           type: object
+          description: Remote port IP addresses (optional)
           properties:
             ipv4:
               type: string
+              description: IPv4 address with CIDR notation
               example: 169.254.2.2/31
             ipv6:
               type: string
+              description: IPv6 address with CIDR notation
               example: fe80::e29:efff:fece:fb21/64
         underlay:
+          description: Underlay status (optional)
           allOf:
-            - $ref: '#/components/schemas/underlayObject'
+            - $ref: "#/components/schemas/underlayObject"
     linkBodyPost:
       type: object
       description: Physical connection
+      required:
+        - local
+        - remote
       properties:
         local:
           type: object
-          description: Current unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Current unit physical port<br> Allowed values:<br> Can be specified
+            either <b>id</b> or <b>name</b>. When both the <b>id</b> and
+            <b>name</b> are specified, <b>id</b> is used
           properties:
             id:
               type: number
+              description: Port ID (required if name is not provided)
               example: 21311
             name:
               type: string
+              description: Port name in format 'port@switch' (required if id is not provided)
               example: swp56@switch22
             ipv4:
               type: string
+              description: IPv4 address with CIDR notation (optional)
               example: 169.254.2.1/31
             ipv6:
               type: string
+              description: IPv6 address with CIDR notation (optional)
               example: fe80::e29:efff:fece:fb20/64
         remote:
           type: object
-          description: Remote unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Remote unit physical port<br> Allowed values:<br> Can be specified
+            either <b>id</b> or <b>name</b>. When both the <b>id</b> and
+            <b>name</b> are specified, <b>id</b> is used
           properties:
             id:
               type: number
+              description: Port ID (required if name is not provided)
               example: 43534
             name:
               type: string
+              description: Port name in format 'port@switch' (required if id is not provided)
               example: swp10@switch5
             ipv4:
               type: string
+              description: IPv4 address with CIDR notation (optional)
               example: 169.254.2.2/31
             ipv6:
               type: string
+              description: IPv6 address with CIDR notation (optional)
               example: fe80::e29:efff:fece:fb21/64
         mclagPeerLink:
+          nullable: true
+          description: MC-LAG peer link configuration (optional). Required only for MC-LAG
+            peer links.
           allOf:
-            - $ref: '#/components/schemas/mclagObject'
+            - $ref: "#/components/schemas/mclagObject"
         underlay:
+          description: Underlay status (optional). Defaults to 'enabled' based on switch
+            types.
           allOf:
-            - $ref: '#/components/schemas/underlayObject'
+            - $ref: "#/components/schemas/underlayObject"
     linkBody:
       type: object
       description: Physical connection
@@ -387,7 +821,9 @@ components:
           example: "323123"
         local:
           type: object
-          description: Current unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Current unit physical port<br> Allowed values:<br> Can be specified
+            either <b>id</b> or <b>name</b>. When both the <b>id</b> and
+            <b>name</b> are specified, <b>id</b> is used
           properties:
             id:
               type: number
@@ -403,7 +839,9 @@ components:
               example: fe80::e29:efff:fece:fb20/64
         remote:
           type: object
-          description: Remote unit physical port<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+          description: Remote unit physical port<br> Allowed values:<br> Can be specified
+            either <b>id</b> or <b>name</b>. When both the <b>id</b> and
+            <b>name</b> are specified, <b>id</b> is used
           properties:
             id:
               type: number
@@ -419,13 +857,13 @@ components:
               example: fe80::e29:efff:fece:fb21/64
         mclagPeerLink:
           allOf:
-              - $ref: '#/components/schemas/mclagObject'
+            - $ref: "#/components/schemas/mclagObject"
         underlay:
           allOf:
-            - $ref: '#/components/schemas/underlayObject'
+            - $ref: "#/components/schemas/underlayObject"
     linkResErrorBody:
       type: object
-      description: Error response
+      description: Error response with validation errors or general error messages
       properties:
         data:
           type: array
@@ -433,11 +871,20 @@ components:
             type: object
         errors:
           type: object
+          description: Error object containing field-specific validation errors or general
+            error messages
           example:
-            propertyName: Error message
+            fromIpv4: Invalid IPv4 address
+            toIpv4: Invalid IPv4 address
+            sharedIPv4Addr: The IPv4 address you entered is already in use by another service.
+            anycastMACAddr: The MAC address you entered is already in use by another MC-LAG
+              peer link.
+            underlay: Invalid underlay value.
+            error: MC-LAG switch pair must be limited to two switches.
           properties:
             key:
               type: string
+              description: Error message for the specific field or 'error' for general errors
         message:
           type: string
           example: Error message
@@ -449,8 +896,337 @@ components:
           properties:
             apiVersion:
               type: string
-              example: 2
+              example: v2
             statusCode:
               type: integer
               example: 400
-
+    linkBodyExtended:
+      type: object
+      description: Extended link information with additional port and switch details
+      properties:
+        id:
+          type: integer
+          description: Link ID.
+          example: 323123
+        local:
+          type: object
+          description: Local port information
+          properties:
+            id:
+              type: integer
+              example: 21311
+            name:
+              type: string
+              example: swp56@switch22
+            ipv4:
+              type: string
+              example: 169.254.2.1/31
+            ipv6:
+              type: string
+              example: fe80::e29:efff:fece:fb20/64
+            deviceName:
+              type: string
+              example: switch22
+            port:
+              type: string
+              example: swp56
+            speed:
+              type: string
+              example: "10000"
+            status:
+              type: string
+              enum:
+                - up
+                - down
+                - unknown
+              example: up
+            hardware:
+              type: object
+              description: Hardware information including id, name and type
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                name:
+                  type: string
+                  example: switch22
+                type:
+                  type: string
+                  example: spine
+        remote:
+          type: object
+          description: Remote port information
+          properties:
+            id:
+              type: integer
+              example: 43534
+            name:
+              type: string
+              example: swp10@switch5
+            ipv4:
+              type: string
+              example: 169.254.2.2/31
+            ipv6:
+              type: string
+              example: fe80::e29:efff:fece:fb21/64
+            deviceName:
+              type: string
+              example: switch5
+            port:
+              type: string
+              example: swp10
+            speed:
+              type: string
+              example: "10000"
+            status:
+              type: string
+              enum:
+                - up
+                - down
+                - unknown
+              example: up
+            hardware:
+              type: object
+              description: Hardware information including id, name and type
+              properties:
+                id:
+                  type: integer
+                  example: 2
+                name:
+                  type: string
+                  example: switch5
+                type:
+                  type: string
+                  example: leaf
+        utilization:
+          type: object
+          description: Link utilization information
+          properties:
+            label:
+              type: string
+              description: Human-readable utilization percentage
+              example: 45%
+            value:
+              type: number
+              description: Numeric utilization percentage
+              example: 45
+        mclagPeerLink:
+          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/mclagObject"
+          description: MC-LAG peer link configuration. Null if this is not a MC-LAG peer
+            link.
+        linkType:
+          type: object
+          description: Link type information
+          properties:
+            value:
+              type: string
+              description: Link type value
+            label:
+              type: string
+              description: Human-readable link type label
+              enum:
+                - Peer-Link
+                - Underlay
+                - ""
+              example: Underlay
+        underlay:
+          type: string
+          description: Underlay status for the link
+          enum:
+            - enabled
+            - disabled
+          example: enabled
+    linkFilterValues:
+      type: object
+      description: Available filter values for links
+      properties:
+        nodes:
+          type: array
+          description: Available nodes for filtering
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: switch1
+              value:
+                type: integer
+                example: 1
+        interfaces:
+          type: array
+          description: Available interfaces for filtering
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: swp1@switch1
+              value:
+                type: integer
+                example: 101
+        speeds:
+          type: array
+          description: Available speeds for filtering
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: 10G
+              value:
+                type: string
+                example: "10000"
+          example:
+            - value: "800000"
+              label: 800G
+            - value: "400000"
+              label: 400G
+            - value: "200000"
+              label: 200G
+            - value: "100000"
+              label: 100G
+            - value: "50000"
+              label: 50G
+            - value: "40000"
+              label: 40G
+            - value: "25000"
+              label: 25G
+            - value: "10000"
+              label: 10G
+            - value: "1000"
+              label: 1G
+        statuses:
+          type: array
+          description: Available statuses for filtering
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: Link Up
+              value:
+                type: string
+                example: up
+          example:
+            - label: Link Up
+              value: up
+            - label: Link Down
+              value: down
+            - label: Unknown
+              value: unknown
+        underlays:
+          type: array
+          description: Available underlay options for filtering
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: Enabled
+              value:
+                type: string
+                example: enabled
+          example:
+            - label: Enabled
+              value: enabled
+            - label: Disabled
+              value: disabled
+    linkDetailsBody:
+      type: object
+      description: Detailed link information including hardware health
+      properties:
+        local:
+          type: object
+          description: Local port information with extended details including full port
+            object with switch, site, tenant info
+          properties:
+            id:
+              type: integer
+              example: 21311
+            port:
+              type: string
+              example: swp56
+            shortName:
+              type: string
+              example: swp56@switch22
+            speed:
+              type: string
+              example: "10000"
+            status:
+              type: string
+              example: up
+            ipv4:
+              type: string
+              example: 169.254.2.1/31
+            ipv6:
+              type: string
+              example: fe80::e29:efff:fece:fb20/64
+            switch:
+              type: object
+              description: Associated switch information
+            site:
+              type: object
+              description: Associated site information
+        remote:
+          type: object
+          description: Remote port information with extended details including full port
+            object with switch, site, tenant info
+          properties:
+            id:
+              type: integer
+              example: 43534
+            port:
+              type: string
+              example: swp10
+            shortName:
+              type: string
+              example: swp10@switch5
+            speed:
+              type: string
+              example: "10000"
+            status:
+              type: string
+              example: up
+            ipv4:
+              type: string
+              example: 169.254.2.2/31
+            ipv6:
+              type: string
+              example: fe80::e29:efff:fece:fb21/64
+            switch:
+              type: object
+              description: Associated switch information
+            site:
+              type: object
+              description: Associated site information
+        hardwareHealth:
+          type: array
+          description: Hardware health information for both local and remote ports
+          items:
+            type: object
+            description: Hardware health check result
+            properties:
+              port_id:
+                type: integer
+                example: 21311
+              severity:
+                type: string
+                example: ok
+              message:
+                type: string
+                example: Port operating normally
+        mclagPeerLink:
+          nullable: true
+          description: MC-LAG peer link configuration if this is a MC-LAG peer link, null
+            otherwise
+          allOf:
+            - $ref: "#/components/schemas/mclagObject"
+        underlay:
+          type: string
+          description: Underlay status for the link
+          enum:
+            - enabled
+            - disabled
+          example: enabled

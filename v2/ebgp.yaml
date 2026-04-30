@@ -15,26 +15,28 @@ paths:
           in: query
           description: Filter result by Site id.
           schema:
-            $ref: '#/components/schemas/filterBySites'
+            $ref: "#/components/schemas/filterBySites"
         - name: filterByVpc
           in: query
-          description: |
-            Filter result by VPC id. If no VPC ID is specified, the results will be filtered based on the default VPC.
+          description: >
+            Filter result by VPC id. If no VPC ID is specified, the results will
+            be filtered based on the default VPC.
+          example: 1,2,3
           schema:
-            $ref: '#/components/schemas/filterBySites'
+            type: string
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ebgps'
+                $ref: "#/components/schemas/ebgps"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: "#/components/schemas/resErrorBody"
     post:
       tags:
         - E-BGP
@@ -44,7 +46,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ebgpAddItem'
+              $ref: "#/components/schemas/ebgpAddItem"
       responses:
         "200":
           description: OK
@@ -61,14 +63,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: "#/components/schemas/resErrorBody"
         "404":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/resErrorBody'
+                  - $ref: "#/components/schemas/resErrorBody"
                   - type: object
                     properties:
                       errors:
@@ -86,14 +88,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/resErrorBody'
+              $ref: "#/components/schemas/resErrorBody"
       "404":
         description: Error
         content:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/resErrorBody'
+                - $ref: "#/components/schemas/resErrorBody"
                 - type: object
                   properties:
                     errors:
@@ -113,7 +115,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ebgpEditItem'
+              $ref: "#/components/schemas/ebgpEditItem"
       responses:
         "200":
           description: OK
@@ -143,13 +145,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ebgpItem'
+                $ref: "#/components/schemas/ebgpItem"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: "#/components/schemas/resErrorBody"
     delete:
       tags:
         - E-BGP
@@ -169,14 +171,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: "#/components/schemas/resErrorBody"
         "404":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/resErrorBody'
+                  - $ref: "#/components/schemas/resErrorBody"
                   - type: object
                     properties:
                       errors:
@@ -194,32 +196,56 @@ paths:
         - E-BGP
       summary: Request for getting ports.
       parameters:
-        - name: idoftheselectedsite
+        - name: site
           in: query
           description: ""
           required: true
           schema:
             type: string
+        - name: hw
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: search
+          in: query
+          description: ""
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: ""
+          required: false
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          description: ""
+          required: false
+          schema:
+            type: integer
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ports'
+                $ref: "#/components/schemas/ports"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: "#/components/schemas/resErrorBody"
         "404":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/resErrorBody'
+                  - $ref: "#/components/schemas/resErrorBody"
                   - type: object
                     properties:
                       errors:
@@ -246,6 +272,25 @@ paths:
         - name: vnet
           in: query
           description: ""
+          required: false
+          schema:
+            type: string
+        - name: search
+          in: query
+          description: ""
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: ""
+          required: false
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          description: ""
+          required: false
           schema:
             type: integer
       responses:
@@ -254,20 +299,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/switches'
+                $ref: "#/components/schemas/switches"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: "#/components/schemas/resErrorBody"
         "404":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/resErrorBody'
+                  - $ref: "#/components/schemas/resErrorBody"
                   - type: object
                     properties:
                       errors:
@@ -305,14 +350,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: "#/components/schemas/resErrorBody"
         "404":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/resErrorBody'
+                  - $ref: "#/components/schemas/resErrorBody"
                   - type: object
                     properties:
                       errors:
@@ -354,13 +399,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/updatesources'
+                $ref: "#/components/schemas/updatesources"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: "#/components/schemas/resErrorBody"
   /api/v2/ebgp/changestatus:
     put:
       tags:
@@ -390,14 +435,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: "#/components/schemas/resErrorBody"
         "404":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/resErrorBody'
+                  - $ref: "#/components/schemas/resErrorBody"
                   - type: object
                     properties:
                       errors:
@@ -438,14 +483,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: "#/components/schemas/resErrorBody"
         "404":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/resErrorBody'
+                  - $ref: "#/components/schemas/resErrorBody"
                   - type: object
                     properties:
                       errors:
@@ -469,20 +514,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/routemaps'
+                $ref: "#/components/schemas/routemaps"
         "400":
           description: Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/resErrorBody'
+                $ref: "#/components/schemas/resErrorBody"
         "404":
           description: Error
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/resErrorBody'
+                  - $ref: "#/components/schemas/resErrorBody"
                   - type: object
                     properties:
                       errors:
@@ -503,13 +548,13 @@ components:
     filterBySites:
       type: array
       items:
-        $ref: '#/components/schemas/selectedSite'
+        $ref: "#/components/schemas/selectedSite"
     selectedSite:
       type: integer
     ebgps:
       type: array
       items:
-        $ref: '#/components/schemas/ebgpItem'
+        $ref: "#/components/schemas/ebgpItem"
     ebgpItem:
       type: object
       properties:
@@ -547,9 +592,9 @@ components:
               type: boolean
               example: false
         vnet:
-          $ref: '#/components/schemas/vnet'
+          $ref: "#/components/schemas/vnet"
         hardware:
-          $ref: '#/components/schemas/hw'
+          $ref: "#/components/schemas/hw"
         port:
           type: object
           properties:
@@ -705,7 +750,7 @@ components:
               example: 10
         ports:
           items:
-            $ref: '#/components/schemas/returnPorts'
+            $ref: "#/components/schemas/returnPorts"
         tags:
           type: array
           example:
@@ -713,6 +758,13 @@ components:
             - tag2
           items:
             type: string
+        removePrivateAs:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          default: enabled
+          example: enabled
         createdDate:
           type: string
         modifiedDate:
@@ -776,7 +828,7 @@ components:
     ports:
       type: array
       items:
-        $ref: '#/components/schemas/portsItem'
+        $ref: "#/components/schemas/portsItem"
     portsItem:
       type: object
       properties:
@@ -863,7 +915,7 @@ components:
           example: 0
         lacp:
           type: string
-          example: "off"
+          example: off
         port_index:
           type: integer
           example: 0
@@ -891,7 +943,7 @@ components:
     switches:
       type: array
       items:
-        $ref: '#/components/schemas/hwItem'
+        $ref: "#/components/schemas/hwItem"
     hwItem:
       type: object
       description: ""
@@ -979,7 +1031,7 @@ components:
         links:
           type: array
           items:
-            $ref: '#/components/schemas/linksBody'
+            $ref: "#/components/schemas/linksBody"
         createdDate:
           type: number
           example: 1617280628000
@@ -991,7 +1043,7 @@ components:
     routemaps:
       type: array
       items:
-        $ref: '#/components/schemas/routemapsItem'
+        $ref: "#/components/schemas/routemapsItem"
     routemapsItem:
       type: object
       properties:
@@ -1004,7 +1056,7 @@ components:
     updatesources:
       type: array
       items:
-        $ref: '#/components/schemas/updatesourcesItem'
+        $ref: "#/components/schemas/updatesourcesItem"
     updatesourcesItem:
       type: object
       properties:
@@ -1098,7 +1150,7 @@ components:
           type: number
           example: 0
         vnet:
-          $ref: '#/components/schemas/vnet'
+          $ref: "#/components/schemas/vnet"
         remoteIP:
           type: string
           example: 1.1.1.2
@@ -1124,7 +1176,7 @@ components:
           type: string
           example: enabled
         hardware:
-          $ref: '#/components/schemas/hw'
+          $ref: "#/components/schemas/hw"
         port:
           type: object
           properties:
@@ -1186,6 +1238,13 @@ components:
             connect:
               type: number
               example: 10
+        removePrivateAs:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          default: enabled
+          example: enabled
     ebgpEditItem:
       type: object
       required:
@@ -1337,9 +1396,9 @@ components:
           type: boolean
           default: false
         hardware:
-          $ref: '#/components/schemas/hw'
+          $ref: "#/components/schemas/hw"
         vnet:
-          $ref: '#/components/schemas/vnet'
+          $ref: "#/components/schemas/vnet"
         updateSource:
           oneOf:
             - type: string
@@ -1355,14 +1414,21 @@ components:
             - tag2
           items:
             type: string
+        removePrivateAs:
+          type: string
+          enum:
+            - enabled
+            - disabled
+          default: enabled
+          example: enabled
     vnet:
       oneOf:
-        - $ref: '#/components/schemas/vnetSelected'
-        - $ref: '#/components/schemas/vnetUnSelected'
+        - $ref: "#/components/schemas/vnetSelected"
+        - $ref: "#/components/schemas/vnetUnSelected"
     hw:
       oneOf:
-        - $ref: '#/components/schemas/hwSelected'
-        - $ref: '#/components/schemas/hwAuto'
+        - $ref: "#/components/schemas/hwSelected"
+        - $ref: "#/components/schemas/hwAuto"
     vnetSelected:
       type: object
       properties:
