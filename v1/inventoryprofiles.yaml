@@ -337,8 +337,8 @@ components:
           type: boolean
           example: false
           description: |
-            For backward compatibility, this property is set to true only when spxDeploymentType is one of the following values: h100_h200_b200_spx_2_tier, h100_h200_b200_spx_3_tier
-        spxDeploymentType:
+            For backward compatibility, this property is set to true only when refArch is one of the following values: h100_h200_b200_spx_2_tier, h100_h200_b200_spx_3_tier
+        refArch:
           type: string
           enum:
             - none
