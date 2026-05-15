@@ -313,6 +313,13 @@ components:
           nullable: true
           type: string
           example: 1a:f0:15:27:6e:8b
+        ipFamily:
+          type: string
+          default: dual
+          enum:
+            - dual
+            - ipv4
+            - ipv6
         nativeVlan:
           oneOf:
             - description: Native VLAN ID
@@ -446,6 +453,13 @@ components:
           nullable: true
           type: string
           example: 1a:f0:15:27:6e:8b
+        ipFamily:
+          type: string
+          default: dual
+          enum:
+            - dual
+            - ipv4
+            - ipv6
         nativeVlan:
           oneOf:
             - description: Native VLAN ID
@@ -614,6 +628,13 @@ components:
           nullable: true
           type: string
           example: 1a:f0:15:27:6e:8b
+        ipFamily:
+          type: string
+          default: dual
+          enum:
+            - dual
+            - ipv4
+            - ipv6
         nativeVlan:
           oneOf:
             - description: Native VLAN ID
