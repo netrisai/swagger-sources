@@ -338,6 +338,10 @@ components:
           example: false
           description: |
             For backward compatibility, this property is set to true only when refArch is one of the following values: h100_h200_b200_spx_2_tier, h100_h200_b200_spx_3_tier
+        hwmp:
+          type: boolean
+          example: false
+          description: Hardware Multi-Plane
         refArch:
           type: string
           enum:
@@ -358,6 +362,7 @@ components:
             - gb300_spx_3_tier_dual_plane
             - gb300_spx_2_tier_quad_plane
             - gb300_spx_3_tier_quad_plane
+
     fabricProps:
       type: object
       description: Fabric specific settings
