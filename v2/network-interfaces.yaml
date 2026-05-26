@@ -103,6 +103,12 @@ paths:
           schema:
             type: integer
           description: Filter by switch id
+        - name: portName
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by port name (exact match)
         - name: sortBy
           in: query
           required: false
