@@ -1160,6 +1160,16 @@ components:
             - auto
             - off
             - on
+        fec:
+          default: auto
+          example: auto
+          type: string
+          enum:
+            - auto
+            - base-r
+            - rs
+            - off
+          description: "Forward Error Correction mode for the port. Defaults to 'auto' for Cumulus and Arista, and 'off' for SONIC."
         extension:
           type: object
           properties:
