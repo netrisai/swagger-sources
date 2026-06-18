@@ -157,6 +157,8 @@ components:
           $ref: '#/components/schemas/ztpPropsList'
         snmpv2Props:
           $ref: '#/components/schemas/snmpv2Props'
+        netqProps:
+          $ref: '#/components/schemas/netqProps'
         createdDate:
           type: integer
           example: 1716575234000
@@ -218,6 +220,8 @@ components:
           $ref: '#/components/schemas/ztpPropsModify'
         snmpv2Props:
           $ref: '#/components/schemas/snmpv2Props'
+        netqProps:
+          $ref: '#/components/schemas/netqProps'
     inventoryProfilesEditItem:
       type: object
       required:
@@ -277,6 +281,8 @@ components:
           $ref: '#/components/schemas/ztpPropsModify'
         snmpv2Props:
           $ref: '#/components/schemas/snmpv2Props'
+        netqProps:
+          $ref: '#/components/schemas/netqProps'
     ruleAddItem:
       type: object
       properties:
@@ -362,7 +368,6 @@ components:
             - gb300_spx_3_tier_dual_plane
             - gb300_spx_2_tier_quad_plane
             - gb300_spx_3_tier_quad_plane
-
     fabricProps:
       type: object
       description: Fabric specific settings
@@ -428,3 +433,28 @@ components:
           type: string
           example: Data Center 1, Rack A5
           description: SNMP location information
+    netqProps:
+      type: object
+      nullable: true
+      description: NetQ configuration properties. Set to null to disable NetQ and remove all associated configurations.
+      required:
+        - serverAddrs
+        - serverPort
+      properties:
+        enabled:
+          type: boolean
+          example: true
+          description: Enable or disable NetQ. If it's not provided, NetQ will be enabled by default.
+        serverAddrs:
+          type: array
+          items:
+            type: string
+          example:
+            - 10.10.10.1
+            - netq-server.example.com
+          description: List of NetQ server IPs or FQDN.
+        serverPort:
+          type: number
+          example: 31980
+          default: 31980
+          description: NetQ server port. Default 31980
