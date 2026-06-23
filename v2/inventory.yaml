@@ -1132,6 +1132,11 @@ components:
           items:
             $ref: '#/components/schemas/dpuBody'
           description: DPU (Data Processing Unit) configurations attached to this server
+        enableEvpnRouteServer:
+          type: boolean
+          description: "Designates this switch as an EVPN Route Server. Leaf switches establish EVPN BGP overlay sessions with all selected EVPN Route Servers. If none are selected, the system automatically chooses the two lowest-ID spine switches (Tier-2) or super-spine switches (Tier-3)."
+          example: false
+          default: false
         createdDate:
           type: number
           example: 1617280628000
@@ -1258,6 +1263,11 @@ components:
             - 2x400
           example: off
           description: Initial break out applies to all switch ports of this switch. Individual breakouts are available under the Network->Interfaces section.
+        enableEvpnRouteServer:
+          type: boolean
+          description: "Designates this switch as an EVPN Route Server. Leaf switches establish EVPN BGP overlay sessions with all selected EVPN Route Servers. If none are selected, the system automatically chooses the two lowest-ID spine switches (Tier-2) or super-spine switches (Tier-3)."
+          example: false
+          default: false
         tags:
           type: array
           items:
@@ -1336,6 +1346,11 @@ components:
               type: string
               example: my_profile
           description: Select an inventory profile to define global configuration (NTP, DNS, timezone, etc…)<br> Allowed values:<br> Can be specified either <b>id</b> or <b>name</b>. When both the <b>id</b> and <b>name</b> are specified, <b>id</b> is used
+        enableEvpnRouteServer:
+          type: boolean
+          description: "Designates this switch as an EVPN Route Server. Leaf switches establish EVPN BGP overlay sessions with all selected EVPN Route Servers. If none are selected, the system automatically chooses the two lowest-ID spine switches (Tier-2) or super-spine switches (Tier-3)."
+          example: false
+          default: false
         maintenanceMode:
           type: boolean
           description: ""
