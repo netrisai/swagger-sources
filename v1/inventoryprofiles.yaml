@@ -401,6 +401,11 @@ components:
         mclag:
           type: boolean
           example: false
+        serverBasedESI:
+          type: boolean
+          default: false
+          nullable: true
+          example: false
     snmpv2Props:
       type: object
       nullable: true
