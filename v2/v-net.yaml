@@ -229,6 +229,34 @@ components:
           type: string
           description: Secondary DHCP Relay address
           example: 10.3.3.1
+    vnetDhcpv6Relay:
+      description: Enabling DHCPv6 Relay
+      type: object
+      required:
+        - enabled
+        - vpc
+        - primaryAddr
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        vpc:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 22
+            name:
+              type: string
+              example: vpc22
+        primaryAddr:
+          type: string
+          description: Primary DHCPv6 Relay address
+          example: 2001:db8:2::1
+        secondaryAddr:
+          type: string
+          description: Secondary DHCPv6 Relay address
+          example: 2001:db8:3::1
     vnetAddBody:
       type: object
       required:
@@ -336,6 +364,8 @@ components:
           description: Required for only vlan-aware v-nets (vlanAware == true).
         dhcpRelay:
           $ref: "#/components/schemas/vnetDhcpRelay"
+        dhcpv6Relay:
+          $ref: "#/components/schemas/vnetDhcpv6Relay"
         gateways:
           type: array
           items:
@@ -476,6 +506,8 @@ components:
           description: Required for only vlan-aware v-nets (vlanAware == true).
         dhcpRelay:
           $ref: "#/components/schemas/vnetDhcpRelay"
+        dhcpv6Relay:
+          $ref: "#/components/schemas/vnetDhcpv6Relay"
         gateways:
           type: array
           items:
@@ -651,6 +683,8 @@ components:
           description: Required for only vlan-aware v-nets (vlanAware == true)
         dhcpRelay:
           $ref: "#/components/schemas/vnetDhcpRelay"
+        dhcpv6Relay:
+          $ref: "#/components/schemas/vnetDhcpv6Relay"
         gateways:
           type: array
           items:
