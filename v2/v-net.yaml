@@ -257,6 +257,122 @@ components:
           type: string
           description: Secondary DHCPv6 Relay address
           example: 2001:db8:3::1
+    vnetIpv6ND:
+      description: IPv6 Neighbor Discovery configuration
+      type: object
+      properties:
+        routerAdvertisement:
+          type: object
+          description: Router Advertisement (RA) settings
+          properties:
+            mode:
+              type: string
+              description: >-
+                Router Advertisement mode. "default" - use the system/platform
+                default RA behavior; "enabled" - explicitly send Router
+                Advertisements for this V-Net; "disabled" - do not send Router
+                Advertisements for this V-Net.
+              enum:
+                - default
+                - enabled
+                - disabled
+              default: default
+              example: default
+            routerLifetime:
+              type: object
+              description: Router lifetime advertised to hosts. Object carrying the value in
+                seconds.
+              properties:
+                seconds:
+                  type: number
+                  description: Router lifetime in seconds. A non-negative integer, or null to
+                    use the default.
+                  nullable: true
+                  example: 1800
+            advertisementInterval:
+              type: object
+              description: Interval between unsolicited Router Advertisements. Object carrying
+                the value in seconds.
+              properties:
+                seconds:
+                  type: number
+                  description: Advertisement interval in seconds. A non-negative integer, or
+                    null to use the default.
+                  nullable: true
+                  example: 600
+            managedConfig:
+              type: boolean
+              description: Managed address configuration (M) flag. When true, hosts use DHCPv6
+                to obtain addresses.
+              default: false
+            otherConfig:
+              type: boolean
+              description: Other configuration (O) flag. When true, hosts use DHCPv6 to obtain
+                other configuration (e.g. DNS).
+              default: false
+        prefixAdvertisement:
+          type: object
+          description: Prefix Information advertised in Router Advertisements
+          properties:
+            preferredLifetime:
+              type: object
+              description: Preferred lifetime of the advertised prefix. Object carrying the
+                value in seconds.
+              properties:
+                seconds:
+                  type: number
+                  description: Preferred lifetime in seconds. A non-negative integer, or null
+                    to use the default.
+                  nullable: true
+                  example: 604800
+            validLifetime:
+              type: object
+              description: Valid lifetime of the advertised prefix. Object carrying the value
+                in seconds.
+              properties:
+                seconds:
+                  type: number
+                  description: Valid lifetime in seconds. A non-negative integer, or null to
+                    use the default.
+                  nullable: true
+                  example: 2592000
+            autoconfig:
+              type: boolean
+              description: Autonomous address configuration (A) flag. When true, hosts may use
+                the prefix for SLAAC.
+              default: false
+        rdnss:
+          type: object
+          description: Recursive DNS Server (RDNSS) option advertised in Router Advertisements
+          properties:
+            enabled:
+              type: boolean
+              description: Whether the RDNSS option is advertised. When true, at least one
+                IPv6 DNS server is required.
+              default: false
+            dnsServers:
+              type: array
+              description: List of recursive DNS servers to advertise. Must be valid IPv6
+                addresses.
+              items:
+                type: string
+                example: "2001:db8::1"
+            lifetime:
+              type: object
+              description: Lifetime of the advertised RDNSS (DNS Server) entries. Object
+                carrying the value in seconds plus an infinite flag.
+              properties:
+                seconds:
+                  type: number
+                  description: DNS Server lifetime in seconds. A non-negative integer, or null
+                    to use the default (or when infinite is true).
+                  nullable: true
+                  example: 1800
+                infinite:
+                  type: boolean
+                  description: When true, the DNS Server lifetime is advertised as infinite and
+                    the seconds value is ignored.
+                  default: false
     vnetAddBody:
       type: object
       required:
@@ -366,6 +482,8 @@ components:
           $ref: "#/components/schemas/vnetDhcpRelay"
         dhcpv6Relay:
           $ref: "#/components/schemas/vnetDhcpv6Relay"
+        ipv6ND:
+          $ref: "#/components/schemas/vnetIpv6ND"
         gateways:
           type: array
           items:
@@ -508,6 +626,8 @@ components:
           $ref: "#/components/schemas/vnetDhcpRelay"
         dhcpv6Relay:
           $ref: "#/components/schemas/vnetDhcpv6Relay"
+        ipv6ND:
+          $ref: "#/components/schemas/vnetIpv6ND"
         gateways:
           type: array
           items:
@@ -685,6 +805,8 @@ components:
           $ref: "#/components/schemas/vnetDhcpRelay"
         dhcpv6Relay:
           $ref: "#/components/schemas/vnetDhcpv6Relay"
+        ipv6ND:
+          $ref: "#/components/schemas/vnetIpv6ND"
         gateways:
           type: array
           items:
