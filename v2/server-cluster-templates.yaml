@@ -315,7 +315,9 @@ components:
           enum:
             - auto
             - dynamic
+            - specify
           example: auto
+          description: Use specify to require a VLAN ID during server cluster creation. The specify value is allowed for l2vpn templates only and is forbidden for l3vpn.
         serverNics:
           type: array
           items:
