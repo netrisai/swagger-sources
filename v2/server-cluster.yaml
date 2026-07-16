@@ -436,6 +436,13 @@ components:
                 type: object
                 oneOf:
                   - $ref: '#/components/schemas/clustersrv.body.template.assignCustomIPv6'
+            vlans:
+              type: array
+              description: VLAN IDs to use for template V-Nets whose vlanID is specify.
+              items:
+                type: object
+                oneOf:
+                  - $ref: '#/components/schemas/clustersrv.body.template.assignCustomVlan'
     clustersrv.body.template.assignCustomIPv4:
       type: object
       properties:
@@ -454,6 +461,21 @@ components:
         postfix:
           type: string
           example: North-South
+    clustersrv.body.template.assignCustomVlan:
+      type: object
+      required:
+        - vlanID
+        - postfix
+      properties:
+        vlanID:
+          type: integer
+          minimum: 2
+          maximum: 4094
+          example: 200
+          description: Use a manual VLAN ID from 2 to 4094.
+        postfix:
+          type: string
+          example: East-West
     clustersrv.body.content:
       required:
         - name
@@ -649,4 +671,3 @@ components:
             statusCode:
               type: integer
               example: 400
-
