@@ -315,7 +315,9 @@ components:
           enum:
             - auto
             - dynamic
+            - specify
           example: auto
+          description: Use specify to require a VLAN ID during server cluster creation. The specify value is allowed for l2vpn templates only and is forbidden for l3vpn.
         serverNics:
           type: array
           items:
@@ -386,6 +388,15 @@ components:
                   type: integer
                   example: 254
                   default: 1
+        ipFamily:
+          type: string
+          description: IP address family for the V-NET. Only applicable for l2vpn and l3vpn types. Defaults to 'dual' if not specified.
+          enum:
+            - dual
+            - ipv4
+            - ipv6
+          default: dual
+          nullable: true
     clustersrvtmpl.body.id:
       required:
         - id
