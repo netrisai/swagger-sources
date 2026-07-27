@@ -1,0 +1,315 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v2
+security:
+  - cookieAuth: []
+paths:
+  /api/v2/topology/import:
+    post:
+      tags:
+        - Topology
+      summary: Import a UFM topology
+      description: Imports an array of UFM link records into the topology keyspace for the provided `<ufm-id>`. The import is idempotent per cluster. Re-importing replaces that cluster's previous data.
+      parameters:
+        - name: ufm-id
+          in: query
+          required: true
+          description: UFM cluster id. Namespaces every Redis key. Also accepted as `ufmId`.
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_.-]+$'
+            example: ufm-lab
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/topology.ufm.import.link'
+      responses:
+        200:
+          description: Import succeeded
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/topology.response.ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/topology.ufm.import.result'
+        400:
+          description: Missing ufm-id, invalid body, or invalid link record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topology.response.error'
+  /api/v2/topology/path:
+    get:
+      tags:
+        - Topology
+      summary: Shortest path(s) for Netris-managed servers
+      description: With both `from` and `to`, returns every equal-cost shortest path (ECMP) between the two servers, per shared fabric. With only `from`, returns the per-path uplink view for that server. Identifiers may be a Netris `serverName` or a raw GUID.
+      parameters:
+        - name: from
+          in: query
+          required: true
+          description: Source server. Accepts a Netris serverName or GUID.
+          schema:
+            type: string
+            example: server-a
+        - name: to
+          in: query
+          required: false
+          description: Destination server. Accepts a Netris serverName or GUID. Omit for the single-server uplink view.
+          schema:
+            type: string
+            example: server-b
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/topology.response.ok'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/topology.ufm.path.response'
+        400:
+          description: Missing `from` query param
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topology.response.error'
+        404:
+          description: Identifier is not a Netris-managed server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topology.response.error'
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    topology.response.ok:
+      type: object
+      description: Success response
+      properties:
+        data:
+          type: object
+          nullable: true
+          additionalProperties: true
+        errors:
+          type: object
+          nullable: true
+          additionalProperties: true
+          example: null
+        message:
+          type: string
+          example: ''
+        isSuccess:
+          type: boolean
+          example: true
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: number
+              example: 2
+            statusCode:
+              type: number
+              example: 200
+    topology.response.error:
+      type: object
+      description: Error response
+      properties:
+        data:
+          type: object
+          nullable: true
+          additionalProperties: true
+          example: null
+        errors:
+          type: object
+          nullable: true
+          additionalProperties: true
+          example: null
+        message:
+          type: string
+          example: Error message
+        isSuccess:
+          type: boolean
+          example: false
+        meta:
+          type: object
+          properties:
+            apiVersion:
+              type: number
+              example: 2
+            statusCode:
+              type: number
+              example: 400
+    topology.ufm.import.link:
+      type: object
+      required:
+        - source_guid
+        - destination_guid
+      properties:
+        source_guid:
+          type: string
+          example: 58a2e10300aa0abe
+        destination_guid:
+          type: string
+          example: b8599f0300ff0010
+        source_port_name:
+          type: string
+          example: server-a_mlx5_0
+        destination_port_name:
+          type: string
+          example: ib-spine01
+        source_port_node_description:
+          type: string
+          example: server-a port mlx5_0
+        destination_port_node_description:
+          type: string
+          example: spine switch port 1
+        name:
+          type: string
+          example: server-a_mlx5_0--ib-spine01
+    topology.ufm.import.result:
+      type: object
+      properties:
+        imported:
+          type: boolean
+          example: true
+        ufmId:
+          type: string
+          example: ufm-lab
+        links:
+          type: number
+          example: 2072
+        nodes:
+          type: number
+          example: 288
+        netrisMatched:
+          type: number
+          example: 10
+    topology.ufm.path.response:
+      type: object
+      properties:
+        from:
+          type: string
+          example: server-a
+        to:
+          type: string
+          example: server-b
+        server:
+          type: string
+          example: server-a
+        result_count:
+          type: number
+          example: 1
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/topology.ufm.path.result'
+        note:
+          type: string
+          example: Destination omitted. Returning uplinks grouped per fabric.
+    topology.ufm.path.result:
+      type: object
+      properties:
+        fabric:
+          $ref: '#/components/schemas/topology.ufm.fabric'
+        observed_at:
+          type: string
+          format: date-time
+        from:
+          $ref: '#/components/schemas/topology.ufm.endpoint'
+        to:
+          $ref: '#/components/schemas/topology.ufm.endpoint'
+        reachable:
+          type: boolean
+          nullable: true
+          example: true
+        id:
+          type: string
+          example: 58a2e10300aa0abe
+        name:
+          type: string
+          example: server-a
+        type:
+          type: string
+          example: server
+        props:
+          $ref: '#/components/schemas/topology.ufm.server.path.props'
+        path_count:
+          type: number
+          example: 2
+        paths:
+          type: array
+          items:
+            $ref: '#/components/schemas/topology.ufm.network.path'
+    topology.ufm.fabric:
+      type: object
+      properties:
+        type:
+          type: string
+          example: infiniband
+        fabricId:
+          type: string
+          example: ufm-lab
+    topology.ufm.endpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 58a2e10300aa0abe
+        node:
+          type: string
+          example: server-a
+    topology.ufm.server.path.props:
+      type: object
+      properties:
+        guids:
+          type: array
+          items:
+            type: string
+          example:
+            - 58a2e10300aa0abe
+    topology.ufm.network.path:
+      type: object
+      properties:
+        network_path:
+          type: array
+          items:
+            type: string
+          example:
+            - server-a
+            - ib-leaf01
+            - ib-spine01
+            - server-b
+        hops:
+          type: number
+          example: 3
+        tiers:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/topology.ufm.tier.node'
+    topology.ufm.tier.node:
+      type: object
+      properties:
+        id:
+          type: string
+          example: b8599f0300ff0010
+        name:
+          type: string
+          example: ib-spine01
