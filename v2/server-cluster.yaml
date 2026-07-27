@@ -321,6 +321,7 @@ components:
         - $ref: '#/components/schemas/clustersrv.body.tenant'
         - $ref: '#/components/schemas/clustersrv.body.site'
         - $ref: '#/components/schemas/clustersrv.body.vpc'
+        - $ref: '#/components/schemas/clustersrv.body.vpcList'
         - $ref: '#/components/schemas/clustersrv.body.template'
         - $ref: '#/components/schemas/clustersrv.body.content'
         - $ref: '#/components/schemas/clustersrv.body.resources'
@@ -332,6 +333,7 @@ components:
         - $ref: '#/components/schemas/clustersrv.body.tenant'
         - $ref: '#/components/schemas/clustersrv.body.site'
         - $ref: '#/components/schemas/clustersrv.body.vpc'
+        - $ref: '#/components/schemas/clustersrv.body.vpcList'
         - $ref: '#/components/schemas/clustersrv.body.template'
         - $ref: '#/components/schemas/clustersrv.body.content'
     clustersrv.put.body:
@@ -382,6 +384,40 @@ components:
             name:
               type: string
               example: VPC-1
+    clustersrv.body.vpcList:
+      type: object
+      properties:
+        vpcList:
+          type: array
+          description: Optional VPC mappings for server cluster template objects. When provided, every VPC-backed template object must be mapped exactly once. Use an existing VPC id to map to an existing VPC. Use id 0 or omit id with the same group value to create/map objects to the same new VPC; different group values create separate VPCs.
+          items:
+            $ref: '#/components/schemas/clustersrv.body.vpc.mapping.item'
+          example:
+            - id: 0
+              group: new-vpc-0
+              name: Create New
+              postfix: frontend
+    clustersrv.body.vpc.mapping.item:
+      required:
+        - postfix
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 0
+          description: VPC identifier. Use an existing VPC id, or use 0/omit this property when creating a new VPC.
+        group:
+          type: string
+          example: new-vpc-0
+          description: Client-provided grouping key for new VPC mappings. Items with the same group are created under the same new VPC.
+        name:
+          type: string
+          example: VPC-1
+          description: VPC name.
+        postfix:
+          type: string
+          example: frontend
+          description: Server-cluster template object postfix.
     clustersrv.body.tenant:
       type: object
       properties:
@@ -649,4 +685,3 @@ components:
             statusCode:
               type: integer
               example: 400
-
