@@ -437,15 +437,6 @@ components:
           type: string
           example: 1-4094
           description: Range of VLAN IDs allowed for use at this site.
-        siteToSiteVpn:
-          type: string
-          example: Disabled
-          description: Site Mesh status
-          enum:
-          - Disabled
-          - Hub
-          - Spoke
-          - Dynamic Spoke
         equinixProjectID:
           type: string
           example: ''
