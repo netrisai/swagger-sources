@@ -348,6 +348,10 @@ components:
           type: boolean
           example: false
           description: Hardware Multi-Plane
+        qosStorage:
+          type: boolean
+          example: false
+          description: Optimize fabric QoS for high-performance storage workloads.
         refArch:
           type: string
           enum:
