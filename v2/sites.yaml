@@ -43,14 +43,6 @@ paths:
                       example: new-site
                     id:
                       example:
-                    siteMesh:
-                      required:
-                        - value
-                      properties:
-                        name:
-                          example:
-                        value:
-                          example: hub
                     rohProfile:
                       required:
                       - value
@@ -318,7 +310,6 @@ components:
         - vmAsn
         - rohProfile
         - aclPolicy
-        - siteMesh
         - switchFabric
         - vlanRange
       properties:
@@ -341,23 +332,6 @@ components:
           type: number
           example: 65002
           description: ASN for ROH (Routing on the Host) virtual compute instances, should be unique within the scope of a site, can be same for different sites.
-        siteMesh:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Site Mesh VPN mode name
-              example: Hub
-              enum: [Disabled, Hub, Spoke, Dynamic Spoke]
-            value:
-              type: string
-              example: disabled
-              description: Site Mesh VPN mode value
-              enum:
-                - disabled
-                - hub
-                - spoke
-                - dspoke
         rohProfile:
           type: object
           description: | 
