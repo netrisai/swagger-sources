@@ -1,0 +1,272 @@
+openapi: 3.0.0
+info:
+  title: Netris API
+  version: v1
+security:
+  - cookieAuth: []
+paths:
+  /api/apilogs:
+    get:
+      tags:
+        - API Logs
+      summary: Request for getting API Logs.
+      parameters:
+        - name: start
+          in: query
+          description: Start of the time range as a Unix timestamp in seconds.
+          required: true
+          schema:
+            type: integer
+            example: 1700000000
+        - name: end
+          in: query
+          description: End of the time range as a Unix timestamp in seconds.
+          required: true
+          schema:
+            type: integer
+            example: 1700086400
+        - name: search
+          in: query
+          description: Full-text search string matched against method, ip, name, user, url, and body fields.
+          required: false
+          schema:
+            type: string
+            example: admin
+        - name: filter
+          in: query
+          description: JSON-encoded filter object. The `method` field accepts an array of HTTP methods for exact matching, `traceId` is matched exactly, and all other fields are matched with a case-insensitive regex.
+          required: false
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apilogs.query.filter'
+        - name: sort
+          in: query
+          description: JSON-encoded sort object specifying the field and direction.
+          required: false
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apilogs.query.sort'
+        - name: pagination
+          in: query
+          description: JSON-encoded pagination object.
+          required: false
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apilogs.query.pagination'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apilogs.response.200'
+        "500":
+          description: Internal Server Error
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Web Service Cookie
+  schemas:
+    apilogs.query.filter:
+      type: object
+      description: Fields to filter the results. `method` uses exact array matching; other fields use case-insensitive regex.
+      properties:
+        method:
+          type: array
+          description: Filter by one or more HTTP methods.
+          items:
+            type: string
+            enum:
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+          example:
+            - GET
+            - POST
+        ip:
+          type: string
+          description: Filter by client IP address (regex match).
+          example: "192.168"
+        name:
+          type: string
+          description: Filter by log entry name (regex match).
+          example: vnet
+        user:
+          type: string
+          description: Filter by username (regex match).
+          example: admin
+        url:
+          type: string
+          description: Filter by request URL (regex match).
+          example: /api/v2
+        body:
+          type: string
+          description: Filter by request body content (regex match).
+          example: tenant
+        traceId:
+          type: string
+          description: Filter by the W3C Trace Context trace-id (exact match). This is the `trace.traceId` field of the audit log document.
+          pattern: ^[0-9a-f]{32}$
+          example: 4bf92f3577b34da6a3ce929d0e0e4736
+        traceSpanId:
+          type: string
+          description: Filter by the W3C Trace Context span-id (exact match). This is the `trace.traceSpanId` field of the audit log document.
+          example: 44502a875e25d773
+        traceParentSpanId:
+          type: string
+          description: Filter by the W3C Trace Context parent-span-id (exact match). This is the `trace.traceParentSpanId` field of the audit log document.
+          example: 47602a875e25d664
+    apilogs.query.sort:
+      type: object
+      description: Sorting options.
+      properties:
+        sortBy:
+          type: string
+          description: Field name to sort by.
+          enum:
+            - ip
+            - name
+            - user
+            - method
+            - url
+            - createdAt
+            - updatedAt
+          example: createdAt
+        order:
+          type: string
+          description: Sort direction.
+          enum:
+            - ASC
+            - DESC
+          example: DESC
+    apilogs.query.pagination:
+      type: object
+      description: Pagination options.
+      properties:
+        limit:
+          type: integer
+          description: Maximum number of records to return per page.
+          example: 25
+        offset:
+          type: integer
+          description: Number of records to skip before starting to return results.
+          example: 0
+    apilogs.response.item:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the log entry.
+          example: 64a1f2b3c4e5f60012345678
+        ip:
+          type: string
+          description: Client IP address.
+          example: 192.168.1.10
+        name:
+          type: string
+          description: Name associated with the log entry.
+          example: vnet create
+        user:
+          type: string
+          description: Username that performed the action.
+          example: admin
+        method:
+          type: string
+          description: HTTP method used.
+          enum:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+          example: POST
+        url:
+          type: string
+          description: Request URL.
+          example: /api/v2/vnet
+        body:
+          type: object
+          description: Request body payload.
+          nullable: true
+        trace:
+          type: object
+          properties:
+            traceId:
+              type: string
+              description: W3C Trace Context trace-id. This is 32 lowercase hex characters.
+              example: 4bf92f3577b34da6a3ce929d0e0e4736
+            traceSpanId:
+              type: string
+              description: W3C Trace Context span-id . This is 16 lowercase hex characters.
+              example: 47602a875e25d664
+            traceParentSpanId:
+              type: string
+              nullable: true
+              description: W3C Trace Context parent-span-id . This is 16 lowercase hex characters.
+              example: 97642a875e25d884
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the log entry was created.
+          example: "2024-01-15T10:30:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the log entry was last updated.
+          example: "2024-01-15T10:30:00.000Z"
+    apilogs.response.200:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/apilogs.response.item'
+        meta:
+          type: object
+          description: Pagination metadata returned by the paginator.
+          properties:
+            totalDocs:
+              type: integer
+              description: Total number of documents matching the query.
+              example: 150
+            limit:
+              type: integer
+              description: Number of documents per page.
+              example: 25
+            offset:
+              type: integer
+              description: Number of documents skipped.
+              example: 0
+            totalPages:
+              type: integer
+              description: Total number of pages.
+              example: 6
+            page:
+              type: integer
+              description: Current page number.
+              example: 1
+            pagingCounter:
+              type: integer
+              description: Serial number of the first document on this page.
+              example: 1
+            hasPrevPage:
+              type: boolean
+              example: false
+            hasNextPage:
+              type: boolean
+              example: true
+            prevPage:
+              type: integer
+              nullable: true
+              example: null
+            nextPage:
+              type: integer
+              nullable: true
+              example: 2
