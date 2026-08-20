@@ -310,7 +310,7 @@ components:
         - vmAsn
         - rohProfile
         - aclPolicy
-        - switchFabric
+        - siteMesh
         - vlanRange
       properties:
         id:
@@ -367,14 +367,9 @@ components:
         switchFabric:
           type: string
           example: netris
-          description: | 
-                      Switch fabric types
-                        - **Netris** - I’m going to use Netris to automatically manage my Netris-supported switch fabric. 
-                        - **Equinux Metal** -  Netris will consume Equinix Metal API to dynamically leverage Equinix Metal Fabric. 
-                        - **Dot1q Trunk** - My switch fabric is separate from Netris. I will provide a Dot1q Trunk to Netris SoftGate and my compute servers, so Netris will use VLAN IDs for service encapsulation and isolation.
-                        - **PhoenixNAP BMC** - Netris will collect metadata and dynamically create necessary network resources using PhoenixNAP BMC API.
-
-
+          deprecated: true
+          description: |
+                      DEPRECATED - Switch fabric selection has been removed. Every site is now managed as a Netris-native fabric (`netris`). This field is no longer required, is ignored if provided on create/update, and is no longer returned in responses. It will be removed in a future release.
           enum:
             - netris
             - equinix_metal
@@ -386,6 +381,8 @@ components:
           description: Range of VLAN IDs allowed for use at this site.
         switchFabricProviders:
           type: object
+          deprecated: true
+          description: DEPRECATED - Switch fabric providers (Equinix Metal, PhoenixNAP BMC) have been removed. This field is ignored if provided on create/update, and is no longer returned in responses. It will be removed in a future release.
           properties:
             equinixMetal:
               type: object
