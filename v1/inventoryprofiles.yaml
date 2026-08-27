@@ -159,6 +159,8 @@ components:
           $ref: '#/components/schemas/snmpv2Props'
         netqProps:
           $ref: '#/components/schemas/netqProps'
+        syslogDestinations:
+          $ref: '#/components/schemas/syslogDestinationsProps'
         createdDate:
           type: integer
           example: 1716575234000
@@ -222,6 +224,8 @@ components:
           $ref: '#/components/schemas/snmpv2Props'
         netqProps:
           $ref: '#/components/schemas/netqProps'
+        syslogDestinations:
+          $ref: '#/components/schemas/syslogDestinationsProps'
     inventoryProfilesEditItem:
       type: object
       required:
@@ -283,6 +287,8 @@ components:
           $ref: '#/components/schemas/snmpv2Props'
         netqProps:
           $ref: '#/components/schemas/netqProps'
+        syslogDestinations:
+          $ref: '#/components/schemas/syslogDestinationsProps'
     ruleAddItem:
       type: object
       properties:
@@ -463,3 +469,53 @@ components:
           example: 31980
           default: 31980
           description: NetQ server port. Default 31980
+    syslogDestinationItem:
+      type: object
+      properties:
+        host:
+          type: string
+          example: 10.10.10.1
+          description: IPv4, IPv6, or Fully Qualified Domain Name of the syslog destination
+        port:
+          type: number
+          example: 514
+          default: 514
+        protocol:
+          type: string
+          example: UDP
+          default: UDP
+          enum:
+            - TCP
+            - UDP
+        severity:
+          type: string
+          example: Informational
+          default: Informational
+          enum:
+            - Emergency
+            - Alert
+            - Critical
+            - Error
+            - Warning
+            - Notice
+            - Informational
+            - Debug
+    syslogDestinationsProps:
+      type: object
+      description: Syslog forwarding configuration for devices using this inventory profile. Per-device override is not supported.
+      properties:
+        enabled:
+          type: boolean
+          example: true
+          default: false
+          description: Enable or disable syslog forwarding for devices using this inventory profile.
+        useRfc5424:
+          type: boolean
+          example: false
+          default: false
+          description: Format forwarded messages per RFC 5424 instead of the platform default.
+        servers:
+          type: array
+          description: Syslog destinations devices using this inventory profile will forward logs to. Maximum 4 entries.
+          items:
+            $ref: '#/components/schemas/syslogDestinationItem'
