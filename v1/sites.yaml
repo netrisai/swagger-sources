@@ -255,7 +255,6 @@ components:
         - virtualInstanceASN
         - rp_id
         - acl_policy
-        - switchFabric
       properties:
         name:
           type: string
@@ -303,7 +302,8 @@ components:
         switchFabric:
           type: string
           example: netris
-          description: 'Netris - I’m going to use Netris to automatically manage my Netris-supported switch fabric. Equinux Metal - Netris will consume Equinix Metal API to dynamically leverage Equinix Metal Fabric. Dot1q Trunk - My switch fabric is separate from Netris. I will provide a Dot1q Trunk to Netris SoftGate and my compute servers, so Netris will use VLAN IDs for service encapsulation and isolation. '
+          deprecated: true
+          description: 'DEPRECATED - Switch fabric selection has been removed. Every site is now managed as a Netris-native fabric (`netris`). This field is no longer required and is ignored if provided. It will be removed in a future release.'
           enum:
             - netris
             - equinix_metal
@@ -315,15 +315,18 @@ components:
         equinixProjectID:
           type: string
           example: ''
-          description: Your Equinix Metal Project ID.
+          deprecated: true
+          description: 'DEPRECATED - Switch fabric providers (Equinix Metal) have been removed. This field is ignored if provided. It will be removed in a future release.'
         equinixProjectAPIKey:
           type: string
           example: ''
-          description: Equinix Project API key with Read/Write permissions.
+          deprecated: true
+          description: 'DEPRECATED - Switch fabric providers (Equinix Metal) have been removed. This field is ignored if provided. It will be removed in a future release.'
         equinixLocation:
           type: string
           example: ''
-          description: Your Equinix Location.
+          deprecated: true
+          description: 'DEPRECATED - Switch fabric providers (Equinix Metal) have been removed. This field is ignored if provided. It will be removed in a future release.'
           enum:
             - se
             - dc
@@ -424,11 +427,9 @@ components:
         switchFabric:
           type: string
           example: netris
-          description: | 
-                      Switch fabric type
-                        - **Netris** - I’m going to use Netris to automatically manage my Netris-supported switch fabric. 
-                        - **Equinux Metal** -  Netris will consume Equinix Metal API to dynamically leverage Equinix Metal Fabric. 
-                        - **Dot1q Trunk** - My switch fabric is separate from Netris. I will provide a Dot1q Trunk to Netris SoftGate and my compute servers, so Netris will use VLAN IDs for service encapsulation and isolation.
+          deprecated: true
+          description: |
+                      DEPRECATED - Switch fabric selection has been removed. Every site is now managed as a Netris-native fabric. Sites created or edited after this change always report `netris`; older sites may still report a legacy value. This field will be removed in a future release.
           enum:
             - netris
             - equinix_metal
@@ -440,15 +441,18 @@ components:
         equinixProjectID:
           type: string
           example: ''
-          description: Your Equinix Metal Project ID.
+          deprecated: true
+          description: 'DEPRECATED - Switch fabric providers (Equinix Metal) have been removed and this field is no longer returned by the API. It will be removed in a future release.'
         equinixProjectAPIKey:
           type: string
           example: ''
-          description: Equinix Project API key with Read/Write permissions.
+          deprecated: true
+          description: 'DEPRECATED - Switch fabric providers (Equinix Metal) have been removed and this field is no longer returned by the API. It will be removed in a future release.'
         equinixLocation:
           type: string
           example: ''
-          description: Your Equinix Location.
+          deprecated: true
+          description: 'DEPRECATED - Switch fabric providers (Equinix Metal) have been removed and this field is no longer returned by the API. It will be removed in a future release.'
           enum:
             - se
             - dc
