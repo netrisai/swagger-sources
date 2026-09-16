@@ -303,16 +303,6 @@ components:
           type: string
           example: ''
           description: ''
-        tenant:
-          type: object
-          properties:
-            id:
-              type: number
-              example: 23
-            name:
-              type: string
-              example: Unix
-          description: ''
         ipFamily:
           type: string
           enum:
@@ -599,7 +589,6 @@ components:
       description: ''
       required:
         - name
-        - tenant
         - prefix
       properties:
         name:
@@ -609,16 +598,6 @@ components:
         description:
           type: string
           example: ''
-          description: ''
-        tenant:
-          type: object
-          properties:
-            id:
-              type: number
-              example: 23
-            name:
-              type: string
-              example: Unix
           description: ''
         prefix:
           type: string
