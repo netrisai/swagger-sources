@@ -161,6 +161,8 @@ components:
           $ref: '#/components/schemas/netqProps'
         syslogDestinations:
           $ref: '#/components/schemas/syslogDestinationsProps'
+        lanzProps:
+          $ref: '#/components/schemas/lanzProps'
         createdDate:
           type: integer
           example: 1716575234000
@@ -226,6 +228,8 @@ components:
           $ref: '#/components/schemas/netqProps'
         syslogDestinations:
           $ref: '#/components/schemas/syslogDestinationsProps'
+        lanzProps:
+          $ref: '#/components/schemas/lanzProps'
     inventoryProfilesEditItem:
       type: object
       required:
@@ -289,6 +293,8 @@ components:
           $ref: '#/components/schemas/netqProps'
         syslogDestinations:
           $ref: '#/components/schemas/syslogDestinationsProps'
+        lanzProps:
+          $ref: '#/components/schemas/lanzProps'
     ruleAddItem:
       type: object
       properties:
@@ -519,3 +525,70 @@ components:
           description: Syslog destinations devices using this inventory profile will forward logs to. Maximum 4 entries.
           items:
             $ref: '#/components/schemas/syslogDestinationItem'
+    lanzProps:
+      type: object
+      description: Arista LANZ (Latency Analyzer) hardware queue-depth monitoring configuration for devices using this inventory profile.
+      properties:
+        enabled:
+          type: boolean
+          example: true
+          default: false
+          description: Master switch for the feature. While false, no other LANZ setting has any effect.
+        highThreshold:
+          type: integer
+          nullable: true
+          example: 200
+          minimum: 8
+          maximum: 16382
+          description: Queue depth that triggers an over-threshold congestion event on interfaces using the default thresholds. Null uses the switch's built-in platform default.
+        lowThreshold:
+          type: integer
+          nullable: true
+          example: 100
+          minimum: 1
+          maximum: 16382
+          description: Queue depth below which the queue is considered recovered. Must be lower than highThreshold when both are set. Null uses the switch's built-in platform default.
+        updateInterval:
+          type: integer
+          nullable: true
+          example: 5000
+          minimum: 80
+          maximum: 10000000
+          description: Minimum time in microseconds between two successive congestion messages for the same queue, applying to both syslog and streaming. Null uses the platform default interval.
+        logToSyslog:
+          type: boolean
+          example: false
+          default: false
+          description: When enabled, over-threshold and recovery events are written to the switch's syslog in addition to being tracked internally by LANZ.
+        cpuHighThreshold:
+          type: integer
+          nullable: true
+          example: 200
+          minimum: 8
+          maximum: 16382
+          description: High-water mark for CPU (control-plane) queue congestion events. CPU queue monitoring itself is always active once LANZ is enabled; this only overrides its threshold. Null uses the platform default.
+        cpuLowThreshold:
+          type: integer
+          nullable: true
+          example: 100
+          minimum: 1
+          maximum: 16382
+          description: Low-water mark for CPU queue recovery events. Must be lower than cpuHighThreshold when both are set. Null uses the platform default.
+        streamingEnabled:
+          type: boolean
+          example: false
+          default: false
+          description: Enables the real-time LANZ streaming feed that external client applications connect to and pull queue telemetry from.
+        streamingAllowedClients:
+          type: array
+          description: IPv4 CIDR subnets permitted to connect to the streaming feed, e.g. "10.0.0.0/24". A bare address with no /prefix is rejected. Empty = unrestricted (any client may connect). Only validated while streamingEnabled is true.
+          items:
+            type: string
+            example: 10.0.0.0/24
+        streamingMaxClients:
+          type: integer
+          nullable: true
+          example: 10
+          minimum: 1
+          maximum: 100
+          description: Maximum number of concurrent client applications that may connect to the streaming feed. Only validated while streamingEnabled is true. Null uses the platform default limit.
