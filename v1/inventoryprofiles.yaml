@@ -380,6 +380,7 @@ components:
             - gb300_spx_3_tier_dual_plane
             - gb300_spx_2_tier_quad_plane
             - gb300_spx_3_tier_quad_plane
+            - rtx_pro_6000
     fabricProps:
       type: object
       description: Fabric specific settings
